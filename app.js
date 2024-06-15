@@ -58,10 +58,17 @@ app.post('/login', passport.authenticate('local', {
   successRedirect: '/', // Redirigir a el buscador si la autenticación es exitosa
   failureRedirect: '/login'    // Redirigir a /login si la autenticación falla
 }));
-
+/*
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect('/login');
+});
+*/
+app.post('/logout', (req, res, next) => {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/login');
+  });
 });
 
 // Middleware para proteger rutas

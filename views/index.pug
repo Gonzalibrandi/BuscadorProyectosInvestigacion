@@ -1,9 +1,3 @@
-//- extends layout
-
-//- block content
-//-   h1= title
-//-   p Welcome to #{title}
-
 doctype html
 html(lang='en')
   head
@@ -15,11 +9,14 @@ html(lang='en')
       button#filter-button(type='button') Mostrar Proyectos Vencidos
       #searchbox(focus)
       #hits
+    //Agregamos el botón de cerrar sesión
+    form(action="/logout", method="POST")
+      button(type="submit") Cerrar sesión
     script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
     script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@4')
     script.
       const search = instantsearch({
-      indexName: "proyectos",
+      indexName: "Proyectos",
       searchClient: instantMeiliSearch(
       "http://localhost:7700"
       ).searchClient

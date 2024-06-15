@@ -1,21 +1,21 @@
-const { MeiliSearch } = require('meilisearch'); // Importación correcta
+const { MeiliSearch } = require('meilisearch'); //Importación
 
-// Configurar conexión con Meilisearch
+//configurar conexión con Meilisearch
 const client = new MeiliSearch({
   host: 'http://meilisearch:7700',
   apiKey: 'MASTER_KEY'
 });
 
-
-/* con esto tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo */
-/* 
+//tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo
+/*
 const proyectos = require('./proyectos.json');
 client.index('proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
+client.deleteIndex('proyectos');
 */
 
-/* actualizacion de atributos displayed */
+//actualizacion de atributos displayed
 /*
-client.index('proyectos').updateSettings({
+client.index('Proyectos').updateSettings({
   "rankingRules": [
       "words",
       "typo",
@@ -79,14 +79,14 @@ client.index('proyectos').updateSettings({
 })
 */
 
-/* filtros */
+//filtros
 /* 
-client.index('proyectos')
+client.index('Proyectos')
   .updateFilterableAttributes([
     'estatus'
   ]) 
-*/
-client.index('proyectos').search('', {
+
+client.index('Proyectos').search('', {
   filter: 'estatus = "Vencido"'
 })
 
