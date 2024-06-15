@@ -7,11 +7,12 @@ const client = new MeiliSearch({
 });
 
 //tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo
-/*
+/* 
+client.deleteIndex('Proyectos');
+client.createIndex('Proyectos', { primaryKey: 'id' })
 const proyectos = require('./proyectos.json');
-client.index('proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
-client.deleteIndex('proyectos');
-*/
+client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
+ */
 
 //actualizacion de atributos displayed
 /*

@@ -4,9 +4,19 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie-edge")
-    title Document
-  body
-    form(action="/login", method="POST")
-      input(type="text", name="username")
-      input(type="password", name="password")
-      input(type="submit", value="Enviar")
+    title Login
+    //- Cambia el nombre del archivo CSS
+    link(rel='stylesheet', href='/styles/login.css') 
+  //- Agrega una clase única al body
+  body.login-page  
+    .container
+      .login-box
+        h2 Iniciar Sesión
+        form(action="/login", method="POST")
+          .user-box
+            label Usuario
+            input(type="text", name="username" required)
+          .user-box
+            label Contraseña
+            input(type="password", name="password" required)
+          button(type="submit") Enviar
