@@ -1,22 +1,18 @@
 doctype html
-html(lang="en")
+html(lang='en')
   head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(http-equiv="X-UA-Compatible", content="ie-edge")
+    meta(charset='utf-8')
+    link(rel='stylesheet' href='/stylesheets/login.css')
+    link(rel='icon' href='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg')
     title Login
-    //- Cambia el nombre del archivo CSS
-    link(rel='stylesheet', href='/styles/login.css') 
-  //- Agrega una clase única al body
-  body.login-page  
-    .container
-      .login-box
-        h2 Iniciar Sesión
-        form(action="/login", method="POST")
-          .user-box
-            label Usuario
-            input(type="text", name="username" required)
-          .user-box
-            label Contraseña
-            input(type="password", name="password" required)
-          button(type="submit") Enviar
+  body
+    .box-grande
+      h1 Buscador de Proyectos de Investigaci&oacute;n
+      h2 Creado por Franco Caraffo y Gonzalo Librandi
+      span Potenciado por Meilisearch
+      img(src='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg' alt='')
+      form(action='/login' ,='' method='POST')
+        h3 Iniciar Sesi&oacute;n
+        input(type='text' name='username' placeholder='Nombre de Usuario' required='')
+        input(type='password' name='password' placeholder='Contraseña' required='')
+        input.boton-enviar(type='submit')
