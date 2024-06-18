@@ -2,18 +2,21 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/templates/basic_search.css')
+    link(rel="stylesheet", href="/stylesheets/index.css")
     link(rel='icon' href='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg')
     title Buscador  
-  body
-    h1 Buscador de Proyectos de Investigacion
+body
+  .sidebar
+    h1 Buscador de Proyectos de Investigación
+    .filter-checkbox
+      input#filter-checkbox(type="checkbox")
+      label(for="filter-checkbox") Mostrar Proyectos Vencidos
+    form(action="/logout", method="POST")  
+      button(type="submit") Cerrar sesión
+  .main-content
     .wrapper
-      button#filter-button(type='button') Mostrar Proyectos Vencidos
       #searchbox(focus)
       #hits
-    //Agregamos el botón de cerrar sesión
-    form(action="/logout", method="POST")
-      button(type="submit") Cerrar sesión
     script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
     script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@4')
     script.
@@ -42,3 +45,5 @@ html(lang='en')
       })
       ]);
       search.start();
+
+<!--link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/templates/basic_search.css')-->
