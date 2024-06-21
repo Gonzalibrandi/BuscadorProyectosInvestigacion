@@ -49,42 +49,8 @@ passport.deserializeUser(function(id, done) {
   done(null, { id: 1, name: "poli" });
 });
 
-// Rutas para manejar la autenticación
-app.get('/login', (req, res) => {
-  res.render('login');
-});
-
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/', // Redirigir a el buscador si la autenticación es exitosa
-  failureRedirect: '/login'    // Redirigir a /login si la autenticación falla
-}));
-/*
-app.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/login');
-});
-*/
-app.post('/logout', (req, res, next) => {
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/login');
-  });
-});
-
-// Middleware para proteger rutas
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
-
-// Ruta para la página principal protegida
-app.get('/', ensureAuthenticated, (req, res) => {
-  res.render('index', { user: req.user });
-});
-
-// Rutas adicionales (usersRouter podría contener rutas de usuarios, por ejemplo)
+// Usar las rutas definidas en indexRouter y usersRouter
+app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // Manejo de errores 404

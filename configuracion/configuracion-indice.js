@@ -10,7 +10,7 @@ const client = new MeiliSearch({
 /* 
 client.deleteIndex('Proyectos');
 client.createIndex('Proyectos', { primaryKey: 'id' })
-const proyectos = require('./proyectos.json');
+const proyectos = require('./datos/proyectos.json');
 client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
  */
 

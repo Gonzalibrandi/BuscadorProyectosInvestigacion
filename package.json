@@ -9,6 +9,8 @@
   "dependencies": {
     "@meilisearch/instant-meilisearch": "^0.18.1",
     "algoliasearch": "^4.23.3",
+    "bcrypt-nodejs": "^0.0.3",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "^3.1.10",
