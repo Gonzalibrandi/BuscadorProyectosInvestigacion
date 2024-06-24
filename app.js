@@ -1,57 +1,43 @@
 const express = require('express');
-const app = express();
 const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
-const PassportLocal = require('passport-local').Strategy;
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const morgan = require('morgan');
 
-// Configuración del motor de vistas
-app.set('views', path.join(__dirname, 'views'));
+// initializations
+const app = express();
+require('./database');
+require('./passport/local-auth');
+
+// settings
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug');
 
-// Middleware básicos
-app.use(logger('dev'));
+// middlewares
+app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Configuración de sesión para Passport
 app.use(session({
-  secret: 'secreto',
-  resave: true,
-  saveUninitialized: true
+  secret: 'mysecretsession',
+  resave: false,
+  saveUninitialized: false
 }));
-
-// Inicialización de Passport
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Estrategia de autenticación local con Passport
-passport.use(new PassportLocal(function(username, password, done) {
-  if (username === "poli" && password === "12345") {
-    return done(null, { id: 1, name: "poli" });
-  }
-  done(null, false);
-}));
-
-// Serialización de usuario
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+app.use((req, res, next) => {
+  app.locals.loginMessage = req.flash('loginMessage');
+  app.locals.signupMessage = req.flash('signupMessage');
+  app.locals.user = req.user;
+  console.log(app.locals)
+  next();
 });
 
-// Deserialización de usuario
-passport.deserializeUser(function(id, done) {
-  done(null, { id: 1, name: "poli" });
-});
-
-// Usar las rutas definidas en indexRouter y usersRouter
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// routes
+app.use('/', require('./routes/index'));
 
 // Manejo de errores 404
 app.use(function(req, res, next) {
@@ -65,3 +51,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+

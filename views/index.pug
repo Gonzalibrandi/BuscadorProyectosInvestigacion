@@ -1,49 +1,42 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='utf-8')
-    link(rel="stylesheet", href="/stylesheets/index.css")
-    link(rel='icon' href='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg')
-    title Buscador  
-body
+extends layout
+
+block content
   .sidebar
     h1 Buscador de Proyectos de Investigación
-    .filter-checkbox
-      input#filter-checkbox(type="checkbox")
-      label(for="filter-checkbox") Mostrar Proyectos Vencidos
+
+    h2 Filtros de Búsqueda
+    .filters
+      .filters_estatus
+        h3 Estatus
+        ul
+          li
+            p Abierto
+            input(type="checkbox" class="filterCheckbox" value="Abierto" data-filter="estatus")
+          li    
+            p Ongoing
+            input(type="checkbox" class="filterCheckbox" value="Ongoing" data-filter="estatus")
+          li    
+            p +4 meses
+            input(type="checkbox" class="filterCheckbox" value=">4 meses" data-filter="estatus")
+      .filters_based-on
+        h3 Based On
+        ul
+          li
+            p USA
+            input(type="checkbox" class="filterCheckbox" value="USA" data-filter="basedOn")
+          li
+            p Australia
+            input(type="checkbox" class="filterCheckbox" value="Australia" data-filter="basedOn")
+          li
+            p Belgium
+            input(type="checkbox" class="filterCheckbox" value="Belgium" data-filter="basedOn")
+          li
+            p Canada
+            input(type="checkbox" class="filterCheckbox" value="Canada" data-filter="basedOn")
     form(action="/logout", method="POST")  
       button(type="submit") Cerrar sesión
+
   .main-content
     .wrapper
-      #searchbox(focus)
+      #searchbox(focus='')
       #hits
-    script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
-    script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@4')
-    script.
-      const search = instantsearch({
-      indexName: "Proyectos",
-      searchClient: instantMeiliSearch(
-      "http://localhost:7700"
-      ).searchClient
-      });
-      search.addWidgets([
-      instantsearch.widgets.searchBox({
-      container: "#searchbox"
-      }),
-      instantsearch.widgets.configure({ hitsPerPage: 8 }),
-      instantsearch.widgets.hits({
-      container: "#hits",
-      templates: {
-      item: `
-      <div>
-      <div class="hit-name">
-      {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
-      </div>
-      </div>
-      `
-      }
-      })
-      ]);
-      search.start();
-
-<!--link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/templates/basic_search.css')-->

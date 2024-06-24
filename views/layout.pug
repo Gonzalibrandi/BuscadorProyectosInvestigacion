@@ -2,6 +2,66 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='utf-8')
+    link(rel="stylesheet", href="/stylesheets/index.css")
+    link(rel='icon' href='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg')
   body
     block content
+  script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
+  script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@4')
+  script.
+    const search = instantsearch({
+      indexName: "Proyectos",
+      searchClient: instantMeiliSearch(
+        "http://localhost:7700"
+      ).searchClient
+    });
+    search.addWidgets([
+      instantsearch.widgets.searchBox({
+        container: "#searchbox"
+      }),
+      instantsearch.widgets.configure({ 
+        hitsPerPage: 8 
+      }),
+      instantsearch.widgets.hits({
+        container: "#hits",
+        templates: {
+          item: `
+            <div>
+              <div class="hit-name">
+                {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
+              </div>
+              <div class="hit-description">
+                {{#helpers.highlight}}{ "attribute": "estatus" }{{/helpers.highlight}}
+              </div>
+            </div>
+          `
+        }
+      })
+    ]);
+    search.start();
+
+    document.querySelectorAll('.filterCheckbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        // Obtener todos los checkboxes
+        const checkboxes = document.querySelectorAll('.filterCheckbox');
+        let filters = [];
+
+        // Crear la cadena de filtros combinando los valores de los checkboxes seleccionados
+        checkboxes.forEach(function(cb) {
+          if (cb.checked) {
+            filters.push(`${cb.dataset.filter} = "${cb.value}"`);
+          }
+        });
+
+        // Configurar los filtros en la búsqueda
+        search.addWidgets([
+          instantsearch.widgets.configure({
+            filters: filters.join(' AND ')
+          }),
+        ]);
+
+        // Actualizar la búsqueda
+        search.refresh();
+      });
+    });
