@@ -7,10 +7,10 @@ const client = new MeiliSearch({
 });
 
 //tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo
-/* 
-client.deleteIndex('Proyectos');
+
+/* client.deleteIndex('Proyectos');
 client.createIndex('Proyectos', { primaryKey: 'id' })
-const proyectos = require('./data/proyectos.json');
+const proyectos = require('../data/proyectos.json');
 client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
  */
 
@@ -86,11 +86,4 @@ client.index('Proyectos').updateSettings({
   .updateFilterableAttributes([
     'estatus',
     'basedOn'
-  ])  */
-
-/*   
-client.index('Proyectos').search('', {
-  filter: 'estatus = "Vencido"'
-}) */
-
-/* offset */
+  ]) */
