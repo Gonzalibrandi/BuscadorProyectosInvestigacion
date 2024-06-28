@@ -12,7 +12,7 @@ function isAuthenticated(req, res, next) {
 
 // Ruta para la página de inicio de sesión
 router.get('/login', (req, res) => {
-  res.render('login', { message: res.locals.loginMessage });
+  res.render('login', { messages: req.flash('loginMessage') });
 });
 
 // Ruta para la página principal, protegida por autenticación
@@ -22,7 +22,7 @@ router.get('/', isAuthenticated, (req, res) => {
 
 // Ruta para la página de registro
 router.get('/signup', (req, res) => {
-  res.render('signup', { message: res.locals.signupMessage });
+  res.render('signup', { messages: req.flash('signupMessage') });
 });
 
 // Manejo del registro de usuarios
