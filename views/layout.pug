@@ -27,13 +27,20 @@ html
         container: "#hits",
         templates: {
           item: `
-            <div>
-              <div class="hit-name">
+            <div class="hit-name"> Nombre: 
                 {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
-              </div>
-              <div class="hit-description">
+            </div>
+            <div class="hit-description"> Estado: 
                 {{#helpers.highlight}}{ "attribute": "estatus" }{{/helpers.highlight}}
-              </div>
+            </div>
+            <div class="hit-description"> Ubicación:
+                {{#helpers.highlight}}{ "attribute": "basedOn" }{{/helpers.highlight}}
+            </div>
+            <div class="hit-description"> Área:
+                {{#helpers.highlight}}{ "attribute": "granArea1" }{{/helpers.highlight}}
+            </div>
+            <div class="hit-description"> Tipo:
+                {{#helpers.highlight}}{ "attribute": "tipo" }{{/helpers.highlight}}
             </div>
           `
         }

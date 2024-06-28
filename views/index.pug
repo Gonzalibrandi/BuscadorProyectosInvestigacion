@@ -7,32 +7,51 @@ block content
     h2 Filtros de Búsqueda
     .filters
       .filters_estatus
-        h3 Estatus
-        ul
-          li
-            p Abierto
-            input(type="checkbox" class="filterCheckbox" value="Abierto" data-filter="estatus")
-          li    
-            p Ongoing
-            input(type="checkbox" class="filterCheckbox" value="Ongoing" data-filter="estatus")
-          li    
-            p +4 meses
-            input(type="checkbox" class="filterCheckbox" value=">4 meses" data-filter="estatus")
+        details
+          summary Estado
+          ul
+            li Abierto
+              input(type="checkbox" class="filterCheckbox" value="Abierto" data-filter="estatus")
+            li Ongoing
+              input(type="checkbox" class="filterCheckbox" value="Ongoing" data-filter="estatus")
+            li >4 meses
+              input(type="checkbox" class="filterCheckbox" value=">4 meses" data-filter="estatus")
+            li Vencido
+              input(type="checkbox" class="filterCheckbox" value="Vencido" data-filter="estatus")
       .filters_based-on
-        h3 Based On
-        ul
-          li
-            p USA
-            input(type="checkbox" class="filterCheckbox" value="USA" data-filter="basedOn")
-          li
-            p Australia
-            input(type="checkbox" class="filterCheckbox" value="Australia" data-filter="basedOn")
-          li
-            p Belgium
-            input(type="checkbox" class="filterCheckbox" value="Belgium" data-filter="basedOn")
-          li
-            p Canada
-            input(type="checkbox" class="filterCheckbox" value="Canada" data-filter="basedOn")
+        details
+          summary Ubicación
+          ul
+            li USA
+              input(type="checkbox" class="filterCheckbox" value="USA" data-filter="basedOn")
+            li Argentina
+              input(type="checkbox" class="filterCheckbox" value="Argentina" data-filter="basedOn")
+            li Bélgica
+              input(type="checkbox" class="filterCheckbox" value="Belgium" data-filter="basedOn")
+            li Canadá
+              input(type="checkbox" class="filterCheckbox" value="Canada" data-filter="basedOn")
+      .filters_area 
+        details
+          summary Área 
+          li Bioquímica
+            input(type="checkbox" class="filterCheckbox" value="Biochemistry Genetics and Molecular Biology" data-filter="granArea1")
+          li Agricultura
+            input(type="checkbox" class="filterCheckbox" value="Agricultural and Biological Sciences" data-filter="granArea1")
+          li Medicina
+            input(type="checkbox" class="filterCheckbox" value="Medicine and Health Sciences" data-filter="granArea1")
+          li Ingeniería
+            input(type="checkbox" class="filterCheckbox" value="Engineering" data-filter="granArea1")
+      .filters_tipo
+        details
+          summary Tipo
+          li Premios
+            input(type="checkbox" class="filterCheckbox" value="Prizes and Awards" data-filter="tipo")
+          li Becas
+            input(type="checkbox" class="filterCheckbox" value="Fellowships scholarships or trainings" data-filter="tipo")
+          li Investigación
+            input(type="checkbox" class="filterCheckbox" value="Research and publications" data-filter="tipo")
+          li Conferencias
+            input(type="checkbox" class="filterCheckbox" value="Travel and Conferences" data-filter="tipo")
     form(action="/logout", method="POST")  
       button(type="submit") Cerrar sesión
 

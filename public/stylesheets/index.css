@@ -16,7 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 150vh;
+    height: 160vh;
     justify-content: space-between;
 }
 
@@ -33,13 +33,27 @@ h1 { /*Buscador de Proyectos de Investigación*/
     font-size: 22px;
     border-bottom: 2px solid #f03774;
     padding-bottom: 10px;
-    margin-bottom: 20px; /* Añadir margen inferior para separación */
+    margin-bottom: 20px;
 }
 
-.sidebar .filter-checkbox { /*BOTÓN DE MOSTRAR PROYECTOS VENCIDOS*/
+h2 { /*Filtros de Búsqueda*/
+  text-align: center;
+  font-family: sans-serif;
+  color: #eee;
+  font-size: 16px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.hit-description{
+  font-weight: 100;
+}
+
+.sidebar .filter-checkbox { /*BOTONES DE FILTROS*/
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: left;
     color: #eee;
 }
 

@@ -82,8 +82,10 @@ client.index('Proyectos').updateSettings({
 
 //filtros
 
-/* client.index('Proyectos')
+client.index('Proyectos')
   .updateFilterableAttributes([
     'estatus',
-    'basedOn'
-  ]) */
+    'basedOn',
+    'granArea1',
+    'tipo'
+  ]) 
