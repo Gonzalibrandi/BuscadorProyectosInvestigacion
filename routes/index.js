@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
+require('../passport/local-auth');
 const User = require('../models/user'); // Asegúrate de que este sea el modelo correcto de tu usuario
 
 // Middleware para asegurar que el usuario está autenticado
@@ -24,6 +25,17 @@ router.get('/', isAuthenticated, (req, res) => {
 router.get('/signup', (req, res) => {
   res.render('signup', { messages: req.flash('signupMessage') });
 });
+
+router.get('/auth/google',
+  passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+router.get('/auth/google/callback',
+  passport.authenticate( 'google', {
+      successRedirect: '/',
+      failureRedirect: '/login'
+}));
 
 // Manejo del registro de usuarios
 router.post('/signup', async (req, res) => {
