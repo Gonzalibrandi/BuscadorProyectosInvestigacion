@@ -3,7 +3,8 @@ extends layout
 block content
   .sidebar
     h1 Buscador de Proyectos de Investigación
-
+    if user
+      .welcome-message Bienvenido, #{user.username}
     h2 Filtros de Búsqueda
     .filters
       .filters_estatus
@@ -32,26 +33,28 @@ block content
               input(type="checkbox" class="filterCheckbox" value="Canada" data-filter="basedOn")
       .filters_area 
         details
-          summary Área 
-          li Bioquímica
-            input(type="checkbox" class="filterCheckbox" value="Biochemistry Genetics and Molecular Biology" data-filter="granArea1")
-          li Agricultura
-            input(type="checkbox" class="filterCheckbox" value="Agricultural and Biological Sciences" data-filter="granArea1")
-          li Medicina
-            input(type="checkbox" class="filterCheckbox" value="Medicine and Health Sciences" data-filter="granArea1")
-          li Ingeniería
-            input(type="checkbox" class="filterCheckbox" value="Engineering" data-filter="granArea1")
+          summary Área
+          ul
+            li Bioquímica
+              input(type="checkbox" class="filterCheckbox" value="Biochemistry Genetics and Molecular Biology" data-filter="granArea1")
+            li Agricultura
+              input(type="checkbox" class="filterCheckbox" value="Agricultural and Biological Sciences" data-filter="granArea1")
+            li Medicina
+              input(type="checkbox" class="filterCheckbox" value="Medicine and Health Sciences" data-filter="granArea1")
+            li Ingeniería
+              input(type="checkbox" class="filterCheckbox" value="Engineering" data-filter="granArea1")
       .filters_tipo
         details
           summary Tipo
-          li Premios
-            input(type="checkbox" class="filterCheckbox" value="Prizes and Awards" data-filter="tipo")
-          li Becas
-            input(type="checkbox" class="filterCheckbox" value="Fellowships scholarships or trainings" data-filter="tipo")
-          li Investigación
-            input(type="checkbox" class="filterCheckbox" value="Research and publications" data-filter="tipo")
-          li Conferencias
-            input(type="checkbox" class="filterCheckbox" value="Travel and Conferences" data-filter="tipo")
+          ul
+            li Premios
+              input(type="checkbox" class="filterCheckbox" value="Prizes and Awards" data-filter="tipo")
+            li Becas
+              input(type="checkbox" class="filterCheckbox" value="Fellowships scholarships or trainings" data-filter="tipo")
+            li Investigación
+              input(type="checkbox" class="filterCheckbox" value="Research and publications" data-filter="tipo")
+            li Conferencias
+              input(type="checkbox" class="filterCheckbox" value="Travel and Conferences" data-filter="tipo") 
     form(action="/logout", method="POST")  
       button(type="submit") Cerrar sesión
 
