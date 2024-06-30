@@ -77,11 +77,22 @@ input{
   color: #f03774;
 }
 
+input:hover{
+  box-shadow: 0 0 10px #eee;
+  transition: 1s ease;
+}
+
 .boton-enviar{
   margin-top: 20px;
   background-color: #f03774;
   color: #000;
   width: 60px;
+  cursor: pointer;
+}
+
+.boton-enviar:hover{
+  box-shadow: 0 0 25px #f03774;
+  transition: 1s ease;
 }
 
 p{

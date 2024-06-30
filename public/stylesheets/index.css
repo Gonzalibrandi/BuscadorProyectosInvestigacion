@@ -4,13 +4,13 @@ body {
     width: 100vw;
     height: 100vh;
     background: #111;
-    font-family: sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #eee;
     overflow-x: hidden;
 }
 
 .sidebar {
-    width: 20%;
+    width: 15%;
     background: #222;
     padding: 20px;
     display: flex;
@@ -18,6 +18,7 @@ body {
     align-items: center;
     height: 120vh;
     justify-content: space-between;
+    position: fixed;
 }
 
 .sidebar form { 
@@ -33,12 +34,16 @@ h1 { /*Buscador de Proyectos de Investigación*/
     border-bottom: 2px solid #f03774;
     padding-bottom: 10px;
     margin: 0 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-.welcome-message {
+.welcome-message { /*Mensaje de bienvenida*/
+  text-align: center;
+  width: 80%;
   font-weight: bold;
   padding: 5px;
+  margin: 0;
+  margin-bottom: 10px;
   border: 2px solid #f03774;
   border-radius: 4px;
 }
@@ -49,7 +54,9 @@ h2 { /*Filtros de Búsqueda*/
   font-size: 20px;
   border-bottom: 2px solid #eee;
   padding-bottom: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 0;
+  width: 80%;
 }
 
 .sidebar .filter-checkbox {
@@ -64,16 +71,23 @@ h2 { /*Filtros de Búsqueda*/
 }
 
 .sidebar button { /*BOTON DE CERRAR SESIÓN*/
-    width: 100%;
+    width: 15%;
+    height: 30px;
     background-color: #f03774;
-    border: none;
-    padding: 10px;
     color: #111;
     font-size: 1rem;
     cursor: pointer;
+    border: none;
     border-radius: 5px;
-    margin:auto;
-    margin-bottom: 30px;
+    position: fixed;
+    bottom: 15px;
+    left: 18px;
+}
+
+.sidebar button:hover{
+  box-shadow: 0 0 15px #f03774;
+  color: #eee;
+  transition: 0.3s ease;
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -95,7 +109,7 @@ summary{
   width: 100%;
   font-weight: bold;
   margin: 0 0 10px 0;
-  padding: 3px;
+  padding: 5px;
   border-radius: 4px;
   cursor: pointer;
 }
