@@ -59,9 +59,9 @@ passport.use(new GoogleStrategy({
 async (request, accessToken, refreshToken, profile, done) => {
   try {
     const user = await User.findOne({ googleId: profile.id });
-    // if (user) {
-    //   return done(null, user);
-    // } else {
+    if (user) {
+      return done(null, user);
+    } else {
       const newUser = new User({
         googleId: profile.id,
         username: profile.displayName,
@@ -69,7 +69,7 @@ async (request, accessToken, refreshToken, profile, done) => {
       });
       await newUser.save();
       return done(null, newUser);
-    // }
+    }
   } catch (err) {
     return done(err);
   }
