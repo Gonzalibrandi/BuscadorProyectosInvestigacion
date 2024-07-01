@@ -4,6 +4,12 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const morgan = require('morgan');
+//para notificaciones de mail
+const fs = require('fs');
+const nodemailer = require('nodemailer');
+const NoResultsSearch = require('./models/noResultsSearch');
+const proyectosPath = path.join(__dirname, './data/proyectos.json');
+require('dotenv').config();
 
 // initializations
 const app = express();
@@ -52,3 +58,45 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Función para enviar correo electrónico
+async function sendEmail(to, project) {
+  let mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject: 'Nuevo proyecto agregado que coincide con tu búsqueda',
+    text: `Hemos agregado un nuevo proyecto que coincide con tu búsqueda: ${project.title}\n\nDescripción: ${project.description}`
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+// Función para verificar nuevas coincidencias
+async function checkNewProjectAgainstSavedSearches(newProject) {
+  const searches = await NoResultsSearch.find();
+
+  for (const search of searches) {
+    if (newProject.title.includes(search.searchQuery) || newProject.description.includes(search.searchQuery)) {
+      await sendEmail(search.userEmail, newProject);
+      await NoResultsSearch.deleteOne({ _id: search._id }); // Eliminar la búsqueda después de notificar
+    }
+  }
+}
+
+// Monitorear cambios en proyectos.json
+fs.watch(proyectosPath, async (eventType, filename) => {
+  if (eventType === 'change') {
+    console.log(`Archivo ${proyectosPath} ha cambiado`);
+    const proyectosData = JSON.parse(fs.readFileSync(proyectosPath, 'utf8'));
+    for (const proyecto of proyectosData) {
+      await checkNewProjectAgainstSavedSearches(proyecto);
+    }
+  }
+});

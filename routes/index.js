@@ -2,6 +2,10 @@ const router = require('express').Router();
 const passport = require('passport');
 require('../passport/local-auth');
 const User = require('../models/user'); // Asegúrate de que este sea el modelo correcto de tu usuario
+const NoResultsSearch = require('../models/noResultsSearch');
+const fs = require('fs');
+const path = require('path');
+const proyectosPath = path.join(__dirname, '../data/proyectos.json');
 
 // Middleware para asegurar que el usuario está autenticado
 function isAuthenticated(req, res, next) {
@@ -53,7 +57,7 @@ router.post('/signup', async (req, res) => {
       return res.redirect('/signup');
     }
 
-    const newUser = new User({ username, password });
+    const newUser = new User({ username, userEmail, password });
     await newUser.save();
 
     req.flash('loginMessage', 'Te has registrado correctamente. Ahora puedes iniciar sesión.');
@@ -79,5 +83,96 @@ router.post('/logout', (req, res, next) => {
     res.redirect('/login');
   });
 });
+
+
+//AGREGADO PARA MAIL
+// Ruta para realizar la búsqueda de proyectos
+router.get('/', isAuthenticated, async (req, res) => {
+  const query = req.query.q;
+  const userEmail = req.user.username; // Asumiendo que el usuario está autenticado y el email está disponible
+
+  console.log(`Realizando búsqueda para: ${query} por el usuario: ${userEmail}`);
+
+  fs.readFile(proyectosPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error leyendo el archivo de proyectos:', err);
+      return res.status(500).send('Error interno del servidor');
+    }
+
+    const proyectos = JSON.parse(data);
+    const results = proyectos.filter(proyecto => proyecto.title.includes(query));
+
+    console.log(`Resultados encontrados: ${results.length}`);
+
+    if (results.length === 0) {
+      const noResultsSearch = new NoResultsSearch({ userEmail, searchQuery: query });
+      noResultsSearch.save((err) => {
+        if (err) {
+          console.error('Error guardando la búsqueda sin resultados:', err);
+        } else {
+          console.log('Búsqueda sin resultados guardada correctamente');
+        }
+      });
+    }
+
+    res.render('results', { results });
+  });
+});
+
+function startWatchingProjectsFile() {
+  console.log('Iniciando el monitoreo del archivo de proyectos...');
+  
+  fs.watch(proyectosPath, async (eventType, filename) => {
+    if (eventType === 'change') {
+      console.log(`Cambio detectado en el archivo: ${filename}`);
+      
+      const searches = await NoResultsSearch.find({});
+      
+      fs.readFile(proyectosPath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Error leyendo el archivo de proyectos:', err);
+          return;
+        }
+
+        const proyectos = JSON.parse(data);
+
+        searches.forEach(search => {
+          const matchingProjects = proyectos.filter(proyecto => proyecto.title.includes(search.searchQuery));
+          if (matchingProjects.length > 0) {
+            sendNotificationEmail(search.userEmail, search.searchQuery, matchingProjects);
+            search.deleteOne(); // Eliminar la búsqueda después de notificar al usuario
+          }
+        });
+      });
+    }
+  });
+}
+
+async function sendNotificationEmail(userEmail, query, projects) {
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  let projectList = projects.map(p => `- ${p.title}`).join('\n');
+  let mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: userEmail,
+    subject: 'Nuevos proyectos encontrados',
+    text: `Se han encontrado nuevos proyectos que coinciden con tu búsqueda: ${query}\n\n${projectList}`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Correo de notificación enviado a ${userEmail}`);
+  } catch (err) {
+    console.error('Error al enviar el correo:', err);
+  }
+}
+
+startWatchingProjectsFile();
 
 module.exports = router;
