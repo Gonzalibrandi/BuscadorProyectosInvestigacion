@@ -15,8 +15,8 @@ html(lang='en')
         p.error-message= message
       form(action='/signup', method='POST')
         h3 Registrarse
-        input(type='text' name='username' placeholder='Nombre de Usuario' required='')
         input(type='email' name='userEmail' placeholder='Email' required='')
+        input(type='text' name='username' placeholder='Nombre de Usuario' required='')
         input(type='password' name='password' placeholder='Contraseña' required='')
         input(type='password' name='passwordRep' placeholder='Repeti tu contraseña' required='')
         input.boton-enviar(type='submit')

@@ -45,6 +45,45 @@ app.use((req, res, next) => {
 // routes
 app.use('/', require('./routes/index'));
 
+//MAIL
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+async function sendEmail(to, project) {
+  let mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject: 'Nuevo proyecto agregado que coincide con tu búsqueda',
+    text: `Hemos agregado un nuevo proyecto que coincide con tu búsqueda: ${project.title}\n\nDescripción: ${project.description}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+async function checkSearches() {
+  try {
+    const searches = await NoResultsSearch.find();
+
+    for (const search of searches) {
+      const searchResults = await client.index('Proyectos').search(search.searchQuery);
+
+      if (searchResults.hits.length > 0) {
+        for (const hit of searchResults.hits) {
+          await sendEmail(search.userEmail, hit);
+        }
+        await NoResultsSearch.deleteOne({ _id: search._id });
+      }
+    }
+  } catch (err) {
+    console.error('Error checking searches:', err);
+  }
+}
+
 // Manejo de errores 404
 app.use(function(req, res, next) {
   res.status(404).send('Página no encontrada');
@@ -56,47 +95,6 @@ app.use(function(err, req, res, next) {
   res.status(500).send('Error interno del servidor');
 });
 
+checkSearches();
+
 module.exports = app;
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
-
-// Función para enviar correo electrónico
-async function sendEmail(to, project) {
-  let mailOptions = {
-    from: process.env.EMAIL_USER,
-    to,
-    subject: 'Nuevo proyecto agregado que coincide con tu búsqueda',
-    text: `Hemos agregado un nuevo proyecto que coincide con tu búsqueda: ${project.title}\n\nDescripción: ${project.description}`
-  };
-
-  await transporter.sendMail(mailOptions);
-}
-
-// Función para verificar nuevas coincidencias
-async function checkNewProjectAgainstSavedSearches(newProject) {
-  const searches = await NoResultsSearch.find();
-
-  for (const search of searches) {
-    if (newProject.title.includes(search.searchQuery) || newProject.description.includes(search.searchQuery)) {
-      await sendEmail(search.userEmail, newProject);
-      await NoResultsSearch.deleteOne({ _id: search._id }); // Eliminar la búsqueda después de notificar
-    }
-  }
-}
-
-// Monitorear cambios en proyectos.json
-fs.watch(proyectosPath, async (eventType, filename) => {
-  if (eventType === 'change') {
-    console.log(`Archivo ${proyectosPath} ha cambiado`);
-    const proyectosData = JSON.parse(fs.readFileSync(proyectosPath, 'utf8'));
-    for (const proyecto of proyectosData) {
-      await checkNewProjectAgainstSavedSearches(proyecto);
-    }
-  }
-});

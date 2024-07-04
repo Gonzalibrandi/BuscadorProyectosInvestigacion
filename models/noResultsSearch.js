@@ -6,4 +6,4 @@ const noResultsSearchSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('NoResultsSearch', noResultsSearchSchema);;
+module.exports = mongoose.model('NoResultsSearch', noResultsSearchSchema);
