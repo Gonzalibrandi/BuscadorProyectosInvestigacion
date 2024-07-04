@@ -77,7 +77,7 @@ client.index('Proyectos').updateSettings({
       }
   },
   searchCutoffMs: 300
-})
+});
 
 //filtros
 
@@ -87,4 +87,4 @@ client.index('Proyectos')
     'basedOn',
     'granArea1',
     'tipo'
-  ]) 
+]);

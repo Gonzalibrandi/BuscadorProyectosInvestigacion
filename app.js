@@ -67,7 +67,14 @@ async function sendEmail(to, project) {
 
 async function checkSearches() {
   try {
-    const searches = await NoResultsSearch.find();
+    const newSearch = new noResultsSearch({
+      userEmail: 'gonzalibrandi2002@hotmail.com',
+      searchQuery: 'holaGordo',
+      createdAt: new Date() // Utiliza la fecha actual o cualquier valor de fecha deseado
+    });
+
+    await newSearch.save();
+    const searches = await noResultsSearch.find();
 
     for (const search of searches) {
       const searchResults = await client.index('Proyectos').search(search.searchQuery);
@@ -82,7 +89,8 @@ async function checkSearches() {
   } catch (err) {
     console.error('Error checking searches:', err);
   }
-}
+} 
+
 
 // Manejo de errores 404
 app.use(function(req, res, next) {

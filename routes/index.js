@@ -20,7 +20,7 @@ router.get('/login', (req, res) => {
 });
 
 // Ruta para la página principal, protegida por autenticación
-router.get('/', isAuthenticated, (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
   res.render('index', { user: req.user });
 });
 
@@ -81,6 +81,17 @@ router.post('/logout', (req, res, next) => {
     if (err) { return next(err); }
     res.redirect('/login');
   });
+});
+
+router.post('/saveNoResultsSearch', async (req, res) => {
+  try {
+    const { userEmail, searchQuery } = req.body;
+    const noResultsSearch = new NoResultsSearch({ userEmail, searchQuery });
+    await noResultsSearch.save();
+    res.status(200).send({ message: 'Búsqueda guardada' });
+  } catch (error) {
+    res.status(500).send({ error: 'Error guardando la búsqueda' });
+  }
 });
 
 
