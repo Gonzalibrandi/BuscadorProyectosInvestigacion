@@ -1,10 +1,13 @@
 extends layout
 
 block content
-  .sidebar
-    h1 Buscador de Proyectos de Investigación
+  .header
+    h1 Buscador de Proyectos de Investigación 
     if user
       .welcome-message Bienvenido, #{user.username}
+    form(action="/logout", method="POST")  
+      button(type="submit") Cerrar sesión
+  .sidebar
     h2 Filtros de Búsqueda
     .filters
       .filters_estatus
@@ -55,8 +58,6 @@ block content
               input(type="checkbox" class="filterCheckbox" value="Research and publications" data-filter="tipo")
             li Conferencias
               input(type="checkbox" class="filterCheckbox" value="Travel and Conferences" data-filter="tipo") 
-    form(action="/logout", method="POST")  
-      button(type="submit") Cerrar sesión
 
   .main-content
     .wrapper

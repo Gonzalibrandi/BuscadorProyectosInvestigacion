@@ -7,8 +7,8 @@ const morgan = require('morgan');
 //para notificaciones de mail
 const fs = require('fs');
 const nodemailer = require('nodemailer');
-const NoResultsSearch = require('./models/noResultsSearch');
-const proyectosPath = path.join(__dirname, './data/proyectos.json');
+const noResultsSearch = require('./models/noResultsSearch');
+const client = require('./meilisearch');
 require('dotenv').config();
 
 // initializations
@@ -59,7 +59,7 @@ async function sendEmail(to, project) {
     from: process.env.EMAIL_USER,
     to,
     subject: 'Nuevo proyecto agregado que coincide con tu búsqueda',
-    text: `Hemos agregado un nuevo proyecto que coincide con tu búsqueda: ${project.title}\n\nDescripción: ${project.description}`,
+    text: `Hemos agregado un nuevo proyecto que coincide con tu búsqueda: ${project.nombre}\n\nDescripción: ${project.descripcion}`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -67,23 +67,26 @@ async function sendEmail(to, project) {
 
 async function checkSearches() {
   try {
+    /* 
     const newSearch = new noResultsSearch({
       userEmail: 'gonzalibrandi2002@hotmail.com',
       searchQuery: 'holaGordo',
       createdAt: new Date() // Utiliza la fecha actual o cualquier valor de fecha deseado
-    });
-
+    }); 
     await newSearch.save();
+    */
     const searches = await noResultsSearch.find();
 
     for (const search of searches) {
+      console.log(search);
       const searchResults = await client.index('Proyectos').search(search.searchQuery);
 
       if (searchResults.hits.length > 0) {
         for (const hit of searchResults.hits) {
+          console.log(hit)
           await sendEmail(search.userEmail, hit);
         }
-        await NoResultsSearch.deleteOne({ _id: search._id });
+        await noResultsSearch.deleteOne({ _id: search._id });
       }
     }
   } catch (err) {

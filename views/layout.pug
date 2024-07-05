@@ -48,28 +48,7 @@ html
         }
       })
     ]);
-
-    search.on('render', function() {
-      const results = search.helper.lastResults;
-      if (results.nbHits === 0) {
-        console.log('a');
-        const searchQuery = search.helper.state.query;
-        const userEmail = document.querySelector('#user-email').value; // Asume que tienes un campo oculto con el email del usuario
-        
-        // Llamada al backend para guardar la búsqueda sin resultados
-        fetch('/saveNoResultsSearch', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userEmail: userEmail,
-            searchQuery: searchQuery
-          })
-        });
-      }
-    });
-
+    
     search.start();
 
     document.querySelectorAll('.filterCheckbox').forEach(function(checkbox) {

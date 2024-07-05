@@ -75,6 +75,7 @@ input{
   border-radius: 6px;
   background-color: transparent;
   color: #f03774;
+  outline: none;
 }
 
 input:hover{
@@ -100,5 +101,5 @@ p{
 }
 
 a{
-  color: #eee;
+  color: #eee;
 }

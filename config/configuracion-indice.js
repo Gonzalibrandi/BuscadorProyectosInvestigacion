@@ -1,13 +1,13 @@
 const { MeiliSearch } = require('meilisearch'); //Importación
 
 //configurar conexión con Meilisearch
-const client = new MeiliSearch({
+/* const client = new MeiliSearch({
   host: 'http://meilisearch:7700',
   apiKey: 'MASTER_KEY'
-});
+}); */
+const client = require('../meilisearch');
 
 //tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo
-
 client.deleteIndex('Proyectos');
 client.createIndex('Proyectos', { primaryKey: 'id' });
 const proyectos = require('../data/proyectos.json');
