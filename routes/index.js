@@ -40,6 +40,11 @@ router.get('/auth/google/callback',
       failureRedirect: '/login'
 }));
 
+// Ruta para la página de favoritos
+router.get('/favoritos', isAuthenticated, (req, res) => {
+  res.render('favoritos', { user: req.user });
+});
+
 // Manejo del registro de usuarios
 router.post('/signup', async (req, res) => {
   const { userEmail, username, password, passwordRep } = req.body;
@@ -83,16 +88,29 @@ router.post('/logout', (req, res, next) => {
   });
 });
 
-router.post('/saveNoResultsSearch', async (req, res) => {
-  try {
-    const { userEmail, searchQuery } = req.body;
-    const noResultsSearch = new NoResultsSearch({ userEmail, searchQuery });
-    await noResultsSearch.save();
-    res.status(200).send({ message: 'Búsqueda guardada' });
-  } catch (error) {
-    res.status(500).send({ error: 'Error guardando la búsqueda' });
-  }
+// Ruta para manejar el envío de favoritos
+router.post('/favoritos', isAuthenticated, (req, res) => {
+  // Lógica para manejar los proyectos favoritos del usuario
+  // Aquí puedes agregar la lógica que necesites para manejar los favoritos
+  res.redirect('/favoritos');
 });
 
+router.post('/setearFavoritos', isAuthenticated, async (req, res) => {
+  const { searchQuery } = req.body;
+  const userEmail = req.user.userEmail; // Suponiendo que el correo del usuario está en req.user
+  const newSearch = new NoResultsSearch({
+    userEmail: userEmail,
+    searchQuery: searchQuery,
+    createdAt: new Date() // Utiliza la fecha actual o cualquier valor de fecha deseado
+  });
+
+  try {
+    await newSearch.save();
+    res.redirect('/favoritos');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/favoritos'); // Puedes redirigir o mostrar un mensaje de error
+  }
+});
 
 module.exports = router;

@@ -1,10 +1,4 @@
 const { MeiliSearch } = require('meilisearch'); //Importación
-
-//configurar conexión con Meilisearch
-/* const client = new MeiliSearch({
-  host: 'http://meilisearch:7700',
-  apiKey: 'MASTER_KEY'
-}); */
 const client = require('../meilisearch');
 
 //tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo
@@ -13,9 +7,7 @@ client.createIndex('Proyectos', { primaryKey: 'id' });
 const proyectos = require('../data/proyectos.json');
 client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
 
-
-//actualizacion de atributos displayed
-
+//actualizacion de atributos mostrados en el localhost:7700
 client.index('Proyectos').updateSettings({
   "rankingRules": [
       "words",
@@ -79,8 +71,7 @@ client.index('Proyectos').updateSettings({
   searchCutoffMs: 300
 });
 
-//filtros
-
+//seteo de filtros
 client.index('Proyectos')
   .updateFilterableAttributes([
     'estatus',

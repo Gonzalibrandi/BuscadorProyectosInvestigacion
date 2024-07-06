@@ -5,6 +5,8 @@ block content
     h1 Buscador de Proyectos de Investigación 
     if user
       .welcome-message Bienvenido, #{user.username}
+    form(action="/favoritos", method="POST")  
+      button(type="submit") Proyectos favoritos
     form(action="/logout", method="POST")  
       button(type="submit") Cerrar sesión
   .sidebar
