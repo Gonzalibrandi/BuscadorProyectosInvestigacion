@@ -11,7 +11,7 @@ body {
   
 .header{
   width: 100%;
-  background: #f03774;
+  background: radial-gradient(#f03774, #a01552);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -34,14 +34,36 @@ body {
   
 .welcome-message { /*Mensaje de bienvenida*/
   text-align: center;
-  width: 15%;
   font-weight: bold;
-  padding: 5px 0;
   border: 2px solid #eee;
   border-radius: 4px;
-}
+  position: absolute;
+  padding: 5px;
+  right: 60%;
+  }
   
-.header button, a { /*BOTON DE CERRAR SESIÓN*/
+  #volver { /*BOTON DE VOLVER AL BUSCADOR*/
+    width: 150px;
+    height: 25px;
+    background-color: #111;
+    color: #f03774;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-family: system-ui;
+    font-weight: bold;
+    padding-bottom: 5px;
+    position: absolute;
+    right: 20%;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    align-content: center;
+    text-decoration: none;
+  }
+  
+  #cerrar-sesion { /*BOTON DE CERRAR SESIÓN*/
   width: 150px;
   height: 30px;
   background-color: #111;
@@ -50,65 +72,35 @@ body {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  margin-right: 0;
   font-family: system-ui;
   font-weight: bold;
   padding-bottom: 5px;
-}
+  position: absolute;
+  right: 8%;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  }
   
-.header a{
-    text-decoration: none;
-    padding-bottom: 0;
-    padding-top: 3px;
-    height: 30px;
-    font-weight: bold;
-    box-sizing: border-box;
-}
-
-.header button:hover, a:hover{
+  #cerrar-sesion:hover, #volver:hover{ /*Botones al pasar el mouse por encima*/
   box-shadow: 0 0 15px #111;
   color: #eee;
   transition: 0.4s ease;
-}
+  }
   
-.sidebar {
-    width: 15%;
-    background: #222;
-    padding: 20px;
-    margin-top: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 120vh;
-    position: fixed;
-}
-  
-.sidebar form { 
-    width: 100%;
-    margin-top: auto;
-    margin-bottom: 0;
-}
-  
-h2 { /*Filtros Favoritos*/
-  text-align: center;
-  color: #eee;
-  font-size: 16px;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  margin-top: 0;
-  width: 80%;
-}
-
 .main-content{
     display: flex;
     position: absolute;
     padding: 40px;
-    width: 600px;
-    left: 30%;
-    top: 200px;
+    width: 80vw;
+    height: 35vh;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
     flex-direction: column;
-    background-color: #f03774;
+    background: radial-gradient(#f03774, #a01552);
     border-radius: 4px;
     align-items: center;
     font-size: 16px;
@@ -144,7 +136,7 @@ h2 { /*Filtros Favoritos*/
 }
 
 .main-content form .boton{
-    background-color: #f03774;
+    background: radial-gradient(#f03774, #a01552);
     width: 200px;
     color: #111;
     font-size: 1rem;

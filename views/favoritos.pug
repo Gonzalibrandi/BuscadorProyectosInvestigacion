@@ -6,15 +6,14 @@ head
   link(rel='icon', href='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg')
   title Proyectos favoritos 
 .header
-  h1 Buscador de Proyectos de Investigaci&oacute;n
-  a(href='/') Volver al Buscador
+  h1 Buscador de Proyectos de Investigación
+  if user
+    .welcome-message Bienvenido, #{user.username}
+  a(href='/' id="volver") Volver al Buscador
   form(action='/logout', method='POST')
-    button(type='submit') Cerrar sesi&oacute;n
-.sidebar
-  h2 Filtros Favoritos
+    button(type="submit" id="cerrar-sesion") Cerrar sesión
 .main-content
-  | En esta secci&oacute;n puede registrar sus b&uacute;squedas favoritas.
-  | Recibir&aacute; un email cada vez que se agregue un proyecto que coincida con alguna de sus b&uacute;squedas.
+  p En esta sección puede registrar sus búsquedas favoritas. Recibirá un email cada vez que se agregue un proyecto que coincida con alguna de sus búsquedas.
   form(action="/setearFavoritos", method="POST")
     input(placeholder='Ingrese su búsqueda', type='text', name='searchQuery')
     input.boton(type='submit', value='Guardar como Favorita')

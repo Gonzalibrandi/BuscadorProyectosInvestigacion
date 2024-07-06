@@ -6,9 +6,9 @@ block content
     if user
       .welcome-message Bienvenido, #{user.username}
     form(action="/favoritos", method="POST")  
-      button(type="submit") Proyectos favoritos
+      button(type="submit" id="favoritos") Proyectos favoritos
     form(action="/logout", method="POST")  
-      button(type="submit") Cerrar sesión
+      button(type="submit" id="cerrar-sesion") Cerrar sesión
   .sidebar
     h2 Filtros de Búsqueda
     .filters

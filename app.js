@@ -67,14 +67,6 @@ async function sendEmail(to, project) {
 
 async function checkSearches() {
   try {
-    /* 
-    const newSearch = new noResultsSearch({
-      userEmail: 'gonzalibrandi2002@hotmail.com',
-      searchQuery: 'holaGordo',
-      createdAt: new Date() // Utiliza la fecha actual o cualquier valor de fecha deseado
-    }); 
-    await newSearch.save();
-    */
     const searches = await noResultsSearch.find();
 
     for (const search of searches) {

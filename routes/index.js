@@ -90,18 +90,16 @@ router.post('/logout', (req, res, next) => {
 
 // Ruta para manejar el envío de favoritos
 router.post('/favoritos', isAuthenticated, (req, res) => {
-  // Lógica para manejar los proyectos favoritos del usuario
-  // Aquí puedes agregar la lógica que necesites para manejar los favoritos
   res.redirect('/favoritos');
 });
 
 router.post('/setearFavoritos', isAuthenticated, async (req, res) => {
   const { searchQuery } = req.body;
-  const userEmail = req.user.userEmail; // Suponiendo que el correo del usuario está en req.user
+  const userEmail = req.user.userEmail;
   const newSearch = new NoResultsSearch({
     userEmail: userEmail,
     searchQuery: searchQuery,
-    createdAt: new Date() // Utiliza la fecha actual o cualquier valor de fecha deseado
+    createdAt: new Date()
   });
 
   try {
@@ -109,7 +107,7 @@ router.post('/setearFavoritos', isAuthenticated, async (req, res) => {
     res.redirect('/favoritos');
   } catch (err) {
     console.error(err);
-    res.redirect('/favoritos'); // Puedes redirigir o mostrar un mensaje de error
+    res.redirect('/favoritos');
   }
 });
 
