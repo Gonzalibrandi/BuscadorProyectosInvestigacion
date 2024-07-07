@@ -27,7 +27,7 @@ body {
 .header h1 { /*Buscador de Proyectos de Investigación*/
   text-align: center;
   color: #eee;
-  font-size: 20px;
+  font-size: 18px;
   margin-right: 300px;
   text-wrap: nowrap;
 }
@@ -39,7 +39,7 @@ body {
   border-radius: 4px;
   position: absolute;
   padding: 5px;
-  right: 60%;
+  right: 50%;
   }
   
   #volver { /*BOTON DE VOLVER AL BUSCADOR*/
