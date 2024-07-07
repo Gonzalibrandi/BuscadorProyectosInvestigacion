@@ -59,7 +59,13 @@ async function sendEmail(to, project) {
     from: process.env.EMAIL_USER,
     to,
     subject: 'Nuevo proyecto agregado que coincide con tu búsqueda',
-    text: `Hemos agregado un nuevo proyecto que coincide con tu búsqueda: ${project.nombre}\n\nDescripción: ${project.descripcion}`,
+    text: `Se ha encontrado un nuevo proyecto que coincide con tu búsqueda:
+    Título: ${project.nombre || 'Sin título'}
+    Descripción: ${project.descripcion || 'Sin descripcion'}
+    Estado: ${project.estatus || 'Sin estado'}
+    Ubicación: ${project.basedOn || 'Sin ubicacion'}
+    Área: ${project.granArea1 || 'Sin area'}
+    Tipo: ${project.tipo || 'Sin tipo'}`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -70,21 +76,37 @@ async function checkSearches() {
     const searches = await noResultsSearch.find();
 
     for (const search of searches) {
-      console.log(search);
-      const searchResults = await client.index('Proyectos').search(search.searchQuery);
+      const { searchQuery, estado, ubicacion, area, tipo, userEmail, _id } = search;
+
+      // Crear un filtro para MeiliSearch usando los campos adicionales
+      let filters = [];
+      if (estado) filters.push(`estatus = "${estado}"`);
+      if (ubicacion) filters.push(`basedOn = "${ubicacion}"`);
+      if (area) filters.push(`granArea1 = "${area}"`);
+      if (tipo) filters.push(`tipo = "${tipo}"`);
+      const filterString = filters.join(' AND ');
+
+      // Ajustar las opciones de búsqueda dependiendo de si hay searchQuery o no
+      let searchOptions = {};
+      if (filterString) {
+        searchOptions.filter = filterString;
+      }
+
+      // Realizar la búsqueda
+      const searchResults = await client.index('Proyectos').search(searchQuery || '', searchOptions);
 
       if (searchResults.hits.length > 0) {
         for (const hit of searchResults.hits) {
-          console.log(hit)
-          await sendEmail(search.userEmail, hit);
+          // Modifica el correo electrónico para incluir detalles del proyecto
+          await sendEmail(userEmail, hit);
         }
-        await noResultsSearch.deleteOne({ _id: search._id });
+        await noResultsSearch.deleteOne({ _id });
       }
     }
   } catch (err) {
     console.error('Error checking searches:', err);
   }
-} 
+}
 
 
 // Manejo de errores 404

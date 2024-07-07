@@ -16,4 +16,47 @@ head
   p En esta sección puede registrar sus búsquedas favoritas. Recibirá un email cada vez que se agregue un proyecto que coincida con alguna de sus búsquedas.
   form(action="/setearFavoritos", method="POST")
     input(placeholder='Ingrese su búsqueda', type='text', name='searchQuery')
+    select(name='Estado')
+      option(value='') Seleccione un estado
+      option(value='Abierto') Abierto
+      option(value='Ongoing') Ongoing
+      option(value='>4 meses') >4 meses
+      option(value='Vencido') Vencido
+    select(name='Ubicacion')
+      option(value='') Seleccione una ubicacion
+      option(value='USA') USA
+      option(value='Argentina') Argentina
+      option(value='Belgium') Belgica
+      option(value='Canada') Canada
+    select(name='Area')
+      option(value='') Seleccione un area
+      option(value='Biochemistry Genetics and Molecular Biology') Bioquimica
+      option(value='Agricultural and Biological Sciences') Agricultura
+      option(value='Medicine and Health Sciences') Medicina
+      option(value='Engineering') Ingenieria
+    select(name='Tipo')
+      option(value='') Seleccione un tipo
+      option(value='Prizes and Awards') Premios
+      option(value='Fellowships scholarships or trainings') Becas
+      option(value='Research and publications') Investigacion
+      option(value='Travel and Conferences') Conferencias
     input.boton(type='submit', value='Guardar como Favorita')
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const selects = document.querySelectorAll('select');
+      selects.forEach(select => {
+          select.addEventListener('change', function() {
+              if (this.selectedIndex === 0) {
+                  this.style.color = 'gray';
+              } else {
+                  this.style.color = '#eee';
+              }
+          });
+          // Set initial color
+          if (select.selectedIndex === 0) {
+              select.style.color = 'gray';
+          } else {
+              select.style.color = '#eee';
+          }
+      });
+    });

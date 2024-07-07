@@ -94,12 +94,16 @@ router.post('/favoritos', isAuthenticated, (req, res) => {
 });
 
 router.post('/setearFavoritos', isAuthenticated, async (req, res) => {
-  const { searchQuery } = req.body;
+  const { searchQuery, Estado, Ubicacion, Area, Tipo } = req.body;
   const userEmail = req.user.userEmail;
   const newSearch = new NoResultsSearch({
     userEmail: userEmail,
     searchQuery: searchQuery,
-    createdAt: new Date()
+    createdAt: new Date(),
+    estado: Estado,
+    ubicacion: Ubicacion,
+    area: Area,
+    tipo: Tipo
   });
 
   try {
@@ -110,5 +114,4 @@ router.post('/setearFavoritos', isAuthenticated, async (req, res) => {
     res.redirect('/favoritos');
   }
 });
-
 module.exports = router;
