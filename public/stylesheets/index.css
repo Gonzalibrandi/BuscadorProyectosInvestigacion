@@ -9,6 +9,18 @@ body {
   overflow-x: hidden;
 }
 
+body::-webkit-scrollbar{
+  background: #111;
+}
+
+body::-webkit-scrollbar-thumb{
+  background: linear-gradient(#111,#a01552, #f03774, #a01552, #111);
+}
+
+body::-webkit-scrollbar-thumb:hover{
+  background: linear-gradient(#111, #f03774, #111);
+}
+
 .header{ /*Encabezado de la página*/
 width: 100vw;
 background: radial-gradient(#f03774, #a01552);
