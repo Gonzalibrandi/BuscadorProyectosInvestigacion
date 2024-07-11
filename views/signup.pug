@@ -11,8 +11,8 @@ html(lang='en')
       h2 Creado por Franco Caraffo y Gonzalo Librandi
       span Potenciado por Meilisearch
       img(src='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg' alt='')
-      if message
-        p.error-message= message
+      if signupMessage
+        p.error-message= signupMessage
       form(action='/signup', method='POST')
         h3 Registrarse
         input(type='email' name='userEmail' placeholder='Email' required='')
@@ -20,5 +20,5 @@ html(lang='en')
         input(type='password' name='password' placeholder='Contraseña' required='')
         input(type='password' name='passwordRep' placeholder='Repeti tu contraseña' required='')
         input.boton-enviar(type='submit')
-      p ¿Ya tenes usuario? 
+      p ¿Ya tienes usuario? 
       a(href='/login') Ingresa

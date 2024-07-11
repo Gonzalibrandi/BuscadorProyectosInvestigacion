@@ -16,29 +16,31 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
+
+// Autenticacion en el logueo
 passport.use('local-signup', new LocalStrategy({
-  //que cosas recibimos del usuario
-  userEmailField: 'userEmail',
   usernameField: 'username',
   passwordField: 'password',
-  passReqToCallback: true  //permite pedir mas datos al registrarse/logearse
+  passReqToCallback: true
 }, async (req, username, password, done) => {
-  const userEmail = req.body.userEmail;
-  const user = await User.findOne({'username': username})
-  console.log(user)
-  if(user) {
-    return done(null, false, req.flash('signupMessage', 'The username is already Taken.'));
-  } else {
-    const newUser = new User();
-    newUser.userEmail = userEmail;
-    newUser.username = username;
-    newUser.password = password;
-    console.log(newUser)
+  const { userEmail, passwordRep } = req.body;
+  if (password !== passwordRep) {
+    return done(null, false, req.flash('signupMessage', 'Las contraseñas no coinciden.'));
+  }
+  try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return done(null, false, req.flash('signupMessage', 'El nombre de usuario ya existe.'));
+    }
+    const newUser = new User({ userEmail, username, password });
     await newUser.save();
-    done(null, newUser);
+    return done(null, newUser);
+  } catch (err) {
+    return done(err, false, req.flash('signupMessage', 'Ocurrió un error durante el registro.'));
   }
 }));
 
+// Autenticacion en el registro
 passport.use('local-login', new LocalStrategy({
   usernameField: 'username',
   passwordField: 'password',
@@ -46,14 +48,15 @@ passport.use('local-login', new LocalStrategy({
 }, async (req, username, password, done) => {
   const user = await User.findOne({username: username});
   if(!user) {
-    return done(null, false, req.flash('loginMessage', 'No User Found'));
+    return done(null, false, req.flash('loginMessage', 'El usuario no existe.'));
   }
   if(!user.comparePassword(password)) {
-    return done(null, false, req.flash('loginMessage', 'Incorrect Password'));
+    return done(null, false, req.flash('loginMessage', 'La contraseña no es correcta.'));
   }
   return done(null, user);
 }));
 
+// Autenticacion con Google
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
@@ -69,7 +72,7 @@ async (request, accessToken, refreshToken, profile, done) => {
       const newUser = new User({
         googleId: profile.id,
         username: profile.displayName,
-        // Add other profile fields as needed
+        userEmail: profile.emails[0].value
       });
       await newUser.save();
       return done(null, newUser);

@@ -1,13 +1,12 @@
-const { MeiliSearch } = require('meilisearch'); //Importación
 const client = require('../meilisearch');
 
-//tomamos el archivo proyectos y creamos un indice con ese mismo nombre y con el archivo
+//Se establece el nuevo indice. Se elimina el actual y se crea y asigna el nuevo
 client.deleteIndex('Proyectos');
 client.createIndex('Proyectos', { primaryKey: 'id' });
 const proyectos = require('../data/proyectos.json');
 client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
 
-//actualizacion de atributos mostrados en el localhost:7700
+//Actualizacion de atributos mostrados en el localhost:7700
 client.index('Proyectos').updateSettings({
   "rankingRules": [
       "words",
@@ -21,11 +20,9 @@ client.index('Proyectos').updateSettings({
   searchableAttributes: [
       'id',
       'nombre',
-      'descripcion',
-      'timestamp',
-      'fechaProximoDeadline',
       'tipo',
-      'granArea1'
+      'granArea1',
+      'basedOn'
   ],
   displayedAttributes: [
       'id',
@@ -38,7 +35,8 @@ client.index('Proyectos').updateSettings({
       'granArea2',
       'link',
       'descripcion',
-      'fechaProximoDeadline'
+      'fechaProximoDeadline',
+      'basedOn'
   ],
   stopWords: [
       'de'

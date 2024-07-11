@@ -54,25 +54,25 @@ html
 
     document.querySelectorAll('.filterCheckbox').forEach(function(checkbox) {
       checkbox.addEventListener('change', function() {
-        // Obtener todos los checkboxes
+        //Obtenemos todos los checkboxes
         const checkboxes = document.querySelectorAll('.filterCheckbox');
         let filters = [];
 
-        // Crear la cadena de filtros combinando los valores de los checkboxes seleccionados
+        //Creamos la cadena de filtros combinando los valores de los checkboxes seleccionados
         checkboxes.forEach(function(cb) {
           if (cb.checked) {
             filters.push(`${cb.dataset.filter} = "${cb.value}"`);
           }
         });
 
-        // Configurar los filtros en la búsqueda
+        //Configuramos los filtros en la búsqueda
         search.addWidgets([
           instantsearch.widgets.configure({
             filters: filters.join(' AND ')
           }),
         ]);
 
-        // Actualizar la búsqueda
+        //Actualizamos la búsqueda
         search.refresh();
       });
     });

@@ -11,15 +11,15 @@ html(lang='en')
       h2 Creado por Franco Caraffo y Gonzalo Librandi
       span Potenciado por Meilisearch
       img(src='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg' alt='')
-      if message
-        p.error-message= message
+      if loginMessage
+        p.error-message= loginMessage
       form(action='/login', method='POST')
         h3 Iniciar Sesión
         input(type='text' name='username' placeholder='Nombre de Usuario' required='')
         input(type='password' name='password' placeholder='Contraseña' required='')
         input.boton-enviar(type='submit')
-      p ¿No tienes usuario?
-      a(href='/signup') Regístrate
-      br
       br
       a(href="/auth/google") Inicia sesion con Google
+      br
+      p ¿No tienes usuario?
+      a(href='/signup') Regístrate

@@ -4,23 +4,19 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const morgan = require('morgan');
-//para notificaciones de mail
-const fs = require('fs');
 const nodemailer = require('nodemailer');
-const noResultsSearch = require('./models/noResultsSearch');
+const favoriteSearch = require('./models/favoriteSearch');
 const client = require('./meilisearch');
 require('dotenv').config();
-
-// initializations
 const app = express();
 require('./database');
 require('./passport/local-auth');
 
-// settings
+// Configuraciones
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug');
 
-// middlewares
+// Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -42,10 +38,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// routes
+// Rutas
 app.use('/', require('./routes/index'));
 
-//MAIL
+// Funciones de envio de notificacion
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -73,12 +69,10 @@ async function sendEmail(to, project) {
 
 async function checkSearches() {
   try {
-    const searches = await noResultsSearch.find();
+    const searches = await favoriteSearch.find();
 
     for (const search of searches) {
       const { searchQuery, estado, ubicacion, area, tipo, userEmail, _id } = search;
-
-      // Crear un filtro para MeiliSearch usando los campos adicionales
       let filters = [];
       if (estado) filters.push(`estatus = "${estado}"`);
       if (ubicacion) filters.push(`basedOn = "${ubicacion}"`);
@@ -94,13 +88,12 @@ async function checkSearches() {
 
       // Realizar la búsqueda
       const searchResults = await client.index('Proyectos').search(searchQuery || '', searchOptions);
-
       if (searchResults.hits.length > 0) {
         for (const hit of searchResults.hits) {
           // Modifica el correo electrónico para incluir detalles del proyecto
           await sendEmail(userEmail, hit);
         }
-        await noResultsSearch.deleteOne({ _id });
+        await favoriteSearch.deleteOne({ _id });
       }
     }
   } catch (err) {
@@ -110,12 +103,12 @@ async function checkSearches() {
 
 
 // Manejo de errores 404
-app.use(function(req, res, next) {
+app.use(function(res) {
   res.status(404).send('Página no encontrada');
 });
 
 // Manejo de errores
-app.use(function(err, req, res, next) {
+app.use(function(err, res) {
   console.error(err.stack);
   res.status(500).send('Error interno del servidor');
 });
