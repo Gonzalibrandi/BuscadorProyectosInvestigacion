@@ -1,266 +1,198 @@
+/* Establecer el fondo general */
 body {
-  display: flex;
+  font-family: "DM Sans";
+  background-color: #f1f5f9; /* Azul oscuro */
+  color: #333; /* Negro suave */
   margin: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #111;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: #eee;
-  overflow-x: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-body::-webkit-scrollbar{
-  background: #111;
+h1 {
+  margin-left: 5%;
 }
 
-body::-webkit-scrollbar-thumb{
-  background: linear-gradient(#111,#a01552, #f03774, #a01552, #111);
-}
-
-body::-webkit-scrollbar-thumb:hover{
-  background: linear-gradient(#111, #f03774, #111);
-}
-
-/* Encabezado de la página */
-.header{ 
-  width: 100vw;
-  background: radial-gradient(#f03774, #be105c);
+/* Header */
+.header {
+  height: 10vh;
+  background-color: #ffffff;
+  color: #05294d;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 80px;
-  position: fixed;
-  z-index: 10;
-  padding-right: 20px;
-  padding-left: 20px;
-}
-
-/* Texto buscador de Proyectos de Investigación */
-.header h1 { 
-  text-align: center;
-  color: #eee;
-  font-size: 18px;
-  margin-right: 550px;
-  text-wrap: nowrap;
-}
-
-/* Mensaje de bienvenida */
-.welcome-message { 
-  text-align: center;
-  font-weight: bold;
-  border: 2px solid #eee;
-  border-radius: 4px;
-  position: absolute;
-  padding: 5px;
-  right: 50%;
-}
-
-/* Boton de proyectos favoritos */
-#favoritos { 
-  width: 150px;
-  height: 30px;
-  background-color: #111;
-  color: #f03774;
-  font-size: 0.8rem;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  font-family: system-ui;
-  font-weight: bold;
-  padding-bottom: 5px;
-  position: absolute;
-  right: 20%;
+  justify-content: space-between;
+  position: sticky;
   top: 0;
-  bottom: 0;
-  margin: auto;
+  z-index: 20;
 }
 
-/* Boton de cerrar sesion */
-#cerrar-sesion { 
-  width: 150px;
-  height: 30px;
-  background-color: #111;
-  color: #f03774;
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  font-family: system-ui;
-  font-weight: bold;
-  padding-bottom: 5px;
-  position: absolute;
-  right: 8%;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-/* Botones al pasar el mouse por encima */
-#cerrar-sesion:hover, #favoritos:hover{ 
-  box-shadow: 0 0 15px #111;
-  color: #eee;
-  transition: 0.4s ease;
-}
-
-/* Barra Lateral */
-.sidebar { 
-  width: 15%;
-  background: #222;
-  padding: 20px;
-  margin-top: 80px;
+.header-right {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  height: 120vh;
-  position: fixed;
+  justify-content: space-evenly;  
+  gap: 10px;
 }
 
-/* Filtros de Búsqueda */
-h2 { 
-  text-align: center;
-  color: #eee;
+.welcome-message {
   font-size: 16px;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  margin-top: 0;
-  width: 80%;
+  color: #3b82f6;
 }
 
-.sidebar .filter-checkbox {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #eee;
+button {
+  font-family: "DM Sans";
+  background-color: #3b82f6;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  margin: 5px;
 }
 
-.sidebar .filter-checkbox input {
-  margin-right: 10px;
+button:hover {
+  background-color: #2563eb; /* Azul más oscuro */
 }
 
-summary{
-  background: radial-gradient(#f03774, #be105c);
-  width: 100%;
+/* Barra lateral */
+.sidebar-container {
+  position: relative;
+}
+
+.sidebar {
+  z-index: 10;
+  background-color: #ffffff;
+  color: #05294d;
+  padding: 20px;
+  padding-top: 15vh;
+  position: fixed;
+  top: 0;
+  left: -300px; /* Comienza fuera de la pantalla */
+  height: 100vh; /* Altura completa */
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease; /* Animación de deslizamiento */
+}
+
+#toggle-filters {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #3b82f6;
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1000; /* Para asegurarse de que el botón esté encima */
+}
+
+#toggle-filters:hover {
+  background-color: #2563eb; /* Azul más oscuro */
+}
+
+/* Estilo de los filtros */
+.filters {
+  margin-top: 20px;
+}
+
+.filters details {
+  margin-bottom: 15px;
+}
+
+.filters summary {
   font-weight: bold;
-  margin: 0 0 10px 0;
-  padding: 5px;
-  border-radius: 4px;
   cursor: pointer;
 }
-  
-summary:focus {
-  width: 100%;
-  color: #eee;
-  background: radial-gradient(#f03774, #be105c);
-  cursor: pointer;
-  transition: 0.4s ease;
+
+.filters ul {
+  list-style-type: none;
+  padding-left: 0;
 }
 
-details > *:not(summary) {
-  opacity: 0;
-  max-height: 0;
-  transition: 0.6s ease-in-out;
+.filters li {
+  margin: 8px 0;
 }
 
-details[open] > *:not(summary) {
-  opacity: 1;
-  max-height: 1000px;
-  animation: 0.6s ease-in-out;
-}
-  
-ul{
-  margin-top: 0;
-  background: radial-gradient(#f03774, #be105c);
-  border-radius: 4px;
-  font-weight: bold;
+.filters input[type="checkbox"] {
+  margin-left: 10px;
 }
 
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  display: none;
+/* Animación de la barra lateral (ocultarla o mostrarla) */
+.sidebar.open {
+  transform: translateX(300px); /* Mueve la barra lateral hacia la derecha */
 }
 
-[class^='ais-'] {
-  font-size: 1rem;
-  background-color: #111;
-  -webkit-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-.hit-description{
-  font-size: 15px;
-  font-weight: 100;
-}
-
-strong{
-  color: #aaa;
-}
-
+/* Main content */
 .main-content {
-  display: flex;
-  justify-content: center; /* Centra horizontalmente el contenido */
-  align-items: flex-start; /* Alínea el contenido cerca del límite superior */
-  width: calc(100% - 200px); /* Resta el ancho de la barra lateral */
-  margin-left: 200px; /* Asegura que no se superponga con la barra lateral */
-  padding-top: 20px; /* Ajusta según lo necesites */
+  padding-left: 50px;
+  flex: 1;
+  background-color: #f1f5f9; /* Fondo gris claro */
 }
 
+/*Movimiento de las búsquedas al abrir/cerrar los filtros*/
+/*
+.main-content.shifted {
+  transform: translateX(280px);
+  transition: transform 0.3s ease;
+} 
+*/
 
-.wrapper{
-  width: 80%;
-  top: 20%;
-  margin-left: 15%;
-  margin-right: auto;
-  padding: 100px 0;
-  z-index: 0;
-}
-
-.search {
-  width: 100%;
-  position: relative;
-  display: flex;
+.wrapper {
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-#searchbox {
-  width: 100%;
-  display: flex;
-  position: relative;
-  margin: 0 auto;
+.proyecto {
+  border: 2px solid #2563eb;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px;
 }
 
-.ais-SearchBox {
-  width: 100%;
-  display: flex;
+/* Responsive design */
+@media (max-width: 768px) {
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .header {
+    height: 15vh;
+  }
+
+  .header-right {
+    flex-direction: column;
+  }
+
+  h1 {font-size: 24px;}
+
+  .sidebar {
+    padding-top: 20vh;
+  }
+  
 }
 
-.ais-SearchBox-form {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
+@media (max-width: 480px) {
+
 }
 
-/* Barra de busqueda */
-.ais-SearchBox-input {
-  width: 100%;
-  border: 3px solid #f03774;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #e3e5ec;
-}
 
-/* Color de texto mientras escribimos */
-.ais-SearchBox-input:focus{ 
+/* Barra de busqueda /
+
+  
+  / Color de texto mientras escribimos /
+  .ais-SearchBox-input:focus{ 
   color:#e3e5ec; 
 }
 
-/* Cuadrado de la lupa en la barra del buscador */
+/ Cuadrado de la lupa en la barra del buscador /
 .ais-SearchBox-submit { 
   width: 40px;
   height: 36px;
@@ -280,19 +212,43 @@ strong{
   user-select: none;
   transform: translateY(-50%);
   cursor: pointer;
+  }
+*/
+
+.ais-SearchBox-input {
+  width: 100%;
+  font-family: "DM Sans";
+  font-size: 16px;
+  padding-left: 8px;
+  }
+
+#searchbox {
+  width: 90%;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  background-color: #fff;
 }
 
-/* Lupa en la barra del buscador */
+.ais-SearchBox {
+  width: 100%;
+  display: flex;
+}
+
+.ais-SearchBox-form {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .ais-SearchBox-submitIcon { 
-  width: 18px;
-  height: 18px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  width: 16px;
+  height: 16px;
 }
 
-/* Color de lupa en la barra del buscador */
 .ais-SearchBox-submit svg path { 
   fill: #e3e5ec;
 }
@@ -321,7 +277,6 @@ strong{
   user-select: none;
   right: 5px;
 }
-
 /* Cruz de la barra del buscador */
 .ais-SearchBox-resetIcon { 
   position: absolute;
@@ -333,85 +288,4 @@ strong{
   transform: translateX(-50%) translateY(-50%);
   cursor: pointer;
   fill: #e3e5ec;
-}
-
-.hits {
-  width: 100%;
-  position: relative;
-  display: flex;
-  margin: 0 auto;
-}
-
-.ais-Hits {
-  width: 100%;
-  display: flex;
-  position: relative;
-  margin: 0 auto;
-}
-
-.ais-Hits--empty {
-  box-sizing: border-box;
-  background-color: #111;
-  position: absolute;
-  padding: 1rem;
-  margin: 0;
-  margin-top: 5px;
-  color: #e3e5ec;
-}
-
-.ais-Hits .ais-Hits-list {
-  display: block;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  padding: 0;
-  margin: 0;
-}
-
-.ais-Hits-list, .ais-Hits--empty {
-  border-radius: 3px;
-  background-color: #111;
-  border-color: #f03774;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-/* Proyectos encontrados */
-.ais-Hits .ais-Hits-list .ais-Hits-item { 
-  margin: 0;
-  box-sizing: border-box;
-  display: block;
-  position: relative;
-  padding: 1rem;
-  width: 100%;
-  color: #e3e5ec;
-  font-weight: bolder;
-  border: 1px solid #f03774;
-  border-radius: 3px;
-  margin-bottom: 3px;
-}
-
-.ais-Hits-list .ais-Hits-item:last-child {
-  margin-bottom: 0px;
-}
-
-.ais-Highlight-highlighted {
-  background-color: #f03774;
-  color: #111;
-}
-
-:-moz-placeholder {
-  color: #f03774;
-  font-weight: 200;
-}
-
-::-webkit-input-placeholder {
-  color: #eee;
-  font-family: system-ui;
-  font-weight: 200;
 }

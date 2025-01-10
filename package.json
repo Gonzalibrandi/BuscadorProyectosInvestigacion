@@ -1,38 +1,55 @@
 {
-  "name": "app",
+  "name": "buscador",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "development": "nodemon ./bin/www"
+    "start": "bun run index.ts"
   },
   "dependencies": {
-    "@meilisearch/instant-meilisearch": "^0.18.1",
+    "@meilisearch/instant-meilisearch": "^0.23.0",
     "algoliasearch": "^4.23.3",
     "bcrypt": "^5.1.1",
     "bcrypt-nodejs": "^0.0.3",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
-    "express": "~4.16.1",
-    "express-session": "^1.18.0",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "http-errors": "~1.6.3",
+    "instantsearch.css": "^8.5.1",
     "instantsearch.js": "^4.71.0",
     "jade": "~1.11.0",
     "meilisearch": "^0.40.0",
     "mongodb": "^6.6.2",
-    "mongoose": "^8.4.3",
-    "morgan": "~1.9.1",
-    "nodemailer": "^6.9.14",
+    "mongoose": "^8.9.3",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.16",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-local": "^1.0.0",
-    "pug": "^3.0.3"
+    "path": "^0.12.7",
+    "pug": "^3.0.3",
+    "react-instantsearch": "^7.13.10"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/bun": "latest",
+    "@types/connect-flash": "^0.0.40",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
+    "@types/mongoose": "^5.11.97",
+    "@types/morgan": "^1.9.9",
+    "@types/nodemailer": "^6.4.17",
+    "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth2": "^0.1.10",
+    "@types/passport-local": "^1.0.38"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }

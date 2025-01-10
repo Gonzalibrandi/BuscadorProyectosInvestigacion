@@ -4,8 +4,10 @@ html
     title= title
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1')
+    link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap')
     link(rel="stylesheet", href="/stylesheets/index.css")
-    link(rel='icon' href='https://imgs.search.brave.com/zYwTc5Kz-3WUCYqsaFVhnT1wuX4woh9h0x1D6JDBJ-0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuY29tL21laWxp/c2VhcmNoL21laWxp/c2VhcmNoL3Jhdy9t/YWluL2Fzc2V0cy9s/b2dvLnN2Zw.svg')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    link(rel='icon' href='https://images.vexels.com/media/users/3/196341/isolated/preview/f00a8411a0fd49550fd3fd6e42638bfb-lupa-plana.png')
   body
     include messages
     block content
@@ -30,20 +32,22 @@ html
         container: "#hits",
         templates: {
           item: `
-            <div class="hit-name">
-                {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
-            </div>
-            <div class="hit-description"> <strong>Estado:</strong> 
-                {{#helpers.highlight}}{ "attribute": "estatus" }{{/helpers.highlight}}
-            </div>
-            <div class="hit-description"> <strong>Ubicación:</strong>
-                {{#helpers.highlight}}{ "attribute": "basedOn" }{{/helpers.highlight}}
-            </div>
-            <div class="hit-description"> <strong>Área:</strong>
-                {{#helpers.highlight}}{ "attribute": "granArea1" }{{/helpers.highlight}}
-            </div>
-            <div class="hit-description"> <strong>Tipo:</strong>
-                {{#helpers.highlight}}{ "attribute": "tipo" }{{/helpers.highlight}}
+            <div class="proyecto">
+              <div class="hit-name">
+                  {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
+              </div>
+              <div class="hit-description"> <strong>Estado:</strong> 
+                  {{#helpers.highlight}}{ "attribute": "estatus" }{{/helpers.highlight}}
+              </div>
+              <div class="hit-description"> <strong>Ubicación:</strong>
+                  {{#helpers.highlight}}{ "attribute": "basedOn" }{{/helpers.highlight}}
+              </div>
+              <div class="hit-description"> <strong>Área:</strong>
+                  {{#helpers.highlight}}{ "attribute": "granArea1" }{{/helpers.highlight}}
+              </div>
+              <div class="hit-description"> <strong>Tipo:</strong>
+                  {{#helpers.highlight}}{ "attribute": "tipo" }{{/helpers.highlight}}
+              </div>
             </div>
           `
         }
@@ -75,4 +79,10 @@ html
         //Actualizamos la búsqueda
         search.refresh();
       });
+    });
+
+    // Script para el botón de filtros
+    document.getElementById('toggle-filters').addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.querySelector('.main-content').classList.toggle('shifted');
     });

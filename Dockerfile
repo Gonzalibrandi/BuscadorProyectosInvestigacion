@@ -1,23 +1,17 @@
-## Dockerfile for building production image.
-## Consider replacing below rolling tag by a digest or a immutable tag
-FROM bitnami/express:4.19.2
-LABEL maintainer "John Smith <john.smith@acme.com>"
+# Usa la imagen oficial de Bun como base
+FROM oven/bun:latest
 
-ENV DISABLE_WELCOME_MESSAGE=1
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-ENV NODE_ENV=production \
-    PORT=3000
+# Copia los archivos del proyecto al contenedor
+COPY . .
 
-# Skip fetching dependencies and database migrations for production image
-ENV SKIP_DB_WAIT=0 \
-    SKIP_DB_MIGRATION=1 \
-    SKIP_NPM_INSTALL=1 \
-    SKIP_BOWER_INSTALL=1
+# Instala las dependencias de la aplicación (incluyendo Express)
+RUN bun install
 
-COPY . /app
-RUN sudo chown -R bitnami: /app
-
-RUN npm install
-
+# Expone el puerto 3000 para la aplicación
 EXPOSE 3000
-CMD ["npm", "start"]
+
+# Comando para iniciar la aplicación
+CMD ["bun", "run", "start"]

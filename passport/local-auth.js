@@ -5,7 +5,7 @@ require('dotenv').config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
-const User = require('../models/user');
+const User = require('../models/user.ts').default;
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -57,27 +57,30 @@ passport.use('local-login', new LocalStrategy({
 }));
 
 // Autenticacion con Google
-passport.use(new GoogleStrategy({
-  clientID: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/callback",
-  passReqToCallback: true,
-},
-async (request, accessToken, refreshToken, profile, done) => {
-  try {
-    const user = await User.findOne({ googleId: profile.id });
-    if (user) {
-      return done(null, user);
-    } else {
-      const newUser = new User({
-        googleId: profile.id,
-        username: profile.displayName,
-        userEmail: profile.emails[0].value
-      });
-      await newUser.save();
-      return done(null, newUser);
+passport.use(new GoogleStrategy(
+  {
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback",
+    passReqToCallback: true,
+  },
+  async (request, accessToken, refreshToken, profile, done) => {
+    try {
+      let user = await User.findOne({ googleId: profile.id });
+      if (user) {
+        return done(null, user);
+      } else {
+        user = new User({
+          googleId: profile.id,
+          username: profile.displayName,
+          userEmail: profile.emails[0].value,
+          password: null, // Deja el campo vacío para usuarios de Google
+        });
+        await user.save();
+        return done(null, user);
+      }
+    } catch (err) {
+      return done(err);
     }
-  } catch (err) {
-    return done(err);
   }
-}));
+));
