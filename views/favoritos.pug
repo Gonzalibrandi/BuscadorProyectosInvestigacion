@@ -3,18 +3,26 @@ head
   meta(charset='UTF-8')
   meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1')
   link(rel='stylesheet' href='/stylesheets/favoritos.css')
+  link(rel="stylesheet", href="/stylesheets/estructura.css")
   link(rel='icon', href='https://images.vexels.com/media/users/3/196341/isolated/preview/f00a8411a0fd49550fd3fd6e42638bfb-lupa-plana.png')
+  link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap')
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   title Proyectos favoritos 
 .header
-  h1 Buscador de Proyectos de Investigación
-  if user
-    .welcome-message Bienvenido, #{user.username}
-  a(href='/' id="volver") Volver al Buscador
-  form(action='/logout', method='POST')
-    button(type="submit" id="cerrar-sesion") Cerrar sesión
+  h1 Buscador de Proyectos
+  .header-right
+    if user
+      .welcome-message Bienvenido/a, #{user.username}
+    form(onclick="window.history.back(); return false;" id="volver-form", title="Volver al buscador")
+      button(type="button" id="volver")
+        i.fa.fa-search
+    form(action='/logout', method='POST')
+      button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
+        i.fa.fa-sign-out
 .main-content
-  p En esta sección puede registrar sus búsquedas favoritas. Recibirá un email cada vez que se agregue un proyecto que coincida con alguna de sus búsquedas.
-  form(action="/setearFavoritos", method="POST")
+  p En esta sección puede registrar sus búsquedas favoritas. 
+  p Recibirá un email cada vez que se agregue un proyecto que coincida con alguna de sus búsquedas.
+  form(action="/setearFavoritos", method="POST", class="formulario")
     input(placeholder='Ingrese su búsqueda', type='text', name='searchQuery')
     select(name='Estado')
       option(value='') Seleccione un estado

@@ -2,16 +2,16 @@ extends layout
 
 block content
   .header
-    h1 Buscador de Proyectos de Investigación
-    if user
-      .header-right
+    h1 Buscador de Proyectos
+    .header-right
+      if user
         .welcome-message Bienvenido/a, #{user.username}
-        form(action="/favoritos", method="POST")  
-          button(type="submit" id="favoritos")
-            i.fa.fa-heart
-        form(action="/logout", method="POST")  
-          button(type="submit" id="cerrar-sesion")
-            i.fa.fa-sign-out
+      form(action="/favoritos", method="POST")  
+        button(type="submit" id="favoritos", title="Proyectos favoritos")
+          i.fa.fa-heart
+      form(action="/logout", method="POST")  
+        button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
+          i.fa.fa-sign-out
   .sidebar-container
     button(id="toggle-filters")
       i.fa.fa-filter

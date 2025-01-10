@@ -6,6 +6,7 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1')
     link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap')
     link(rel="stylesheet", href="/stylesheets/index.css")
+    link(rel="stylesheet", href="/stylesheets/estructura.css")
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     link(rel='icon' href='https://images.vexels.com/media/users/3/196341/isolated/preview/f00a8411a0fd49550fd3fd6e42638bfb-lupa-plana.png')
   body
@@ -32,23 +33,27 @@ html
         container: "#hits",
         templates: {
           item: `
-            <div class="proyecto">
-              <div class="hit-name">
-                  {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
-              </div>
-              <div class="hit-description"> <strong>Estado:</strong> 
-                  {{#helpers.highlight}}{ "attribute": "estatus" }{{/helpers.highlight}}
-              </div>
-              <div class="hit-description"> <strong>Ubicación:</strong>
-                  {{#helpers.highlight}}{ "attribute": "basedOn" }{{/helpers.highlight}}
-              </div>
-              <div class="hit-description"> <strong>Área:</strong>
-                  {{#helpers.highlight}}{ "attribute": "granArea1" }{{/helpers.highlight}}
-              </div>
-              <div class="hit-description"> <strong>Tipo:</strong>
-                  {{#helpers.highlight}}{ "attribute": "tipo" }{{/helpers.highlight}}
-              </div>
+          <div class="proyecto">
+            <div class="hit-name">
+                {{#helpers.highlight}}{ "attribute": "nombre" }{{/helpers.highlight}}
             </div>
+            <div class="hit-description">
+                <span class="fixed-text">Estado</span>
+                {{#helpers.highlight}}{ "attribute": "estatus" }{{/helpers.highlight}}
+            </div>
+            <div class="hit-description">
+                <span class="fixed-text">Ubicación</span>
+                {{#helpers.highlight}}{ "attribute": "basedOn" }{{/helpers.highlight}}
+            </div>
+            <div class="hit-description">
+                <span class="fixed-text">Área</span>
+                {{#helpers.highlight}}{ "attribute": "granArea1" }{{/helpers.highlight}}
+            </div>
+            <div class="hit-description">
+                <span class="fixed-text">Tipo</span>
+                {{#helpers.highlight}}{ "attribute": "tipo" }{{/helpers.highlight}}
+            </div>
+          </div>
           `
         }
       })

@@ -1,65 +1,3 @@
-/* Establecer el fondo general */
-body {
-  font-family: "DM Sans";
-  background-color: #f1f5f9; /* Azul oscuro */
-  color: #333; /* Negro suave */
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-h1 {
-  margin-left: 5%;
-}
-
-/* Header */
-.header {
-  height: 10vh;
-  background-color: #ffffff;
-  color: #05294d;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
-.header-right {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;  
-  gap: 10px;
-}
-
-.welcome-message {
-  font-size: 16px;
-  color: #3b82f6;
-}
-
-button {
-  font-family: "DM Sans";
-  background-color: #3b82f6;
-  border: none;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 16px;
-  margin: 5px;
-}
-
-button:hover {
-  background-color: #2563eb; /* Azul más oscuro */
-}
-
 /* Barra lateral */
 .sidebar-container {
   position: relative;
@@ -81,7 +19,7 @@ button:hover {
 
 #toggle-filters {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   left: 20px;
   background-color: #3b82f6;
   border: none;
@@ -90,7 +28,7 @@ button:hover {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  z-index: 1000; /* Para asegurarse de que el botón esté encima */
+  z-index: 100; 
 }
 
 #toggle-filters:hover {
@@ -133,7 +71,7 @@ button:hover {
 .main-content {
   padding-left: 50px;
   flex: 1;
-  background-color: #f1f5f9; /* Fondo gris claro */
+  background-color: #05294d; /* Fondo gris claro */
 }
 
 /*Movimiento de las búsquedas al abrir/cerrar los filtros*/
@@ -150,11 +88,21 @@ button:hover {
 }
 
 .proyecto {
-  border: 2px solid #2563eb;
+  border: 2px solid #93b0ee;
   border-radius: 4px;
   padding: 8px;
   margin: 4px;
 }
+
+.hit-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hit-description .fixed-text {
+  color: #93b0ee;
+}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -215,22 +163,26 @@ button:hover {
   }
 */
 
-.ais-SearchBox-input {
-  width: 100%;
-  font-family: "DM Sans";
-  font-size: 16px;
-  padding-left: 8px;
-  }
-
 #searchbox {
   width: 90%;
   display: flex;
   margin: 0 auto;
   margin-top: 16px;
   padding: 12px;
-  border-radius: 5px;
-  border: 1px solid #e2e8f0;
-  background-color: #fff;
+}
+
+.ais-SearchBox-input {
+  width: 100%;
+  font-family: "DM Sans";
+  font-size: 16px;
+  padding-left: 8px;
+  border-radius: 8px;
+  outline: none;
+}
+
+.ais-SearchBox-input:hover {
+  box-shadow: 0 0 15px #e3e5ec;
+  transition: .3s ease;
 }
 
 .ais-SearchBox {
@@ -245,8 +197,8 @@ button:hover {
 }
 
 .ais-SearchBox-submitIcon { 
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
 }
 
 .ais-SearchBox-submit svg path { 
@@ -275,12 +227,12 @@ button:hover {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  right: 5px;
+  right: 50px;
 }
 /* Cruz de la barra del buscador */
 .ais-SearchBox-resetIcon { 
   position: absolute;
-  left: -27px;
+  left: -20px;
   width: 12px;
   height: 12px;
   top: 50%;
