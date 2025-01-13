@@ -1,0 +1,48 @@
+# Copyright VMware, Inc.
+# SPDX-License-Identifier: APACHE-2.0
+
+services:
+  meilisearch:
+    image: getmeili/meilisearch:v1.9.0
+    ports:
+      - '7700:7700'
+    environment:
+      - MEILI_ENV=development
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - mynetwork
+
+  mongodb:
+    image: bitnami/mongodb:7.0
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - mongodb_data:/bitnami/mongodb
+    networks:
+      - mynetwork
+
+  buscador:
+    build:
+      context: ./my-project
+    ports:
+      - '3000:3000'
+    volumes:
+      - './my-project:/app'
+      - 'node_modules_cache:/app/node_modules'
+    depends_on:
+      - mongodb
+      - meilisearch
+    networks:
+      - mynetwork
+
+
+networks:
+  mynetwork:
+    driver: bridge
+
+
+volumes:
+  mongodb_data:
+  meilisearch_data:
+  node_modules_cache:
