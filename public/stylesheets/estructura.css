@@ -2,7 +2,7 @@
 body {
     font-family: "DM Sans";
     background-color: #05294d; /* Azul oscuro */
-    color: #eee; /* Negro suave */
+    color: #eeeeee; /* Negro suave */
     margin: 0;
     padding: 0;
     display: flex;
@@ -12,7 +12,7 @@ body {
 /* Header */
 .header {
     height: 10vh;
-    background-color: #ffffff;
+    background-color: #9bb1fc;
     color: #05294d;
     padding: 20px;
     text-align: center;
@@ -37,17 +37,17 @@ body {
 h1 {
     font-size: 24px;
     margin: 0;
-    color: #007bff; /* Azul brillante */
+    color: #05294d; /* Azul brillante */
 }
 
 .welcome-message {
     font-size: 16px;
-    color: #3b82f6;
+    color: #05294d;
 }
 
 button {
     font-family: "DM Sans";
-    background-color: #3b82f6;
+    background-color: #05294d;
     border: none;
     color: #fff;
     padding: 10px 20px;
@@ -60,4 +60,10 @@ button {
 
 button:hover {
     background-color: #2563eb; /* Azul más oscuro */
+}
+
+.boton-claro {
+    color: #05294d;
+    font-weight: bold;
+    background-color: #9bb1fc;
 }

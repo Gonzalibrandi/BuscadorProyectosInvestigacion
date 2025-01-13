@@ -9,6 +9,9 @@ block content
       form(action="/favoritos", method="POST")  
         button(type="submit" id="favoritos", title="Proyectos favoritos")
           i.fa.fa-heart
+      a(href="/agregar-proyecto" id="agregar-proyecto", title="Agregar Proyecto")
+        button(type="button")
+          i.fa.fa-plus
       form(action="/logout", method="POST")  
         button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
           i.fa.fa-sign-out

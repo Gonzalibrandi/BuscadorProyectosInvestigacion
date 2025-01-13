@@ -7,15 +7,18 @@ head
   link(rel='icon', href='https://images.vexels.com/media/users/3/196341/isolated/preview/f00a8411a0fd49550fd3fd6e42638bfb-lupa-plana.png')
   link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap')
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  title Proyectos favoritos 
+  title Proyectos Favoritos 
 .header
-  h1 Buscador de Proyectos
+  h1 Proyectos Favoritos
   .header-right
     if user
       .welcome-message Bienvenido/a, #{user.username}
-    form(onclick="window.history.back(); return false;" id="volver-form", title="Volver al buscador")
+    a(href="/" id="volver-form" title="Volver al buscador")
       button(type="button" id="volver")
         i.fa.fa-search
+    a(href="/agregar-proyecto" id="agregar-proyecto", title="Agregar Proyecto")
+      button(type="button")
+        i.fa.fa-plus
     form(action='/logout', method='POST')
       button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
         i.fa.fa-sign-out
@@ -48,7 +51,7 @@ head
       option(value='Fellowships scholarships or trainings') Becas
       option(value='Research and publications') Investigacion
       option(value='Travel and Conferences') Conferencias
-    input.boton(type='submit', value='Guardar como favorita')
+    input.boton(type='submit', value='Guardar como favorita', class="boton-claro")
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const selects = document.querySelectorAll('select');

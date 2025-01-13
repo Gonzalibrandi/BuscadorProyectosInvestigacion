@@ -2,7 +2,10 @@ import { Router, type Request, type Response, type NextFunction } from 'express'
 import passport from 'passport';
 import '../passport/local-auth';
 import favoriteSearch from '../models/favoriteSearch';
-import user from '../models/user';
+import fs from 'fs';
+import path from 'path';
+//import '../config/inicializacion-indice';
+import configurarIndice from '../config/configuracion-indice';
 
 const router = Router();
 
@@ -107,5 +110,64 @@ router.post('/setearFavoritos', isAuthenticated, async (req: Request, res: Respo
     res.redirect('/favoritos');
   }
 });
+
+// Ruta para la página de agregar proyectos
+router.get('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) => {
+  res.render('agregar_proyecto', { user: req.user });
+});
+
+// Ruta para la página de agregar proyectos
+router.get('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) => {
+  res.render('agregar_proyecto', { user: req.user });
+});
+
+// Ruta para manejar el formulario de agregar proyectos
+router.post('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) => {
+  const filePath = path.join(__dirname, '../data/proyectos.json');
+  const { nombre, tipo, estatus, basedOn, ...opcional } = req.body;
+
+  // Validar campos obligatorios
+  if (!nombre || !tipo || !estatus || !basedOn) {
+    res.status(400).send('Faltan campos obligatorios');
+    return;
+  }
+
+  // Leer el archivo JSON
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error al leer los datos de proyectos');
+    }
+
+    let proyectos = JSON.parse(data);
+    const nuevoId = proyectos.length ? proyectos[proyectos.length - 1].id + 1 : 1;
+
+    const nuevoProyecto = {
+      id: nuevoId,
+      timestamp: new Date().toLocaleDateString('es-AR'),
+      nombre,
+      tipo,
+      estatus,
+      basedOn,
+      ...opcional,
+    };
+
+    proyectos.push(nuevoProyecto);
+
+    // Guardar el nuevo proyecto en el archivo
+    fs.writeFile(filePath, JSON.stringify(proyectos, null, 2), (writeErr) => {
+      if (writeErr) {
+        console.error(writeErr);
+        return res.status(500).send('Error al guardar el proyecto');
+      }
+
+      //require('../config/inicializacion-indice');
+      configurarIndice();
+
+      res.redirect('/agregar-proyecto?success=true');
+    });
+  });
+});
+
 
 export default router;

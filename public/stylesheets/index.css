@@ -228,6 +228,7 @@
   -ms-user-select: none;
   user-select: none;
   right: 50px;
+  display: none;
 }
 /* Cruz de la barra del buscador */
 .ais-SearchBox-resetIcon { 

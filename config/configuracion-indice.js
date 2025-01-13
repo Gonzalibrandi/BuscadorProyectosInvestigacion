@@ -1,30 +1,39 @@
 const client = require('../meilisearch');
+const fs = require('fs');
+const path = require('path');
 
-//Se establece el nuevo indice. Se elimina el actual y se crea y asigna el nuevo
-client.deleteIndex('Proyectos');
-client.createIndex('Proyectos', { primaryKey: 'id' });
-const proyectos = require('../data/proyectos.json');
-client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
+const configurarIndice = () => {
+  // Eliminar índice existente
+  client.deleteIndex('Proyectos');
+  
+  // Crear el nuevo índice
+  client.createIndex('Proyectos', { primaryKey: 'id' });
+  
+  // Leer el archivo JSON de proyectos
+  const proyectos = require('../data/proyectos.json');
+  
+  // Agregar los documentos al índice
+  client.index('Proyectos').addDocuments(proyectos).then((res) => console.log(res)).catch((err) => console.error(err));
 
-//Actualizacion de atributos mostrados en el localhost:7700
-client.index('Proyectos').updateSettings({
-  "rankingRules": [
+  // Actualizar configuraciones de atributos
+  client.index('Proyectos').updateSettings({
+    "rankingRules": [
       "words",
       "typo",
       "proximity",
       "attribute",
       "sort",
       "exactness"
-  ],
-  distinctAttribute: 'id',
-  searchableAttributes: [
+    ],
+    distinctAttribute: 'id',
+    searchableAttributes: [
       'id',
       'nombre',
       'tipo',
       'granArea1',
       'basedOn'
-  ],
-  displayedAttributes: [
+    ],
+    displayedAttributes: [
       'id',
       'timestamp',
       'estatus',
@@ -37,43 +46,41 @@ client.index('Proyectos').updateSettings({
       'descripcion',
       'fechaProximoDeadline',
       'basedOn'
-  ],
-  stopWords: [
+    ],
+    stopWords: [
       'de'
-  ],
-  sortableAttributes: [
+    ],
+    sortableAttributes: [
       'nombre',
       'id'
-  ],
-  synonyms: {
-      
-  },
-  typoTolerance: {
+    ],
+    typoTolerance: {
       "enabled": true,
       "minWordSizeForTypos": {
         "oneTypo": 5,
         "twoTypos": 9
-      },
-      "disableOnWords": [],
-      "disableOnAttributes": []
-  },
-  pagination: {
+      }
+    },
+    pagination: {
       maxTotalHits: 100
-  },
-  faceting: {
+    },
+    faceting: {
       "maxValuesPerFacet": 100,
       "sortFacetValuesBy": {
         "*": "alpha"
       }
-  },
-  searchCutoffMs: 300
-});
+    },
+    searchCutoffMs: 300
+  });
 
-//seteo de filtros
-client.index('Proyectos')
-  .updateFilterableAttributes([
-    'estatus',
-    'basedOn',
-    'granArea1',
-    'tipo'
-]);
+  // Configuración de filtros
+  client.index('Proyectos')
+    .updateFilterableAttributes([
+      'estatus',
+      'basedOn',
+      'granArea1',
+      'tipo'
+    ]);
+};
+
+module.exports = configurarIndice;
