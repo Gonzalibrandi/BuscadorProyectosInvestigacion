@@ -13,15 +13,16 @@ head
   .header-right
     if user
       .welcome-message Bienvenido/a, #{user.username}
-    a(href="/" id="volver-form" title="Volver al buscador")
-      button(type="button" id="volver")
-        i.fa.fa-search
-    a(href="/agregar-proyecto" id="agregar-proyecto", title="Agregar Proyecto")
-      button(type="button")
-        i.fa.fa-plus
-    form(action='/logout', method='POST')
-      button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
-        i.fa.fa-sign-out
+    .header-right-buttons
+      a(href="/" id="volver-form" title="Volver al buscador")
+        button(type="button" id="volver")
+          i.fa.fa-search
+      a(href="/agregar-proyecto" id="agregar-proyecto", title="Agregar proyecto")
+        button(type="button")
+          i.fa.fa-plus
+      form(action='/logout', method='POST')
+        button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
+          i.fa.fa-sign-out
 .main-content
   p En esta sección puede registrar sus búsquedas favoritas. 
   p Recibirá un email cada vez que se agregue un proyecto que coincida con alguna de sus búsquedas.

@@ -1,20 +1,14 @@
-/* Barra lateral */
-.sidebar-container {
-  position: relative;
-}
-
 .sidebar {
   z-index: 10;
-  background-color: #ffffff;
+  background-color: #d5dfff;
   color: #05294d;
   padding: 20px;
   padding-top: 15vh;
   position: fixed;
   top: 0;
-  left: -300px; /* Comienza fuera de la pantalla */
-  height: 100vh; /* Altura completa */
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease; /* Animación de deslizamiento */
+  left: -300px;
+  height: 100vh;
+  transition: transform 0.3s ease;
 }
 
 #toggle-filters {
@@ -35,7 +29,11 @@
   background-color: #2563eb; /* Azul más oscuro */
 }
 
-/* Estilo de los filtros */
+h2 {
+  font-size: 18px;
+  text-decoration: underline;
+}
+
 .filters {
   margin-top: 20px;
 }
@@ -69,18 +67,11 @@
 
 /* Main content */
 .main-content {
-  padding-left: 50px;
+  padding: 0 20px;
   flex: 1;
   background-color: #05294d; /* Fondo gris claro */
-}
 
-/*Movimiento de las búsquedas al abrir/cerrar los filtros*/
-/*
-.main-content.shifted {
-  transform: translateX(280px);
-  transition: transform 0.3s ease;
-} 
-*/
+}
 
 .wrapper {
   max-width: 1200px;
@@ -88,7 +79,7 @@
 }
 
 .proyecto {
-  border: 2px solid #93b0ee;
+  border: 2px solid #d5dfff;
   border-radius: 4px;
   padding: 8px;
   margin: 4px;
@@ -120,10 +111,6 @@
   }
 
   h1 {font-size: 24px;}
-
-  .sidebar {
-    padding-top: 20vh;
-  }
   
 }
 
@@ -181,7 +168,7 @@
 }
 
 .ais-SearchBox-input:hover {
-  box-shadow: 0 0 15px #e3e5ec;
+  box-shadow: 0 0 8px #e3e5ec;
   transition: .3s ease;
 }
 

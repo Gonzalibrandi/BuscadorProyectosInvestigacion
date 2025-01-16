@@ -1,64 +1,22 @@
-/* Estilo del contenido principal */
 .main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centra horizontalmente */
-    min-height: calc(100vh - 70px); /* Altura completa menos el header */
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+}
   
-  .main-content h1 {
-    font-family: "DM Sans";
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+.main-content h1 {
+  font-family: "DM Sans";
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
   
-  .main-content p {
-    font-size: 16px;
-    text-align: center;
-    margin: 2px;
-    max-width: 600px;
-  }
-  
-  /* Estilo del formulario */
-  .formulario {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 500px;
-    width: 100%; /* Asegura que no se pase del contenedor */
-  }
-  
-  input,
-  select,
-  textarea {
-    font-family: "DM Sans";
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #333;
-  }
-  
-  textarea {
-    resize: vertical; /* Permite cambiar el tamaño solo verticalmente */
-  }
-  
-  select {
-    appearance: none; /* Elimina el estilo por defecto del navegador */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 20 20'%3E%3Cpolygon points='0,0 20,0 10,10' fill='%23666'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 10px 10px;
-  }
-  
-  select option {
-    color: #000;
-  }
-
-
+.main-content p {
+  font-size: 16px;
+  text-align: center;
+  margin: 2px;
+  max-width: 600px;
+}
   

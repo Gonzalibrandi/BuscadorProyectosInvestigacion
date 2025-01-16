@@ -12,7 +12,7 @@ body {
 /* Header */
 .header {
     height: 10vh;
-    background-color: #9bb1fc;
+    background-color: #d5dfff;
     color: #05294d;
     padding: 20px;
     text-align: center;
@@ -34,6 +34,14 @@ body {
     gap: 10px;
 }
 
+.header-right-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;  
+    gap: 10px;
+}
+
 h1 {
     font-size: 24px;
     margin: 0;
@@ -43,6 +51,15 @@ h1 {
 .welcome-message {
     font-size: 16px;
     color: #05294d;
+}
+
+.main-content {
+    margin: auto;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 button {
@@ -59,7 +76,7 @@ button {
 }
 
 button:hover {
-    background-color: #2563eb; /* Azul más oscuro */
+    background-color: #2563eb;
 }
 
 .boton-claro {
@@ -67,3 +84,44 @@ button:hover {
     font-weight: bold;
     background-color: #9bb1fc;
 }
+
+/* Estilo del formulario */
+.formulario {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    width: 100%; /* Asegura que no se pase del contenedor */
+  }
+  
+input,
+select,
+textarea {
+    font-family: "DM Sans";
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    resize: vertical;
+}
+  
+
+/* Responsive design */
+@media (max-width: 768px) {
+  
+  
+    .header-right {
+      flex-direction: column;
+    }
+
+    button {
+        padding: 5px 10px;
+        font-size: 16px;
+        margin: 3px;
+    }
+
+    h1 {font-size: 24px;}
+    
+  }

@@ -13,38 +13,33 @@ head
   .header-right
     if user
       .welcome-message Bienvenido/a, #{user.username}
-    a(href="/" id="volver-form" title="Volver al buscador")
-      button(type="button" id="volver")
-        i.fa.fa-search
-    form(action="/favoritos", method="POST")  
-      button(type="submit" id="favoritos", title="Proyectos favoritos")
-        i.fa.fa-heart
-    form(action='/logout', method='POST')
-      button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
-        i.fa.fa-sign-out
+    .header-right-buttons
+      a(href="/" id="volver-form" title="Volver al buscador")
+        button(type="button" id="volver")
+          i.fa.fa-search
+      form(action="/favoritos", method="POST")  
+        button(type="submit" id="favoritos", title="Proyectos favoritos")
+          i.fa.fa-heart
+      form(action='/logout', method='POST')
+        button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
+          i.fa.fa-sign-out
 .main-content
   form(action="/agregar-proyecto", method="POST", class="formulario")
-    label(for="nombre") Nombre del proyecto *
     input(placeholder='Nombre del proyecto', type='text', name='nombre', required)
-    label(for="tipo") Tipo *
     select(name='tipo', required)
       option(value='') Seleccione un tipo
       option(value='Prizes and Awards') Premios
       option(value='Fellowships scholarships or trainings') Becas
       option(value='Research and publications') Investigación
       option(value='Travel and Conferences') Conferencias
-    label(for="estatus") Estado *
     select(name='estatus', required)
       option(value='') Seleccione un estado
       option(value='Abierto') Abierto
       option(value='Ongoing') Ongoing
       option(value='>4 meses') >4 meses
       option(value='Vencido') Vencido
-    label(for="basedOn") Basado en *
     input(placeholder='Ubicación', type='text', name='basedOn', required)
-    label(for="descripcion") Descripción
     textarea(placeholder='Descripción del proyecto', name='descripcion', rows='4')
-    label(for="link") Enlace
     input(placeholder='Enlace del proyecto', type='url', name='link')
     button.boton(type='submit', class="boton-claro") Agregar Proyecto
   script.

@@ -1,52 +1,15 @@
-
-/* Estilo del contenido principal */
 .main-content {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra horizontalmente */
-  min-height: calc(100vh - 70px); /* Altura completa menos el header */
-  padding: 20px;
+  align-items: center;
+  min-height: 70vh;
 }
 
 .main-content p {
   font-size: 16px;
   text-align: center;
-  margin: 2px;
+  margin: 6px;
   max-width: 600px;
-}
-
-/* Estilo del formulario */
-.formulario {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 400px;
-  width: 100%; /* Asegura que no se pase del contenedor */
-}
-
-input {
-  font-family: "DM Sans";
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-  color: #333;
-}
-
-select {
-  font-family: "DM Sans";
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-  color: #333;
-}
-
-select option {
-  color: #000;
 }
 
 .boton {

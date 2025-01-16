@@ -3,15 +3,15 @@
 
 1. Tener instalado Docker, recomendamos Docker Desktop que trae todas las herramientas necesarias.
 
-2. Clonar el repositorio:
+2. Crear una carpeta para almacenar el pryecto. En esa carpeta, clonar el repositorio:
 
    ```bash
-   git clone Gonzalibrandi/BuscadorProyectosInvestigacion
+   git clone https://github.com/Gonzalibrandi/BuscadorProyectosInvestigacion.git
    ```
 
-3. Inicia sesión en Google Cloud Platform y ve a [https://console.cloud.google.com/apis/credentials](https://console.cloud.google.com/apis/credentials).
+3. Iniciar sesión en Google Cloud Platform e ir a [https://console.cloud.google.com/apis/credentials](https://console.cloud.google.com/apis/credentials).
    
-   - Aquí ve a: **Credenciales → Crear credenciales → ID de cliente OAuth**  
+   - Ir a: **Credenciales → Crear credenciales → ID de cliente OAuth**  
    - Tipo de aplicación → **Aplicación web**  
    - Nombre → `<el que quieras>`, ej. **Aplicación web 3**  
    - URI de redirección autorizados → **Añadir URI** → `http://localhost:3000/auth/google/callback` → haz clic en "CREAR"  
