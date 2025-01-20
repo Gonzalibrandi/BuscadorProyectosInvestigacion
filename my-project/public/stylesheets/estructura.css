@@ -1,4 +1,5 @@
-/* Establecer el fondo general */
+*{box-sizing: border-box;}
+
 body {
     font-family: "DM Sans";
     background-color: #05294d; /* Azul oscuro */
@@ -7,13 +8,25 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
+    background: url(https://images.unsplash.com/photo-1687392946859-cebb261f01f5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D) no-repeat center center fixed;
 }
 
-/* Header */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Colocamos detrás del contenido */
+    backdrop-filter: blur(5px); /* Aplicamos el desenfoque */
+    filter: brightness(0.5); /* Opcional: Para oscurecer un poco */
+}
+
 .header {
-    height: 10vh;
-    background-color: #d5dfff;
-    color: #05294d;
+    height: 12vh;
+    color: #eee;
+    backdrop-filter: blur(5px) brightness(0.3);
     padding: 20px;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -45,12 +58,10 @@ body {
 h1 {
     font-size: 24px;
     margin: 0;
-    color: #05294d; /* Azul brillante */
 }
 
 .welcome-message {
     font-size: 16px;
-    color: #05294d;
 }
 
 .main-content {
@@ -62,11 +73,11 @@ h1 {
     justify-content: center;
 }
 
-button {
+.header-right-button {
     font-family: "DM Sans";
-    background-color: #05294d;
+    background-color: #fff;
     border: none;
-    color: #fff;
+    color: #05294d;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -74,54 +85,57 @@ button {
     font-size: 16px;
     margin: 5px;
 }
-
-button:hover {
-    background-color: #2563eb;
+.header-right-button:hover {
+    background-color: #9aa1b1;
 }
 
-.boton-claro {
-    color: #05294d;
-    font-weight: bold;
-    background-color: #9bb1fc;
-}
-
-/* Estilo del formulario */
-.formulario {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 500px;
-    width: 100%; /* Asegura que no se pase del contenedor */
-  }
-  
-input,
-select,
-textarea {
-    font-family: "DM Sans";
-    padding: 10px;
-    font-size: 14px;
+input {
     border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    resize: vertical;
 }
   
 
 /* Responsive design */
-@media (max-width: 768px) {
-  
+@media (max-width: 800px) {
   
     .header-right {
       flex-direction: column;
     }
 
-    button {
+    .header-right-button {
         padding: 5px 10px;
         font-size: 16px;
-        margin: 3px;
+        margin: 2px;
     }
 
-    h1 {font-size: 24px;}
+    h1 {
+        font-size: 24px;
+    }
+
+    .welcome-message {
+        font-size: 14px;
+    }
+    
+  }
+
+/* Responsive design */
+@media (max-width: 500px) {
+  
+    .header-right {
+      flex-direction: column;
+    }
+
+    .header-right-button {
+        padding: 5px 10px;
+        font-size: 10px;
+        margin: 2px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    .welcome-message {
+        font-size: 10px;
+    }
     
   }

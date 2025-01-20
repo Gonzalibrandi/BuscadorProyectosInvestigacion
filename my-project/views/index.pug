@@ -8,16 +8,16 @@ block content
         .welcome-message Bienvenido/a, #{user.username}
       .header-right-buttons
         form(action="/favoritos", method="POST")  
-          button(type="submit" id="favoritos", title="Proyectos favoritos")
+          button(type="submit" id="favoritos" title="Proyectos favoritos" class="header-right-button")
             i.fa.fa-heart
-        a(href="/agregar-proyecto" id="agregar-proyecto", title="Agregar proyecto")
-          button(type="button")
+        a(href="/agregar-proyecto" id="agregar-proyecto" title="Agregar proyecto")
+          button(type="button" class="header-right-button")
             i.fa.fa-plus
         form(action="/logout", method="POST")  
-          button(type="submit" id="cerrar-sesion", title="Cerrar sesión")
+          button(type="submit" id="cerrar-sesion" title="Cerrar sesión" class="header-right-button")
             i.fa.fa-sign-out
   .sidebar-container
-    button(id="toggle-filters")
+    button(id="toggle-filters" title="Mostrar filtros")
       i.fa.fa-filter
     .sidebar
       h2 Filtros de Búsqueda
@@ -71,6 +71,7 @@ block content
               li Conferencias
                 input(type="checkbox" class="filterCheckbox" value="Travel and Conferences" data-filter="tipo")
   .main-content
-    .wrapper
-      #searchbox(focus='')
-      #hits
+    .wrapper-box
+      .wrapper
+        #searchbox(focus='')
+        #hits

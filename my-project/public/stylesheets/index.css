@@ -1,9 +1,13 @@
+* {
+  list-style: none;
+}
+
 .sidebar {
   z-index: 10;
-  background-color: #d5dfff;
-  color: #05294d;
+  color: #eee;
+  backdrop-filter: blur(5px) brightness(0.3);
   padding: 20px;
-  padding-top: 15vh;
+  padding-top: 14vh;
   position: fixed;
   top: 0;
   left: -300px;
@@ -11,6 +15,7 @@
   transition: transform 0.3s ease;
 }
 
+/*BOTÓN PARA MOSTRAR LOS FILTROS*/
 #toggle-filters {
   position: fixed;
   bottom: 20px;
@@ -18,14 +23,15 @@
   background-color: #3b82f6;
   border: none;
   color: white;
-  padding: 12px;
-  border-radius: 5px;
+  padding: 16px;
+  border-radius: 100px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 24px;
   z-index: 100; 
 }
 
 #toggle-filters:hover {
+  transition: .3s ease;
   background-color: #2563eb; /* Azul más oscuro */
 }
 
@@ -35,25 +41,30 @@ h2 {
 }
 
 .filters {
-  margin-top: 20px;
+  margin-top: 24px;
+  padding-left: 16px;
 }
 
 .filters details {
-  margin-bottom: 15px;
+  margin-bottom: 24px;
 }
 
 .filters summary {
-  font-weight: bold;
   cursor: pointer;
+  list-style-type: disclosure-closed;
+}
+
+.filters summary:hover {
+  text-decoration: underline;
 }
 
 .filters ul {
-  list-style-type: none;
-  padding-left: 0;
+  padding-left: 10px;
 }
 
 .filters li {
   margin: 8px 0;
+  list-style: none;
 }
 
 .filters input[type="checkbox"] {
@@ -62,48 +73,126 @@ h2 {
 
 /* Animación de la barra lateral (ocultarla o mostrarla) */
 .sidebar.open {
-  transform: translateX(300px); /* Mueve la barra lateral hacia la derecha */
+  transform: translateX(300px);
 }
 
-/* Main content */
-.main-content {
-  padding: 0 20px;
-  flex: 1;
-  background-color: #05294d; /* Fondo gris claro */
-
-}
-
+/*CONTENEDOR DE LOS RESULTADOS*/
 .wrapper {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/*BLOQUE DE CADA RESULTADO*/
 .proyecto {
-  border: 2px solid #d5dfff;
-  border-radius: 4px;
-  padding: 8px;
-  margin: 4px;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 16px 0px;
+  background-color: #fff;
 }
 
+/*NOMBRE DE LOS RESULTADOS*/
 .hit-name {
   font-size: 18px;
   font-weight: bold;
+  color: #05294d;
+  padding-bottom: 4px;
 }
 
-.hit-description .fixed-text {
-  color: #93b0ee;
+/*NOMBRE DE LAS PROPIEDADES DE LOS RESULTADOS*/
+.fixed-text {
+  color: #05294d;
 }
 
+/*VALOR DE LAS PROPIEDADES*/
+.hit-description {
+  color: #3b82f6;
+}
+
+/*TEXTO DE LA BARRA DE BÚSQUEDA*/
+.ais-SearchBox-input{ 
+  color:#e3e5ec; 
+}
+
+.ais-SearchBox-submit {
+  /* height: 40px;
+  width: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  background-color: transparent; */
+  display: none;
+}
+
+/* 
+.ais-SearchBox-submit:hover {
+  background-color: transparent;
+}
+
+.ais-SearchBox-submitIcon { 
+  width: 24px;
+  height: 24px;
+}
+
+.ais-SearchBox-submitIcon:hover { 
+  width: 34px;
+  height: 34px;
+  transition: .2s ease;
+}
+ */
+ 
+#searchbox {
+  width: 90%;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.ais-SearchBox-input::placeholder {
+  color: #eee;
+}
+
+.ais-SearchBox-input {
+  width: 106%;
+  font-family: "DM Sans";
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  outline: none;
+  background-color: transparent;
+}
+
+.ais-SearchBox-input:hover {
+  box-shadow: 0 0 8px #e3e5ec;
+  transition: .3s ease;
+}
+
+.ais-SearchBox {
+  width: 100%;
+}
+
+
+.ais-SearchBox-submit svg path { 
+  fill: #e3e5ec;
+}
+
+.ais-SearchBox-reset {
+  display: none;
+}
+
+/* Cruz de la barra del buscador */
+.ais-SearchBox-resetIcon { 
+  cursor: pointer;
+  fill: #e3e5ec;
+}
 
 /* Responsive design */
 @media (max-width: 768px) {
 
   .main-content {
     margin-left: 0;
-  }
-
-  .header {
-    height: 15vh;
   }
 
   .header-right {
@@ -116,116 +205,4 @@ h2 {
 
 @media (max-width: 480px) {
 
-}
-
-
-/* Barra de busqueda /
-
-  
-  / Color de texto mientras escribimos /
-  .ais-SearchBox-input:focus{ 
-  color:#e3e5ec; 
-}
-
-/ Cuadrado de la lupa en la barra del buscador /
-.ais-SearchBox-submit { 
-  width: 40px;
-  height: 36px;
-  border: 3px solid #f03774;
-  background: #111;
-  text-align: center;
-  color: #fff !important;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-  right: 0;
-  position: relative;
-  box-sizing: border-box;
-  top: 50%;
-  left: 0;
-  padding: 0;
-  user-select: none;
-  transform: translateY(-50%);
-  cursor: pointer;
-  }
-*/
-
-#searchbox {
-  width: 90%;
-  display: flex;
-  margin: 0 auto;
-  margin-top: 16px;
-  padding: 12px;
-}
-
-.ais-SearchBox-input {
-  width: 100%;
-  font-family: "DM Sans";
-  font-size: 16px;
-  padding-left: 8px;
-  border-radius: 8px;
-  outline: none;
-}
-
-.ais-SearchBox-input:hover {
-  box-shadow: 0 0 8px #e3e5ec;
-  transition: .3s ease;
-}
-
-.ais-SearchBox {
-  width: 100%;
-  display: flex;
-}
-
-.ais-SearchBox-form {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.ais-SearchBox-submitIcon { 
-  width: 24px;
-  height: 24px;
-}
-
-.ais-SearchBox-submit svg path { 
-  fill: #e3e5ec;
-}
-
-.ais-SearchBox-reset {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: absolute;
-  z-index: 1;
-  width: 20px;
-  height: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0;
-  overflow: visible;
-  font: inherit;
-  line-height: normal;
-  color: inherit;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  right: 50px;
-  display: none;
-}
-/* Cruz de la barra del buscador */
-.ais-SearchBox-resetIcon { 
-  position: absolute;
-  left: -20px;
-  width: 12px;
-  height: 12px;
-  top: 50%;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-  cursor: pointer;
-  fill: #e3e5ec;
 }

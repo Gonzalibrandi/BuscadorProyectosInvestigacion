@@ -1,0 +1,114 @@
+/* Establecer el fondo general */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Contenedor principal */
+.box-grande {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.titulo {
+  color: #05294d; /* Azul oscuro */
+  font-size: 32px;
+}
+
+h2 {
+  color: #7aadff; /* Azul medio */
+  font-size: 16px;
+  font-weight: 400;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+h3 {
+  color: #637092; /* Azul oscuro */
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+/* Texto adicional */
+span {
+  color: #4b6cb7; /* Azul intermedio */
+  font-size: 14px;
+  display: block;
+  margin-top: 10px;
+}
+
+/* Estilos de los mensajes de error */
+.error-message {
+  color: #ef4444; /* Rojo claro */
+  margin-bottom: 15px;
+}
+
+/* Estilo de los campos de entrada */
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #e2e8f0; /* Bordes suaves */
+  border-radius: 5px;
+  background-color: #f1f5f9; /* Fondo gris claro */
+  font-family: "DM Sans";
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #3b82f6; /* Azul brillante al enfocar */
+  outline: none;
+}
+
+/* Estilo del botón de envío */
+.boton-enviar {
+  font-family: "DM Sans";
+  width: 90%;
+  padding: 12px;
+  margin-top: 12px;
+  background-color: #3b82f6; /* Azul brillante */
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.boton-enviar:hover {
+  background-color: #2563eb; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Enlaces */
+a {
+  color: #3b82f6; /* Azul brillante */
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #022b81; /* Azul más oscuro al pasar el mouse */
+  text-decoration: underline;
+}
+
+p {
+  margin-top: 16px;
+  margin-bottom: 0;
+  color: black;
+}
+
+img {
+  height: 12px;
+  padding-right: 4px;
+}
