@@ -89,6 +89,8 @@ h2 {
   padding: 12px 16px;
   margin: 16px 0px;
   background-color: #fff;
+  width: 60vw;
+  max-width: 800px;
 }
 
 /*NOMBRE DE LOS RESULTADOS*/
@@ -115,35 +117,12 @@ h2 {
 }
 
 .ais-SearchBox-submit {
-  /* height: 40px;
-  width: 40px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  padding: 0;
-  background-color: transparent; */
   display: none;
 }
 
-/* 
-.ais-SearchBox-submit:hover {
-  background-color: transparent;
-}
-
-.ais-SearchBox-submitIcon { 
-  width: 24px;
-  height: 24px;
-}
-
-.ais-SearchBox-submitIcon:hover { 
-  width: 34px;
-  height: 34px;
-  transition: .2s ease;
-}
- */
- 
 #searchbox {
-  width: 90%;
+  width: 95%;
+  min-width: 500px;
   display: flex;
   margin: 0 auto;
   margin-top: 16px;
@@ -200,9 +179,9 @@ h2 {
   }
 
   h1 {font-size: 24px;}
-  
-}
 
-@media (max-width: 480px) {
+  #searchbox {
+    min-width: 200px;
+  }
 
 }

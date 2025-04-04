@@ -2,7 +2,7 @@ extends layout
 
 block content
   .header
-    h1 Buscador de Proyectos
+    h1 Buscador Web
     .header-right
       if user
         .welcome-message Bienvenido/a, #{user.username}
@@ -28,7 +28,7 @@ block content
             ul
               li Abierto
                 input(type="checkbox" class="filterCheckbox" value="Abierto" data-filter="estatus")
-              li Ongoing
+              li En curso
                 input(type="checkbox" class="filterCheckbox" value="Ongoing" data-filter="estatus")
               li >4 meses
                 input(type="checkbox" class="filterCheckbox" value=">4 meses" data-filter="estatus")
