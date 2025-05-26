@@ -34,31 +34,22 @@
    b. Dentro del archivo `.env`, reemplazar con las credenciales obtenidas en el paso 3.
 
 6. Desde Google Cloud, crear una cuenta de servicio dentro del proyecto.
- - Ir a:
+ - Ir a: https://console.cloud.google.com/iam-admin/serviceaccounts
 
 👉 Google Cloud Console – Cuentas de servicio
 
-Seleccioná tu proyecto actual.
-- Crear cuenta de servicio
+   - Seleccioná tu proyecto actual.
+   - Hacé clic en "Crear cuenta de servicio".
+      - Nombre: "sheets-importer".
+      - Rol: Editor.
+      - Click en “Continuar” y “Finalizar”.
 
-    - Hacé clic en "Crear cuenta de servicio".
+   - Descargar credenciales
+      - Una vez creada, hacé clic en los 3 puntitos ⋮ → “Administrar claves”.
+      - Clic en “Agregar clave” → “Crear nueva clave” → Tipo JSON.
+      - Descargá el archivo y guardalo como: "google-sheet-credentials.json" en tu proyecto, dentro de my-project.
 
-    - Nombre: sheets-importer o como prefieras.
-
-    - Rol: Editor (o podés elegir uno más limitado como Sheets API User + Viewer).
-
-    - Click en “Continuar” y “Finalizar”.
-
-- Descargar credenciales
-
-    Una vez creada, hacé clic en los 3 puntitos ⋮ → “Administrar claves”.
-
-    Clic en “Agregar clave” → “Crear nueva clave” → Tipo JSON.
-
-    Descargá el archivo y guardalo como:
-    google-credentials.json en tu proyecto.
-
-7. Cargar la hoja de calculo en google drive, y compartir al mail de la cuenta de servicios (se obtiene desde google-sheet-credentials.json)
+7. Cargar la hoja de calculo en google drive, y compartir al mail de la cuenta de servicios (se obtiene desde google-sheet-credentials.json -> client-email) como Editor.
 
 8. Dentro de la carpeta `BuscadorProyectosInvestigacion`, construir los contenedores con el comando:
    ```bash
@@ -66,4 +57,8 @@ Seleccioná tu proyecto actual.
    ```
    (Necesario tener abierto Docker Desktop).
 
-9. Abrir el navegador en la dirección `localhost:3000`.
+9. 
+   - Habilitar la API de Google Sheets en Google Console Cloud.
+   - Ejecutar: bun run scripts/cargarDesdeSheets.ts 1-mjj0_b9QPgv4u0ijEaSTHRv57-qZcRdNxt9aV9e9IE A1:BH2762 --reset
+
+10. Abrir el navegador en la dirección `localhost:3000`.
