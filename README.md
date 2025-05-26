@@ -33,15 +33,37 @@
 
    b. Dentro del archivo `.env`, reemplazar con las credenciales obtenidas en el paso 3.
 
-6. Dentro de la carpeta `BuscadorProyectosInvestigacion`, construir los contenedores con el comando:
+6. Desde Google Cloud, crear una cuenta de servicio dentro del proyecto.
+ - Ir a:
+
+👉 Google Cloud Console – Cuentas de servicio
+
+Seleccioná tu proyecto actual.
+- Crear cuenta de servicio
+
+    - Hacé clic en "Crear cuenta de servicio".
+
+    - Nombre: sheets-importer o como prefieras.
+
+    - Rol: Editor (o podés elegir uno más limitado como Sheets API User + Viewer).
+
+    - Click en “Continuar” y “Finalizar”.
+
+- Descargar credenciales
+
+    Una vez creada, hacé clic en los 3 puntitos ⋮ → “Administrar claves”.
+
+    Clic en “Agregar clave” → “Crear nueva clave” → Tipo JSON.
+
+    Descargá el archivo y guardalo como:
+    google-credentials.json en tu proyecto.
+
+7. Cargar la hoja de calculo en google drive, y compartir al mail de la cuenta de servicios (se obtiene desde google-sheet-credentials.json)
+
+8. Dentro de la carpeta `BuscadorProyectosInvestigacion`, construir los contenedores con el comando:
    ```bash
    docker compose up
    ```
    (Necesario tener abierto Docker Desktop).
 
-7. Dentro del contenedor `buscador-1`, ejecutar:
-   ```bash
-   bun run config/inicializacion-indice.js
-   ```
-
-8. Abrir el navegador en la dirección `localhost:3000`.
+9. Abrir el navegador en la dirección `localhost:3000`.
