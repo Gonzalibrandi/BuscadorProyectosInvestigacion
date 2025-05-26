@@ -1,0 +1,99 @@
+.header {
+    height: var(--header-height);
+    color: var(--color-text-light);
+    backdrop-filter: var(--blur-effect) brightness(0.3);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-header);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;  
+    gap: 10px;
+}
+
+.header-right-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;  
+    gap: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.welcome-message {
+    font-size: 16px;
+}
+
+.header-right-button {
+    font-family: "DM Sans";
+    background-color: var(--color-background-light);
+    border: none;
+    color: var(--color-primary);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+    font-size: 16px;
+    margin: 5px;
+}
+
+.header-right-button:hover {
+    background-color: var(--color-hover);
+}
+
+/* Responsive design */
+@media (max-width: var(--breakpoint-desktop)) {
+    .header-right {
+        flex-direction: column;
+    }
+
+    .header-right-button {
+        padding: 5px 10px;
+        font-size: 16px;
+        margin: 2px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .welcome-message {
+        font-size: 14px;
+    }
+}
+
+/* Responsive design */
+@media (max-width: var(--breakpoint-mobile)) {
+    .header-right {
+        flex-direction: column;
+    }
+
+    .header-right-button {
+        padding: 5px 10px;
+        font-size: 10px;
+        margin: 2px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    .welcome-message {
+        font-size: 12px;
+    }
+}

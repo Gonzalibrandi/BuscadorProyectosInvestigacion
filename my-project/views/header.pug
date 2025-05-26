@@ -1,0 +1,8 @@
+.header
+  h1 Buscador Web
+  .header-right
+    if user
+      .welcome-message #{user.username}
+      form(action="/logout", method="POST")  
+        button(type="submit" id="cerrar-sesion" title="Cerrar sesión" class="header-right-button")
+          i.fa.fa-sign-out 

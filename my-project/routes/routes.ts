@@ -112,17 +112,12 @@ router.post('/setearFavoritos', isAuthenticated, async (req: Request, res: Respo
 });
 
 // Ruta para la página de agregar proyectos
-router.get('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) => {
-  res.render('agregar_proyecto', { user: req.user });
-});
-
-// Ruta para la página de agregar proyectos
-router.get('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) => {
-  res.render('agregar_proyecto', { user: req.user });
+router.get('/agregar', isAuthenticated, (req: Request, res: Response) => {
+  res.render('agregar', { user: req.user });
 });
 
 // Ruta para manejar el formulario de agregar proyectos
-router.post('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) => {
+router.post('/agregar', isAuthenticated, (req: Request, res: Response) => {
   const filePath = path.join(__dirname, '../data/proyectos.json');
   const { nombre, tipo, estatus, basedOn, ...opcional } = req.body;
 
@@ -164,7 +159,7 @@ router.post('/agregar-proyecto', isAuthenticated, (req: Request, res: Response) 
       //require('../config/inicializacion-indice');
       configurarIndice();
 
-      res.redirect('/agregar-proyecto?success=true');
+      res.redirect('/agregar?success=true');
     });
   });
 });

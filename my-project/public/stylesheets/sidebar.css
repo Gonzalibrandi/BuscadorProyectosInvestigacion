@@ -1,0 +1,133 @@
+.sidebar-container {
+  position: relative;
+}
+
+.sidebar {
+  background-color: var(--color-sidebar);
+  padding: 20px;
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--header-height));
+  position: fixed;
+  left: 0;
+  top: var(--header-height);
+  overflow-y: auto;
+  transition: transform var(--transition-speed) ease;
+  box-shadow: var(--shadow-sidebar);
+  z-index: 100;
+}
+
+.sidebar-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-buttons a {
+  text-decoration: none;
+}
+
+.sidebar-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: var(--color-background-light);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color var(--transition-speed);
+  color: var(--color-primary);
+  font-family: "DM Sans";
+  font-weight: 800;
+}
+
+
+.sidebar-button:hover {
+  background-color: var(--color-hover);
+}
+
+.sidebar-button i {
+  font-size: 1.2em;
+}
+
+#toggle-sidebar {
+  display: none;
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 200;
+  padding: 10px;
+  border: none;
+  background-color: var(--color-background-light);
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sidebar);
+  color: var(--color-primary);
+}
+
+.main-content {
+  margin-left: var(--sidebar-width);
+  padding: 20px;
+  transition: all var(--transition-speed) ease;
+}
+
+/* Estilos para los filtros */
+.filters {
+  margin-top: 20px;
+  color: var(--color-text-light);
+}
+
+details {
+  margin-bottom: 15px;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.filters ul {
+  list-style: none;
+  padding-left: 15px;
+}
+
+.filters li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+/* Responsive design */
+@media (max-width: var(--breakpoint-tablet)) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  #toggle-sidebar {
+    display: block;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-content.shifted {
+    margin-left: 0;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
