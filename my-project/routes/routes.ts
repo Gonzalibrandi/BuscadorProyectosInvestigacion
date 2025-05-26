@@ -6,6 +6,8 @@ import fs from 'fs';
 import path from 'path';
 //import '../config/inicializacion-indice';
 import configurarIndice from '../config/configuracion-indice';
+import configurarIndicePeliculas from '../config/crear-indice';
+import MeiliSearch from 'meilisearch';
 
 const router = Router();
 
@@ -17,14 +19,58 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction): void 
   res.redirect('/login'); // Redirige a la página de inicio de sesión si no está autenticado
 }
 
+// Ruta para crear el índice de películas (DEBE IR ANTES DE LAS RUTAS DE BÚSQUEDA)
+router.post('/admin/crear-indice-peliculas', isAuthenticated, async (req: Request, res: Response) => {
+  try {
+    await configurarIndicePeliculas();
+    res.json({ message: 'Índice creado exitosamente' });
+  } catch (err: any) {
+    console.error('Error al crear índice:', err);
+    res.status(500).json({ error: err?.message || 'Error interno del servidor' });
+  }
+});
+
 // Ruta para la página de inicio de sesión
 router.get('/login', (req: Request, res: Response) => {
   res.render('login');
 });
 
-// Ruta para la página principal, protegida por autenticación
+// Ruta para la página principal (ahora muestra los índices), protegida por autenticación
 router.get('/', isAuthenticated, async (req: Request, res: Response) => {
-  res.render('index', { user: req.user });
+  res.render('indices', { user: req.user });
+});
+
+// Ruta para la página de búsqueda específica de un índice
+router.get('/buscar/:indice', isAuthenticated, async (req: Request, res: Response) => {
+  try {
+    const client = new MeiliSearch({
+      host: 'http://meilisearch:7700',
+      apiKey: 'MASTER_KEY'
+    });
+
+    // Obtener la configuración del índice
+    const settings = await client.index(req.params.indice).getSettings();
+    
+    // Obtener los valores únicos para cada atributo filtrable
+    const filterableValues: { [key: string]: string[] } = {};
+    for (const attr of settings.filterableAttributes || []) {
+      const facetDistribution = await client.index(req.params.indice).search('', {
+        facets: [attr],
+        limit: 0
+      });
+      filterableValues[attr] = Object.keys(facetDistribution.facetDistribution?.[attr] || {});
+    }
+
+    res.render('index', { 
+      user: req.user, 
+      indice: req.params.indice,
+      filterableAttributes: settings.filterableAttributes || [],
+      filterableValues
+    });
+  } catch (error) {
+    console.error('Error al obtener configuración del índice:', error);
+    res.status(500).json({ error: 'Error al cargar la configuración del índice' });
+  }
 });
 
 // Ruta para la página de registro
@@ -163,6 +209,5 @@ router.post('/agregar', isAuthenticated, (req: Request, res: Response) => {
     });
   });
 });
-
 
 export default router;

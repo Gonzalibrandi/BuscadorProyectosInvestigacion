@@ -11,6 +11,9 @@ import dotenv from 'dotenv';
 import './database';
 import './passport/local-auth';
 
+// Importar rutas al inicio
+import indexRoutes from './routes/routes';
+
 dotenv.config();
 
 const app: Application = express();
@@ -43,8 +46,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Rutas
-import indexRoutes from './routes/routes';
+// Rutas principales
 app.use('/', indexRoutes);
 
 // Configuración del transporte de correos
@@ -111,7 +113,6 @@ async function checkSearches(): Promise<void> {
             throw new Error('El correo del usuario no está definido');
           }
           await sendEmail(userEmail, hit);
-        
         }
         await favoriteSearch.deleteOne({ _id });
       }
@@ -121,18 +122,17 @@ async function checkSearches(): Promise<void> {
   }
 }
 
-// Manejo de errores 404
-app.use((req: Request, res: Response) => {
-  res.status(404).send('Página no encontrada');
-});
-
-// Manejo de errores generales
-app.use((err: Error, req: Request, res: Response) => {
-  console.error(err.stack);
-  res.status(500).send('Error interno del servidor');
-});
-
 // Ejecutar la función para verificar búsquedas
 checkSearches().catch((err) => console.error(err));
+
+// Los middlewares de error deben ir AL FINAL de todas las rutas
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({ error: 'Página no encontrada' });
+});
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
 
 export default app;

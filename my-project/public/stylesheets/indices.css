@@ -1,0 +1,128 @@
+.indices-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.indice-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.indice-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.indice-card h2 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 1.5rem;
+}
+
+.indice-card p {
+  margin: 0 0 1rem 0;
+  color: #666;
+}
+
+.indice-link {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.indice-link:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+h1.text-center {
+  margin-bottom: 1rem;
+  color: var(--color-text-light);
+}
+
+p.text-center {
+  color: var(--color-text-light);
+  margin-bottom: 2rem;
+}
+
+.admin-panel {
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-panel button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #28a745;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.admin-panel button:hover {
+  background: #218838;
+}
+
+.log-area {
+  background: #343a40;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: monospace;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+.log-area .log-entry {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-left: 3px solid transparent;
+}
+
+.log-area .log-entry.success {
+  border-color: #28a745;
+  color: #98c379;
+}
+
+.log-area .log-entry.error {
+  border-color: #dc3545;
+  color: #e06c75;
+}
+
+.log-area .log-entry.info {
+  border-color: #17a2b8;
+  color: #61afef;
+} 

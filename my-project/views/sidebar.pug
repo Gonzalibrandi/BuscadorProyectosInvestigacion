@@ -15,54 +15,11 @@
         button(type="button" class="sidebar-button")
           i.fa.fa-plus
           span Agregar Documento
-    if showFilters
+    if showFilters && filterableAttributes && filterableAttributes.length > 0
       h2 Filtros de Búsqueda
       .filters
-        .filters_estatus
-          details
-            summary Estado
-            ul
-              li Abierto
-                input(type="checkbox" class="filterCheckbox" value="Abierto" data-filter="estatus")
-              li En curso
-                input(type="checkbox" class="filterCheckbox" value="Ongoing" data-filter="estatus")
-              li >4 meses
-                input(type="checkbox" class="filterCheckbox" value=">4 meses" data-filter="estatus")
-              li Vencido
-                input(type="checkbox" class="filterCheckbox" value="Vencido" data-filter="estatus")
-        .filters_based-on
-          details
-            summary Ubicación
-            ul
-              li USA
-                input(type="checkbox" class="filterCheckbox" value="USA" data-filter="basedOn")
-              li Argentina
-                input(type="checkbox" class="filterCheckbox" value="Argentina" data-filter="basedOn")
-              li Bélgica
-                input(type="checkbox" class="filterCheckbox" value="Belgium" data-filter="basedOn")
-              li Canadá
-                input(type="checkbox" class="filterCheckbox" value="Canada" data-filter="basedOn")
-        .filters_area 
-          details
-            summary Área
-            ul
-              li Bioquímica
-                input(type="checkbox" class="filterCheckbox" value="Biochemistry Genetics and Molecular Biology" data-filter="granArea1")
-              li Agricultura
-                input(type="checkbox" class="filterCheckbox" value="Agricultural and Biological Sciences" data-filter="granArea1")
-              li Medicina
-                input(type="checkbox" class="filterCheckbox" value="Medicine and Health Sciences" data-filter="granArea1")
-              li Ingeniería
-                input(type="checkbox" class="filterCheckbox" value="Engineering" data-filter="granArea1")
-        .filters_tipo
-          details
-            summary Tipo
-            ul
-              li Premios
-                input(type="checkbox" class="filterCheckbox" value="Prizes and Awards" data-filter="tipo")
-              li Becas
-                input(type="checkbox" class="filterCheckbox" value="Fellowships scholarships or trainings" data-filter="tipo")
-              li Investigación
-                input(type="checkbox" class="filterCheckbox" value="Research and publications" data-filter="tipo")
-              li Conferencias
-                input(type="checkbox" class="filterCheckbox" value="Travel and Conferences" data-filter="tipo") 
+        each attribute in filterableAttributes
+          div(class=`filters_${attribute}`)
+            details
+              summary= attribute.charAt(0).toUpperCase() + attribute.slice(1).replace(/([A-Z])/g, ' $1')
+              ul 

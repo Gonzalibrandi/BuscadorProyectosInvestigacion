@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  - var showFilters = false
+  - var isIndicesView = true
+  include header
+  .main-content
+    .wrapper-box
+      .wrapper
+        h1.text-center Índices Disponibles
+        p.text-center Selecciona un índice para comenzar la búsqueda
+        
+        .admin-panel
+          button#crear-peliculas.btn.btn-primary Crear Índice de Películas
+          #log-container.log-area
+        
+        #indices-container.indices-container
+
+block scripts
+  script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
+  script(src='/js/sidebar.js')
+  script(src='/js/indices.js') 

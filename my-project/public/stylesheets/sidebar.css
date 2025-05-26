@@ -11,9 +11,32 @@
   left: 0;
   top: var(--header-height);
   overflow-y: auto;
+  overflow-x: hidden;
   transition: transform var(--transition-speed) ease;
   box-shadow: var(--shadow-sidebar);
   z-index: 100;
+  scrollbar-gutter: stable;
+}
+
+/* Personalizar scrollbar del sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .sidebar-buttons {
@@ -42,7 +65,6 @@
   font-family: "DM Sans";
   font-weight: 800;
 }
-
 
 .sidebar-button:hover {
   background-color: var(--color-hover);
@@ -81,24 +103,174 @@
 
 details {
   margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.3s ease;
 }
 
-summary {
+details[open] {
+  padding-bottom: 15px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+details > summary {
   font-weight: bold;
   cursor: pointer;
-  padding: 8px 0;
+  padding: 8px;
+  user-select: none;
+  position: relative;
+  list-style: none;
+  transition: all 0.3s ease;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details > summary::after {
+  content: '›';
+  position: absolute;
+  right: 10px;
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
+  font-size: 1.2em;
+}
+
+details[open] > summary::after {
+  transform: rotate(-90deg);
+}
+
+details > summary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
 
 .filters ul {
   list-style: none;
-  padding-left: 15px;
+  padding: 10px;
+  margin: 0;
+  overflow: hidden;
 }
 
-.filters li {
+details[open] ul {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para los refinement lists */
+.refinement-list {
+  margin-top: 10px;
+}
+
+.ais-RefinementList-item {
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.ais-RefinementList-item:nth-child(1) { animation-delay: 0.1s; }
+.ais-RefinementList-item:nth-child(2) { animation-delay: 0.15s; }
+.ais-RefinementList-item:nth-child(3) { animation-delay: 0.2s; }
+.ais-RefinementList-item:nth-child(4) { animation-delay: 0.25s; }
+.ais-RefinementList-item:nth-child(5) { animation-delay: 0.3s; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ais-RefinementList-label {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 5px 0;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.ais-RefinementList-label:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.ais-RefinementList-checkbox {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ais-RefinementList-checkbox:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  animation: checkmark 0.2s ease-out;
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ais-RefinementList-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  color: var(--color-background);
+  font-size: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ais-RefinementList-count {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  min-width: 24px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.ais-RefinementList-label:hover .ais-RefinementList-count {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ais-RefinementList-text {
+  margin-right: 8px;
+  flex: 1;
+  transition: color 0.2s ease;
 }
 
 /* Responsive design */

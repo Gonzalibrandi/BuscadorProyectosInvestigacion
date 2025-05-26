@@ -1,0 +1,193 @@
+body {
+  overflow-y: visible;
+}
+
+.documento {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hit-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hit-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.hit-label {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hit-value {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.hit-value mark {
+  background: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+  padding: 0.2rem 0.1rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.error {
+  color: #ff6b6b;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+/* Estilos para los filtros */
+.ais-RefinementList {
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.ais-RefinementList-list {
+  list-style: none;
+  padding: 0;
+}
+
+.ais-RefinementList-item {
+  margin-bottom: 0.8rem;
+}
+
+.ais-RefinementList-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s;
+}
+
+.ais-RefinementList-label:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.ais-RefinementList-checkbox {
+  margin-right: 0.8rem;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ais-RefinementList-checkbox:checked {
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+.ais-RefinementList-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  color: #000;
+  font-size: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ais-RefinementList-count {
+  margin-left: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Estilos para el searchbox */
+.ais-SearchBox {
+  margin-bottom: 2rem;
+}
+
+.ais-SearchBox-input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.ais-SearchBox-input:focus {
+  outline: none;
+  border-color: rgba(255, 193, 7, 0.5);
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
+}
+
+.ais-SearchBox-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Estilos para los hits */
+.ais-Hits {
+  margin-top: 2rem;
+}
+
+.ais-Hits-list {
+  display: grid;
+  gap: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Forzar scrollbar siempre visible */
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+/* Personalizar scrollbar para tema oscuro */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+} 
