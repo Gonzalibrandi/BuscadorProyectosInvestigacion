@@ -152,12 +152,12 @@ if (document.getElementById('searchbox')) {
           container: `#${containerId}`,
           attribute: attribute,
           operator: 'or',
-          sortBy: ['count:desc', 'name:asc'],
-          limit: 10,
-          showMore: true,
+          sortBy: ['name:asc'],
+          limit: 25,
+          showMore: false,
           showMoreLimit: 20,
           searchable: true,
-          searchablePlaceholder: 'Buscar en ' + attribute,
+          searchablePlaceholder: 'Buscar...',
           templates: {
             item: `
               <label class="ais-RefinementList-label">

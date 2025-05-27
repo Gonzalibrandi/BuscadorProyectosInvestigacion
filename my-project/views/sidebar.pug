@@ -16,10 +16,12 @@
           i.fa.fa-plus
           span Agregar Documento
     if showFilters && filterableAttributes && filterableAttributes.length > 0
-      h2 Filtros de Búsqueda
       .filters
+        h2 Filtros de Búsqueda
         each attribute in filterableAttributes
           div(class=`filters_${attribute}`)
             details
-              summary= attribute.charAt(0).toUpperCase() + attribute.slice(1).replace(/([A-Z])/g, ' $1')
-              ul 
+              summary
+                span= attribute.charAt(0).toUpperCase() + attribute.slice(1).replace(/([A-Z])/g, ' $1')
+              .filter-content
+                ul.filter-list 

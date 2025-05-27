@@ -10,14 +10,7 @@
 }
 
 /*BLOQUE DE CADA RESULTADO*/
-.proyecto {
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin: 16px 0px;
-  background-color: #fff;
-  width: 60vw;
-  max-width: 800px;
-}
+
 
 /*NOMBRE DE LOS RESULTADOS*/
 .hit-name {

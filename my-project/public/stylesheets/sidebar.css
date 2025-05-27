@@ -3,8 +3,8 @@
 }
 
 .sidebar {
-  background-color: var(--color-sidebar);
-  padding: 20px;
+  background-color: var(--color-surface);
+  padding: 15px;
   width: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
   position: fixed;
@@ -12,7 +12,7 @@
   top: var(--header-height);
   overflow-y: auto;
   overflow-x: hidden;
-  transition: transform var(--transition-speed) ease;
+  transition: all var(--transition-speed) ease;
   box-shadow: var(--shadow-sidebar);
   z-index: 100;
   scrollbar-gutter: stable;
@@ -40,10 +40,10 @@
 }
 
 .sidebar-buttons {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .sidebar-buttons a {
@@ -52,26 +52,30 @@
 
 .sidebar-button {
   width: 100%;
-  padding: 10px;
+  padding: 12px 15px;
   border: none;
   background-color: var(--color-background-light);
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
-  transition: background-color var(--transition-speed);
+  gap: 12px;
+  transition: all 0.2s ease;
   color: var(--color-primary);
   font-family: "DM Sans";
-  font-weight: 800;
+  font-weight: 600;
+  font-size: 0.95em;
 }
 
 .sidebar-button:hover {
   background-color: var(--color-hover);
+  transform: translateX(3px);
 }
 
 .sidebar-button i {
-  font-size: 1.2em;
+  font-size: 1.1em;
+  width: 20px;
+  text-align: center;
 }
 
 #toggle-sidebar {
@@ -97,75 +101,94 @@
 
 /* Estilos para los filtros */
 .filters {
-  margin-top: 20px;
+  margin-top: 15px;
   color: var(--color-text-light);
 }
 
 details {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   transition: all 0.3s ease;
 }
 
 details[open] {
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   background: rgba(255, 255, 255, 0.08);
 }
 
 details > summary {
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
   user-select: none;
   position: relative;
   list-style: none;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-details > summary::-webkit-details-marker {
-  display: none;
+details > summary::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 details > summary::after {
   content: '›';
-  position: absolute;
-  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: rotate(90deg);
   transition: transform 0.3s ease;
   font-size: 1.2em;
+  color: var(--color-primary);
 }
 
 details[open] > summary::after {
   transform: rotate(-90deg);
 }
 
-details > summary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
 .filters ul {
   list-style: none;
-  padding: 10px;
+  padding: 5px 0px;
   margin: 0;
   overflow: hidden;
 }
 
-details[open] ul {
-  animation: slideDown 0.3s ease-out;
+.ais-RefinementList-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: 0.9em;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.ais-RefinementList-checkbox {
+  margin-right: 6px;
+  width: 14px;
+  height: 14px;
+}
+
+.ais-RefinementList-count {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  min-width: 20px;
+  text-align: center;
 }
 
 /* Estilos para los refinement lists */
@@ -195,76 +218,6 @@ details[open] ul {
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-.ais-RefinementList-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 6px 8px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.ais-RefinementList-label:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(5px);
-}
-
-.ais-RefinementList-checkbox {
-  margin-right: 8px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-  appearance: none;
-  -webkit-appearance: none;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.ais-RefinementList-checkbox:checked {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  animation: checkmark 0.2s ease-out;
-}
-
-@keyframes checkmark {
-  0% {
-    transform: scale(0.8);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.ais-RefinementList-checkbox:checked::after {
-  content: '✓';
-  position: absolute;
-  color: var(--color-background);
-  font-size: 12px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.ais-RefinementList-count {
-  margin-left: auto;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.8em;
-  min-width: 24px;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-
-.ais-RefinementList-label:hover .ais-RefinementList-count {
-  background: rgba(255, 255, 255, 0.15);
 }
 
 .ais-RefinementList-text {
