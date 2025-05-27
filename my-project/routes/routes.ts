@@ -1,4 +1,4 @@
-import { Router, type Request, type Response, type NextFunction } from 'express';
+import { Router, type Request, type Response, type NextFunction, type RequestHandler } from 'express';
 import passport from 'passport';
 import '../passport/local-auth';
 import favoriteSearch from '../models/favoriteSearch';
@@ -8,6 +8,8 @@ import path from 'path';
 import configurarIndice from '../config/configuracion-indice';
 import configurarIndicePeliculas from '../config/crear-indice';
 import MeiliSearch from 'meilisearch';
+import { google } from 'googleapis';
+import client from '../meilisearch';
 
 const router = Router();
 
@@ -37,7 +39,10 @@ router.get('/login', (req: Request, res: Response) => {
 
 // Ruta para la página principal (ahora muestra los índices), protegida por autenticación
 router.get('/', isAuthenticated, async (req: Request, res: Response) => {
-  res.render('indices', { user: req.user });
+  res.render('indices', { 
+    title: 'Índices Disponibles',
+    user: req.user 
+  });
 });
 
 // Ruta para la página de búsqueda específica de un índice
@@ -209,5 +214,232 @@ router.post('/agregar', isAuthenticated, (req: Request, res: Response) => {
     });
   });
 });
+
+// Ruta para obtener todos los índices
+router.get('/admin/indices', isAuthenticated, async (req: Request, res: Response) => {
+  try {
+    const indices = await client.getIndexes();
+    // Asegurarnos de que devolvemos un array
+    const indicesArray = Array.isArray(indices) ? indices : (indices.results || []);
+    res.json(indicesArray);
+  } catch (error: any) {
+    console.error('Error al obtener índices:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Ruta para obtener las columnas de un Google Sheet
+router.post('/admin/obtener-columnas', isAuthenticated, (async (req: Request, res: Response) => {
+  const { sheetId, sheetRange } = req.body;
+
+  if (!sheetId) {
+    res.status(400).json({ error: 'ID del sheet es requerido' });
+    return;
+  }
+
+  try {
+    // Configurar autenticación de Google
+    const auth = new google.auth.GoogleAuth({
+      credentials: require('../google-sheet-credentials.json'),
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    // Leer solo la primera fila para obtener los nombres de las columnas
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: sheetId,
+      range: sheetRange || 'A1:Z1',
+    });
+
+    if (!response.data.values || response.data.values.length === 0) {
+      res.status(400).json({ 
+        error: 'No se encontraron columnas en el sheet' 
+      });
+      return;
+    }
+
+    // Devolver los nombres de las columnas (primera fila)
+    const columnas = response.data.values[0].filter(Boolean); // Filtrar valores vacíos
+    res.json({ columnas });
+
+  } catch (error: any) {
+    console.error('Error al obtener columnas:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para crear un nuevo índice desde Google Sheets
+router.post('/admin/crear-indice', isAuthenticated, (async (req: Request, res: Response) => {
+  const { nombre, sheetId, sheetRange, columnasFiltrables } = req.body;
+
+  if (!nombre || !sheetId) {
+    res.status(400).json({ error: 'Nombre del índice y ID del sheet son requeridos' });
+    return;
+  }
+
+  if (!columnasFiltrables || columnasFiltrables.length === 0) {
+    res.status(400).json({ error: 'Debe seleccionar al menos una columna filtrable' });
+    return;
+  }
+
+  try {
+    // Configurar autenticación de Google
+    const auth = new google.auth.GoogleAuth({
+      credentials: require('../google-sheet-credentials.json'),
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    // Leer datos del sheet
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: sheetId,
+      range: sheetRange || 'A1:Z1000',
+    });
+
+    if (!response.data.values || response.data.values.length < 2) {
+      return res.status(400).json({ 
+        error: 'El sheet debe contener al menos una fila de encabezados y una fila de datos' 
+      });
+    }
+
+    const [headers, ...rows] = response.data.values;
+
+    // Crear documentos
+    const documentos = rows.map((row, idx) => {
+      const doc: Record<string, any> = {};
+      headers.forEach((header, i) => {
+        doc[header] = row[i] ?? null;
+      });
+      if (!doc["id"]) doc["id"] = `${nombre}-${idx}`;
+      return doc;
+    });
+
+    // Crear o actualizar el índice
+    try {
+      await client.createIndex(nombre, { primaryKey: 'id' });
+    } catch (err: any) {
+      if (!err.message?.includes('already exists')) {
+        throw err;
+      }
+    }
+
+    // Configurar el índice con las columnas filtrables seleccionadas
+    await client.index(nombre).updateSettings({
+      searchableAttributes: headers,
+      displayedAttributes: headers,
+      sortableAttributes: headers.filter(h => 
+        h.toLowerCase().includes('fecha') || 
+        h.toLowerCase().includes('nombre')
+      ),
+      filterableAttributes: columnasFiltrables,
+    });
+
+    // Agregar documentos
+    await client.index(nombre).addDocuments(documentos);
+
+    return res.json({ 
+      message: 'Índice creado exitosamente',
+      stats: {
+        documentos: documentos.length,
+        campos: headers.length,
+        camposFiltrables: columnasFiltrables.length
+      }
+    });
+
+  } catch (error: any) {
+    console.error('Error al crear índice:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para eliminar un índice
+router.delete('/admin/indices/:uid', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    await client.deleteIndex(req.params.uid);
+    res.json({ message: 'Índice eliminado exitosamente' });
+  } catch (error: any) {
+    console.error('Error al eliminar índice:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para renombrar un índice
+router.put('/admin/indices/:uid/rename', isAuthenticated, (async (req: Request, res: Response) => {
+  const { newName } = req.body;
+  const { uid } = req.params;
+
+  if (!newName) {
+    res.status(400).json({ error: 'El nuevo nombre es requerido' });
+    return;
+  }
+
+  try {
+    // MeiliSearch no tiene una operación directa de renombrado,
+    // así que tenemos que crear un nuevo índice y copiar los datos
+    const sourceIndex = await client.getIndex(uid);
+    const documents = await sourceIndex.getDocuments({ limit: 100000 }); // Ajusta el límite según necesites
+    const settings = await sourceIndex.getSettings();
+
+    // Crear nuevo índice con el nuevo nombre
+    await client.createIndex(newName, { primaryKey: 'id' });
+    const newIndex = client.index(newName);
+
+    // Copiar configuración
+    await newIndex.updateSettings(settings);
+
+    // Copiar documentos si existen
+    if (documents.results.length > 0) {
+      await newIndex.addDocuments(documents.results);
+    }
+
+    // Eliminar índice original
+    await client.deleteIndex(uid);
+
+    return res.json({ 
+      message: 'Índice renombrado exitosamente',
+      newUid: newName
+    });
+  } catch (error: any) {
+    console.error('Error al renombrar índice:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para obtener la configuración de un índice
+router.get('/admin/indices/:uid/config', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const index = client.index(req.params.uid);
+    const settings = await index.getSettings();
+    
+    res.json({
+      searchableAttributes: settings.searchableAttributes || [],
+      filterableAttributes: settings.filterableAttributes || [],
+      sortableAttributes: settings.sortableAttributes || [],
+      displayedAttributes: settings.displayedAttributes || []
+    });
+  } catch (error: any) {
+    console.error('Error al obtener configuración del índice:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para obtener estadísticas de un índice
+router.get('/admin/indices/:uid/stats', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const index = client.index(req.params.uid);
+    const stats = await index.getStats();
+    const settings = await index.getSettings();
+    
+    res.json({
+      numberOfDocuments: stats.numberOfDocuments,
+      fieldCount: settings.displayedAttributes?.length || 0
+    });
+  } catch (error: any) {
+    console.error('Error al obtener estadísticas del índice:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
 
 export default router;

@@ -11,8 +11,8 @@ import dotenv from 'dotenv';
 import './database';
 import './passport/local-auth';
 
-// Importar rutas al inicio
-import indexRoutes from './routes/routes';
+// Importar rutas
+import routes from './routes/routes';
 
 dotenv.config();
 
@@ -42,12 +42,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   app.locals.loginMessage = req.flash('loginMessage');
   app.locals.signupMessage = req.flash('signupMessage');
   app.locals.user = req.user;
-  console.log(app.locals);
   next();
 });
 
-// Rutas principales
-app.use('/', indexRoutes);
+// Rutas
+app.use('/', routes);
 
 // Configuración del transporte de correos
 const transporter = nodemailer.createTransport({

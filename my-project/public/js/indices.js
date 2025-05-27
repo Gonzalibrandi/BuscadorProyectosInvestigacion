@@ -1,3 +1,54 @@
+// Funciones globales para eliminar y renombrar índices
+async function eliminarIndice(uid) {
+  if (!confirm(`¿Estás seguro de que deseas eliminar el índice "${uid}"?`)) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/admin/indices/${uid}`, {
+      method: 'DELETE'
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || 'Error al eliminar el índice');
+    }
+
+    mostrarLog(`✅ Índice "${uid}" eliminado exitosamente`, 'success');
+    await cargarIndices();
+  } catch (error) {
+    mostrarLog(`❌ Error: ${error.message}`, 'error');
+  }
+}
+
+async function renombrarIndice(uid) {
+  const newName = prompt(`Ingresa el nuevo nombre para el índice "${uid}":`, uid);
+  
+  if (!newName || newName === uid) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/admin/indices/${uid}/rename`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ newName })
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || 'Error al renombrar el índice');
+    }
+
+    mostrarLog(`✅ Índice renombrado exitosamente a "${newName}"`, 'success');
+    await cargarIndices();
+  } catch (error) {
+    mostrarLog(`❌ Error: ${error.message}`, 'error');
+  }
+}
+
 function addLogEntry(message, type = 'info') {
   const logContainer = document.getElementById('log-container');
   const entry = document.createElement('div');
@@ -5,6 +56,94 @@ function addLogEntry(message, type = 'info') {
   entry.textContent = message;
   logContainer.appendChild(entry);
   logContainer.scrollTop = logContainer.scrollHeight;
+}
+
+// Función global para mostrar logs
+function mostrarLog(mensaje, tipo = 'info') {
+  const logContainer = document.getElementById('log-container');
+  const logItem = document.createElement('div');
+  logItem.className = `log-item log-${tipo}`;
+  logItem.textContent = mensaje;
+  logContainer.appendChild(logItem);
+  logContainer.classList.add('active');
+  logContainer.scrollTop = logContainer.scrollHeight;
+}
+
+// Función global para cargar índices
+async function cargarIndices() {
+  const indicesContainer = document.getElementById('indices-container');
+  
+  try {
+    const response = await fetch('/admin/indices');
+    if (!response.ok) {
+      throw new Error('Error al obtener los índices');
+    }
+    
+    const indices = await response.json();
+    
+    if (!Array.isArray(indices)) {
+      throw new Error('La respuesta del servidor no es un array válido');
+    }
+    
+    if (indices.length === 0) {
+      indicesContainer.innerHTML = '<p class="text-center">No hay índices disponibles.</p>';
+      return;
+    }
+
+    // Obtener estadísticas detalladas para cada índice
+    const indicesConStats = await Promise.all(indices.map(async (indice) => {
+      try {
+        // Obtener estadísticas del índice
+        const statsResponse = await fetch(`/admin/indices/${indice.uid}/stats`);
+        if (!statsResponse.ok) {
+          throw new Error('Error al obtener estadísticas');
+        }
+        const stats = await statsResponse.json();
+        
+        return {
+          ...indice,
+          numberOfDocuments: stats.numberOfDocuments,
+          fieldCount: stats.fieldCount
+        };
+      } catch (error) {
+        console.error(`Error al obtener estadísticas para ${indice.uid}:`, error);
+        return {
+          ...indice,
+          numberOfDocuments: 0,
+          fieldCount: 0
+        };
+      }
+    }));
+
+    indicesContainer.innerHTML = indicesConStats.map(indice => `
+      <div class="indice-card">
+        <h3>${indice.uid}</h3>
+        <div class="indice-stats">
+          <span>${indice.numberOfDocuments} documentos</span>
+          <span>${indice.fieldCount} campos</span>
+        </div>
+        <div class="indice-actions">
+          <button class="btn btn-secondary btn-small" onclick="window.location.href='/buscar/${indice.uid}'">
+            Buscar
+          </button>
+          <button class="btn btn-warning btn-small" onclick="renombrarIndice('${indice.uid}')">
+            Renombrar
+          </button>
+          <button class="btn btn-danger btn-small" onclick="eliminarIndice('${indice.uid}')">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+  } catch (error) {
+    console.error('Error al cargar índices:', error);
+    indicesContainer.innerHTML = `
+      <p class="error">
+        Error al cargar los índices: ${error.message}
+      </p>
+    `;
+  }
 }
 
 async function crearIndicePeliculas() {
@@ -45,72 +184,186 @@ async function crearIndicePeliculas() {
   }
 }
 
-async function cargarIndices() {
-  console.log('Iniciando carga de índices...');
-  
-  // Verificar si estamos en la vista correcta
-  const isIndicesView = document.querySelector('.wrapper-box') !== null;
-  console.log('¿Estamos en la vista de índices?', isIndicesView);
-  
-  try {
-    console.log('Intentando conectar con MeiliSearch...');
-    const response = await fetch('http://localhost:7700/indexes');
-    const data = await response.json();
-    console.log('Índices obtenidos:', data);
-    
-    const contenedor = document.getElementById('indices-container');
-    if (!contenedor) {
-      console.error('No se encontró el contenedor de índices');
-      return;
-    }
-
-    // Limpiar el contenedor
-    contenedor.innerHTML = '';
-
-    if (!data.results || data.results.length === 0) {
-      contenedor.innerHTML = '<p class="error">No se encontraron índices disponibles.</p>';
-      return;
-    }
-
-    data.results.forEach(indice => {
-      console.log('Procesando índice:', indice);
-      const card = document.createElement('div');
-      card.className = 'indice-card';
-      
-      const nombre = document.createElement('h2');
-      nombre.textContent = indice.uid;
-      
-      const info = document.createElement('p');
-      info.textContent = `Última actualización: ${new Date(indice.updatedAt).toLocaleDateString('es-AR')}`;
-      
-      const link = document.createElement('a');
-      link.href = `/buscar/${indice.uid}`;
-      link.className = 'indice-link';
-      link.textContent = 'Acceder';
-      
-      card.appendChild(nombre);
-      card.appendChild(info);
-      card.appendChild(link);
-      contenedor.appendChild(card);
-    });
-  } catch (error) {
-    console.error('Error al cargar los índices:', error);
-    const contenedor = document.getElementById('indices-container');
-    if (contenedor) {
-      contenedor.innerHTML = '<p class="error">Error al cargar los índices. Por favor, verifica que MeiliSearch esté funcionando en el puerto 7700.</p>';
-    }
-  }
-}
-
-// Asegurarnos de que el DOM está cargado
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM cargado, iniciando aplicación...');
-  console.log('URL actual:', window.location.pathname);
-  cargarIndices();
-  
-  // Agregar el event listener para el botón de crear índice
-  const btnCrearPeliculas = document.getElementById('crear-peliculas');
-  if (btnCrearPeliculas) {
-    btnCrearPeliculas.addEventListener('click', crearIndicePeliculas);
+  const modal = document.getElementById('modal-crear-indice');
+  const btnCrearIndice = document.getElementById('crear-indice');
+  const btnsCerrarModal = document.querySelectorAll('.close-modal');
+  const formCrearIndice = document.getElementById('form-crear-indice');
+  const logContainer = document.getElementById('log-container');
+  const indicesContainer = document.getElementById('indices-container');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const nextStepBtn = document.getElementById('next-step');
+  const prevStepBtn = document.getElementById('prev-step');
+  const sheetInput = document.getElementById('sheet-input');
+  const columnasContainer = document.getElementById('columnas-container');
+  let columnasDisponibles = [];
+
+  // Funciones auxiliares
+  const mostrarLog = (mensaje, tipo = 'info') => {
+    const logItem = document.createElement('div');
+    logItem.className = `log-item log-${tipo}`;
+    logItem.textContent = mensaje;
+    logContainer.appendChild(logItem);
+    logContainer.classList.add('active');
+    logContainer.scrollTop = logContainer.scrollHeight;
+  };
+
+  const extraerSheetId = (input) => {
+    if (input.includes('spreadsheets/d/')) {
+      const match = input.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      return match ? match[1] : null;
+    }
+    return input;
+  };
+
+  // Función para cargar las columnas del sheet
+  async function cargarColumnas() {
+    const sheetId = extraerSheetId(sheetInput.value);
+    const sheetRange = document.getElementById('sheet-range').value || 'A1:Z1';
+
+    try {
+      const response = await fetch('/admin/obtener-columnas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ sheetId, sheetRange })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al obtener las columnas');
+      }
+
+      const data = await response.json();
+      columnasDisponibles = data.columnas;
+      
+      // Renderizar las columnas
+      columnasContainer.innerHTML = columnasDisponibles.map(columna => `
+        <div class="columna-item" data-columna="${columna}">
+          <input type="checkbox" id="col-${columna}" name="columnas[]" value="${columna}">
+          <label for="col-${columna}">${columna}</label>
+        </div>
+      `).join('');
+
+      // Agregar eventos de click a las columnas
+      document.querySelectorAll('.columna-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          const checkbox = item.querySelector('input[type="checkbox"]');
+          if (e.target !== checkbox) {
+            checkbox.checked = !checkbox.checked;
+          }
+          item.classList.toggle('selected', checkbox.checked);
+        });
+      });
+
+    } catch (error) {
+      mostrarLog('Error al cargar las columnas: ' + error.message, 'error');
+      columnasContainer.innerHTML = '<div class="error">Error al cargar las columnas</div>';
+    }
   }
+
+  // Navegación entre pasos
+  nextStepBtn.addEventListener('click', async () => {
+    if (!sheetInput.value) {
+      mostrarLog('Por favor, ingresa la URL o ID del Google Sheet', 'error');
+      return;
+    }
+
+    step1.classList.remove('active');
+    step2.classList.add('active');
+    await cargarColumnas();
+  });
+
+  prevStepBtn.addEventListener('click', () => {
+    step2.classList.remove('active');
+    step1.classList.add('active');
+  });
+
+  // Manejadores de eventos del modal
+  if (btnCrearIndice) {
+    btnCrearIndice.addEventListener('click', () => {
+      modal.classList.add('active');
+      step1.classList.add('active');
+      step2.classList.remove('active');
+    });
+  }
+
+  btnsCerrarModal.forEach(btn => {
+    btn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      formCrearIndice.reset();
+      step1.classList.add('active');
+      step2.classList.remove('active');
+    });
+  });
+
+  // Click fuera del modal para cerrar
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      formCrearIndice.reset();
+      step1.classList.add('active');
+      step2.classList.remove('active');
+    }
+  });
+
+  // Manejo del formulario
+  formCrearIndice.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const nombreIndice = document.getElementById('nombre-indice').value;
+    const sheetId = extraerSheetId(sheetInput.value);
+    const sheetRange = document.getElementById('sheet-range').value || 'A1:Z1000';
+    
+    // Obtener columnas seleccionadas
+    const columnasSeleccionadas = Array.from(
+      document.querySelectorAll('input[name="columnas[]"]:checked')
+    ).map(input => input.value);
+
+    if (!sheetId) {
+      mostrarLog('ID o URL del Google Sheet inválido', 'error');
+      return;
+    }
+
+    if (columnasSeleccionadas.length === 0) {
+      mostrarLog('Selecciona al menos una columna para filtrar', 'error');
+      return;
+    }
+
+    try {
+      mostrarLog('Iniciando creación del índice...', 'info');
+      
+      const response = await fetch('/admin/crear-indice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nombre: nombreIndice,
+          sheetId,
+          sheetRange,
+          columnasFiltrables: columnasSeleccionadas
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        mostrarLog(`✅ Índice "${nombreIndice}" creado exitosamente`, 'success');
+        modal.classList.remove('active');
+        formCrearIndice.reset();
+        step1.classList.add('active');
+        step2.classList.remove('active');
+        await cargarIndices();
+      } else {
+        mostrarLog(`❌ Error: ${data.error}`, 'error');
+      }
+    } catch (error) {
+      mostrarLog(`❌ Error: ${error.message}`, 'error');
+    }
+  });
+
+  // Cargar índices al iniciar
+  cargarIndices();
 }); 

@@ -11,10 +11,49 @@ block content
         p.text-center Selecciona un índice para comenzar la búsqueda
         
         .admin-panel
-          button#crear-peliculas.btn.btn-primary Crear Índice de Películas
+          button#crear-indice.btn.btn-primary Crear Nuevo Índice
           #log-container.log-area
         
         #indices-container.indices-container
+
+        // Modal para crear índice
+        #modal-crear-indice.modal
+          .modal-content
+            .modal-header
+              h2 Crear Nuevo Índice
+              button.close-modal &times;
+            .modal-body
+              form#form-crear-indice
+                .step-container.active#step1
+                  h3 Paso 1: Información Básica
+                  .form-group
+                    label(for="nombre-indice") Nombre del Índice
+                    input#nombre-indice(type="text" required placeholder="Ej: Proyectos, Películas, etc.")
+                  
+                  .form-group
+                    label(for="sheet-input") URL o ID de Google Sheet
+                    input#sheet-input(type="text" required placeholder="Pega la URL del Google Sheet o su ID")
+                    small.help-text El sheet debe tener permisos de lectura y una fila de encabezados
+                  
+                  .form-group
+                    label(for="sheet-range") Rango de Celdas (opcional)
+                    input#sheet-range(type="text" placeholder="Ej: A1:Z1000")
+                    small.help-text Si se deja vacío, se usará el rango por defecto
+                  
+                  .form-actions
+                    button.btn.btn-secondary.close-modal(type="button") Cancelar
+                    button.btn.btn-primary#next-step(type="button") Siguiente
+
+                .step-container#step2
+                  h3 Paso 2: Configuración de Filtros
+                  .form-group
+                    label Seleccione las columnas por las que quiere filtrar el índice
+                    #columnas-container.columnas-grid
+                      .loading-columns Cargando columnas...
+                  
+                  .form-actions
+                    button.btn.btn-secondary#prev-step(type="button") Atrás
+                    button.btn.btn-primary(type="submit") Crear Índice
 
 block scripts
   script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')

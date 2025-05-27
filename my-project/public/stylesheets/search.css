@@ -3,60 +3,165 @@ body {
 }
 
 .documento {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.documento:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .hit-item {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
 }
 
 .hit-item:last-child {
-  border-bottom: none;
   margin-bottom: 0;
-  padding-bottom: 0;
 }
 
 .hit-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
 }
 
 .hit-value {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1.1rem;
-  line-height: 1.4;
+  color: var(--color-text-light);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-.hit-value mark {
-  background: rgba(255, 193, 7, 0.3);
-  color: #ffc107;
-  padding: 0.2rem 0.1rem;
+.hit-value.searchable mark {
+  background: var(--color-primary);
+  color: white;
+  padding: 2px 4px;
   border-radius: 4px;
-  font-weight: 500;
 }
 
-.error {
-  color: #ff6b6b;
-  padding: 1rem;
-  background: rgba(255, 107, 107, 0.1);
-  border-radius: 8px;
+.hit-value.filterable {
+  color: var(--color-primary-light);
+}
+
+.stats-container {
+  margin: 20px 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.pagination-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.ais-Pagination-list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+.ais-Pagination-item {
+  margin: 0;
+}
+
+.ais-Pagination-link {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-light);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ais-Pagination-item--selected .ais-Pagination-link {
+  background: var(--color-primary);
+  color: white;
+}
+
+.ais-Pagination-item--disabled .ais-Pagination-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ais-Pagination-link:hover:not(.ais-Pagination-item--disabled) {
+  background: var(--color-primary-dark);
+  color: white;
+}
+
+.no-results {
   text-align: center;
-  border: 1px solid rgba(255, 107, 107, 0.2);
+  padding: 40px 20px;
+  color: var(--color-text-light);
+}
+
+.no-results p {
+  margin: 10px 0;
+}
+
+.no-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.no-results li {
+  margin: 8px 0;
+  color: var(--color-text-muted);
+}
+
+.searchbox {
+  margin-bottom: 20px;
+}
+
+.ais-SearchBox-form {
+  display: flex;
+  gap: 10px;
+}
+
+.ais-SearchBox-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
+
+.ais-SearchBox-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ais-SearchBox-submit,
+.ais-SearchBox-reset {
+  padding: 0 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-light);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ais-SearchBox-submit:hover,
+.ais-SearchBox-reset:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ais-SearchBox-submitIcon,
+.ais-SearchBox-resetIcon {
+  width: 20px;
+  height: 20px;
 }
 
 /* Estilos para los filtros */
@@ -125,32 +230,6 @@ body {
   color: rgba(255, 255, 255, 0.6);
   min-width: 24px;
   text-align: center;
-}
-
-/* Estilos para el searchbox */
-.ais-SearchBox {
-  margin-bottom: 2rem;
-}
-
-.ais-SearchBox-input {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-.ais-SearchBox-input:focus {
-  outline: none;
-  border-color: rgba(255, 193, 7, 0.5);
-  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
-}
-
-.ais-SearchBox-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
 }
 
 /* Estilos para los hits */
