@@ -1,7 +1,7 @@
 .header {
     height: var(--header-height);
     color: var(--color-text-light);
-    background: var(--color-surface);
+    background: var(--color-background);
     backdrop-filter: blur(10px);
     padding: var(--spacing-md) var(--spacing-lg);
     display: flex;
