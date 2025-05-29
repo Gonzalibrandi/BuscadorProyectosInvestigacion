@@ -255,47 +255,9 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 1400px) {
-  .sidebar {
-    position: fixed;
-    left: -300px;
-    top: 0;
-    height: 100vh;
-    width: 300px;
-    background: var(--color-surface);
-    transition: left 0.3s ease;
-    z-index: 1000;
-  }
-
-  .sidebar.open {
-    left: 0;
-  }
-
-  .wrapper {
-    width: 90vw;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
-  /* Botón de menú solo visible en móvil */
-  .menu-button {
-    display: block;
-  }
-}
-
-@media (min-width: 1401px) {
-  .menu-button {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .wrapper {
-    padding: 20px;
-  }
-
+@media (max-width: var(--breakpoint-sm)) {
   .documento {
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
   }
 
   .ais-SearchBox-form {
@@ -305,7 +267,6 @@ body {
   .ais-Pagination-list {
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--spacing-xs);
   }
 }
 
@@ -343,5 +304,4 @@ html {
   margin: 0 auto;
   padding-bottom: 80px; /* Espacio para el paginador */
   padding-top: 20px; /* Espacio después de la barra de búsqueda */
-
 }
