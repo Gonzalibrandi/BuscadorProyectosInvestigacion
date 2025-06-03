@@ -2,11 +2,6 @@ import { Router, type Request, type Response, type NextFunction, type RequestHan
 import passport from 'passport';
 import '../passport/local-auth';
 import favoriteSearch from '../models/favoriteSearch';
-import fs from 'fs';
-import path from 'path';
-//import '../config/inicializacion-indice';
-import configurarIndice from '../config/configuracion-indice';
-import configurarIndicePeliculas from '../config/crear-indice';
 import MeiliSearch from 'meilisearch';
 import { google } from 'googleapis';
 import client from '../meilisearch';
@@ -20,17 +15,6 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction): void 
   }
   res.redirect('/login'); // Redirige a la página de inicio de sesión si no está autenticado
 }
-
-// Ruta para crear el índice de películas (DEBE IR ANTES DE LAS RUTAS DE BÚSQUEDA)
-router.post('/admin/crear-indice-peliculas', isAuthenticated, async (req: Request, res: Response) => {
-  try {
-    await configurarIndicePeliculas();
-    res.json({ message: 'Índice creado exitosamente' });
-  } catch (err: any) {
-    console.error('Error al crear índice:', err);
-    res.status(500).json({ error: err?.message || 'Error interno del servidor' });
-  }
-});
 
 // Ruta para la página de inicio de sesión
 router.get('/login', (req: Request, res: Response) => {
@@ -160,59 +144,6 @@ router.post('/setearFavoritos', isAuthenticated, async (req: Request, res: Respo
     console.error(err);
     res.redirect('/favoritos');
   }
-});
-
-// Ruta para la página de agregar proyectos
-router.get('/agregar', isAuthenticated, (req: Request, res: Response) => {
-  res.render('agregar', { user: req.user });
-});
-
-// Ruta para manejar el formulario de agregar proyectos
-router.post('/agregar', isAuthenticated, (req: Request, res: Response) => {
-  const filePath = path.join(__dirname, '../data/proyectos.json');
-  const { nombre, tipo, estatus, basedOn, ...opcional } = req.body;
-
-  // Validar campos obligatorios
-  if (!nombre || !tipo || !estatus || !basedOn) {
-    res.status(400).send('Faltan campos obligatorios');
-    return;
-  }
-
-  // Leer el archivo JSON
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error al leer los datos de proyectos');
-    }
-
-    let proyectos = JSON.parse(data);
-    const nuevoId = proyectos.length ? proyectos[proyectos.length - 1].id + 1 : 1;
-
-    const nuevoProyecto = {
-      id: nuevoId,
-      timestamp: new Date().toLocaleDateString('es-AR'),
-      nombre,
-      tipo,
-      estatus,
-      basedOn,
-      ...opcional,
-    };
-
-    proyectos.push(nuevoProyecto);
-
-    // Guardar el nuevo proyecto en el archivo
-    fs.writeFile(filePath, JSON.stringify(proyectos, null, 2), (writeErr) => {
-      if (writeErr) {
-        console.error(writeErr);
-        return res.status(500).send('Error al guardar el proyecto');
-      }
-
-      //require('../config/inicializacion-indice');
-      configurarIndice();
-
-      res.redirect('/agregar?success=true');
-    });
-  });
 });
 
 // Ruta para obtener todos los índices

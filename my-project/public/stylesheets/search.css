@@ -58,7 +58,7 @@ body {
   padding: var(--spacing-md);
   background: var(--color-surface);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  text-align: center;
 }
 
 .pagination-container {
