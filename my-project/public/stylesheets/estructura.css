@@ -109,6 +109,11 @@ body::before {
   padding: 0 var(--spacing-md);
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;

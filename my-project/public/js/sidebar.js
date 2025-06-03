@@ -9,19 +9,13 @@ function initializeSidebar() {
   }
 
   // Función para verificar si estamos en modo móvil
-  const isMobileView = () => window.innerWidth <= 768;
+  const isMobileView = () => window.innerWidth <= 768; // Umbral para vista móvil
 
   // Función para actualizar el estado inicial
   const updateInitialState = () => {
-    if (isMobileView()) {
-      sidebar.style.transform = 'translateX(-100%)';
-      mainContent.style.marginLeft = '0';
-      toggleButton.style.display = 'block';
-    } else {
-      sidebar.style.transform = 'translateX(0)';
-      mainContent.style.marginLeft = '300px';
-      toggleButton.style.display = 'none';
-    }
+    // Mantener el sidebar abierto y el botón visible al cargar
+    sidebar.style.transform = 'translateX(0)';
+    toggleButton.style.display = 'block';
   };
 
   // Toggle del sidebar
@@ -39,6 +33,7 @@ function initializeSidebar() {
 
   // Cerrar el sidebar al hacer clic fuera
   document.addEventListener('click', (event) => {
+    // Solo cerrar si estamos en vista móvil Y el clic es fuera del sidebar y el botón
     if (isMobileView() && 
         sidebar.style.transform === 'translateX(0px)' && 
         !sidebar.contains(event.target) && 

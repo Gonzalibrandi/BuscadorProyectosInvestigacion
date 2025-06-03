@@ -442,4 +442,43 @@ router.get('/admin/indices/:uid/stats', isAuthenticated, (async (req: Request, r
   }
 }) as RequestHandler);
 
+// Ruta para agregar un documento a un índice
+router.post('/admin/indices/:uid/documentos', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const { uid } = req.params;
+    const documento = req.body;
+
+    // Validar que el documento tenga al menos un campo
+    if (Object.keys(documento).length === 0) {
+      return res.status(400).json({ error: 'El documento no puede estar vacío' });
+    }
+
+    // Obtener el índice
+    const index = client.index(uid);
+
+    // Agregar el documento al índice y obtener la tarea
+    const task = await index.addDocuments([documento]);
+
+    res.json({ 
+      message: 'Solicitud de documento recibida. Procesando indexación...', // Mensaje más preciso
+      taskUid: task.taskUid // Devolver el UID de la tarea
+    });
+  } catch (error: any) {
+    console.error('Error al agregar documento:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para obtener el estado de una tarea de MeiliSearch
+router.get('/admin/indices/:uid/tasks/:taskUid', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const { taskUid } = req.params;
+    const task = await client.getTask(parseInt(taskUid, 10));
+    res.json(task);
+  } catch (error: any) {
+    console.error('Error al obtener estado de la tarea:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
 export default router;

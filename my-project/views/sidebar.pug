@@ -3,25 +3,23 @@
     i.fa.fa-bars
   .sidebar
     .sidebar-buttons
-      a(href="/" id="volver" title="Volver al buscador")
+      a(href="/" id="volver" title="Volver al inicio")
         button(type="button" class="sidebar-button")
           i.fa.fa-search
-          span Índices
+          span Inicio
       form(action="/favoritos", method="POST")  
         button(type="submit" id="favoritos" title="Proyectos favoritos" class="sidebar-button")
           i.fa.fa-heart
           span Favoritos
-      a(href="/agregar" id="agregar" title="Agregar proyecto")
-        button(type="button" class="sidebar-button")
-          i.fa.fa-plus
-          span Agregar Documento
+      button(type="button" id="agregar" title="Agregar proyecto" class="sidebar-button")
+        i.fa.fa-plus
+        span Agregar Documento
     if showFilters && filterableAttributes && filterableAttributes.length > 0
       .filters
-        h2 Filtros de Búsqueda
+        h2 Filtros
         each attribute in filterableAttributes
           div(class=`filters_${attribute}`)
             details
               summary
                 span= attribute.charAt(0).toUpperCase() + attribute.slice(1).replace(/([A-Z])/g, ' $1')
-              .filter-content
-                ul.filter-list 
+              ul.filter-list 

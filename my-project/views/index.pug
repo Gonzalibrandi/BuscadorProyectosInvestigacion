@@ -12,8 +12,24 @@ block content
         #hits.hits-container
         #pagination.pagination-container
 
+    // Modal para agregar documento
+    #modal-agregar-documento.modal
+      .modal-content
+        .modal-header
+          h2 Agregar Nuevo Documento
+          button.close-modal &times;
+        .modal-body
+          form#form-agregar-documento
+            .step-container.active
+              #campos-container
+                // Los campos se generarán dinámicamente aquí
+            .form-actions
+              button.btn.btn-secondary.close-modal(type="button") Cancelar
+              button.btn.btn-primary(type="submit") Agregar Documento
+
 block scripts
   script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
   script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@4')
   script(src='/js/sidebar.js')
   script(src='/js/search.js')
+  script(src='/js/agregar-documento.js')

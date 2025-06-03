@@ -19,8 +19,8 @@ if (document.getElementById('searchbox')) {
       // Generar el template dinámicamente
       let template = '<div class="documento">';
       
-      // Mostrar todos los atributos disponibles
-      displayedAttrs.forEach(attr => {
+      // Mostrar los primeros 3 atributos
+      displayedAttrs.slice(0, 3).forEach(attr => {
         const isSearchable = searchableAttrs.includes(attr);
         const isFilterable = filterableAttrs.includes(attr);
         
@@ -35,8 +35,36 @@ if (document.getElementById('searchbox')) {
             </div>
           </div>`;
       });
+
+      // Si hay más de 3 atributos, agregar el contenedor para los campos ocultos
+      if (displayedAttrs.length > 3) {
+        template += '<div class="hidden-fields">';
+        displayedAttrs.slice(3).forEach(attr => {
+          const isSearchable = searchableAttrs.includes(attr);
+          const isFilterable = filterableAttrs.includes(attr);
+          
+          template += `
+            <div class="hit-item">
+              <div class="hit-label">${attr.toUpperCase()}</div>
+              <div class="hit-value ${isSearchable ? 'searchable' : ''} ${isFilterable ? 'filterable' : ''}">
+                ${isSearchable ? 
+                  `{{#helpers.highlight}}{ "attribute": "${attr}" }{{/helpers.highlight}}` :
+                  `{{${attr}}}`
+                }
+              </div>
+            </div>`;
+        });
+        template += '</div>';
+        
+        // Agregar el botón de expandir/colapsar
+        template += `
+          <button class="expand-button">
+            <i class="fas fa-chevron-down"></i>
+          </button>`;
+      }
       
       template += '</div>';
+
       return { template, filterableAttrs, searchableAttrs, displayedAttrs };
     } catch (error) {
       console.error('Error al obtener la configuración del índice:', error);
@@ -94,6 +122,30 @@ if (document.getElementById('searchbox')) {
           `
         }
       }),
+
+      // Agregar un widget personalizado para manejar el expandir/colapsar
+      {
+        init: function() {
+          // Agregar el event listener al contenedor de hits
+          document.getElementById('hits').addEventListener('click', function(e) {
+            if (e.target.closest('.expand-button')) {
+              const button = e.target.closest('.expand-button');
+              const hiddenFields = button.previousElementSibling;
+              const isExpanded = button.classList.contains('expanded');
+              
+              if (isExpanded) {
+                hiddenFields.style.display = 'none';
+                button.classList.remove('expanded');
+                button.innerHTML = '<i class="fas fa-chevron-down"></i>';
+              } else {
+                hiddenFields.style.display = 'block';
+                button.classList.add('expanded');
+                button.innerHTML = '<i class="fas fa-chevron-down"></i>';
+              }
+            }
+          });
+        }
+      },
 
       instantsearch.widgets.pagination({
         container: '#pagination',

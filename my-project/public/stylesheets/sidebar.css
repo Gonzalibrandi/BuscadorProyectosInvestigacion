@@ -43,7 +43,7 @@
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sidebar-buttons a {
@@ -53,33 +53,34 @@
 .sidebar-button {
   width: 100%;
   padding: 12px 15px;
-  border: none;
-  background-color: var(--color-background-light);
-  border-radius: 8px;
+  font-weight: 500;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-light);
+  padding: var(--spacing-sm) var(--spacing-sm);
+  border-radius: var(--border-radius-md);
   cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-timing);
   display: flex;
   align-items: center;
-  gap: 12px;
-  transition: all 0.2s ease;
-  color: var(--color-primary);
-  font-family: "DM Sans";
-  font-weight: 600;
-  font-size: 0.95em;
+  gap: var(--spacing-sm);
 }
 
 .sidebar-button:hover {
-  background-color: var(--color-hover);
-  transform: translateX(3px);
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
 }
 
 .sidebar-button i {
-  font-size: 1.1em;
-  width: 20px;
-  text-align: center;
+  color: var(--color-primary);
+  font-size: var(--font-size-xl);
 }
 
 #toggle-sidebar {
-  display: none;
+  /* display: none; */
   position: fixed;
   left: 20px;
   bottom: 20px;
@@ -104,6 +105,13 @@
 .filters {
   margin-top: 15px;
   color: var(--color-text-light);
+}
+
+.filters h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  margin-top: 40px;
 }
 
 details {
@@ -192,6 +200,19 @@ details[open] > summary::after {
   text-align: center;
 }
 
+/* Estilos para la barra de búsqueda dentro de los filtros de refinamiento */
+.ais-RefinementList .ais-SearchBox-form {
+  margin-bottom: var(--spacing-sm);
+}
+
+.ais-RefinementList .ais-SearchBox-input {
+  width: 100%; /* Asegurar que ocupe el ancho disponible */
+  box-sizing: border-box; /* Incluir padding y borde en el ancho */
+  padding: var(--spacing-xs) var(--spacing-sm); /* Reducir padding */
+  font-size: var(--font-size-sm); /* Reducir tamaño de fuente */
+  height: auto; /* Ajustar altura automáticamente */
+}
+
 /* Estilos para los refinement lists */
 .refinement-list {
   margin-top: 10px;
@@ -242,9 +263,9 @@ details[open] > summary::after {
     transform: translateX(0);
   }
 
-  #toggle-sidebar {
-    display: block;
-  }
+  /* #toggle-sidebar { */
+  /*   display: block; */
+  /* } */
 
   .main-content {
     margin-left: 0;
