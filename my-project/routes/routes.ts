@@ -122,27 +122,74 @@ router.post('/favoritos', isAuthenticated, (req: Request, res: Response) => {
   res.redirect('/favoritos');
 });
 
-// Guardado de proyectos favoritos
+// Guardado de búsquedas favoritas
 router.post('/setearFavoritos', isAuthenticated, async (req: Request, res: Response) => {
-  const { searchQuery, Estado, Ubicacion, Area, Tipo } = req.body;
+  const { indice, ...criterios } = req.body;
   const userEmail = req.user?.userEmail;
+
+  // Verificar que haya al menos un criterio
+  if (Object.keys(criterios).length === 0) {
+    return res.status(400).json({ error: 'Debes especificar al menos un criterio de búsqueda' });
+  }
 
   const newSearch = new favoriteSearch({
     userEmail,
-    searchQuery,
+    indice,
     createdAt: new Date(),
-    estado: Estado,
-    ubicacion: Ubicacion,
-    area: Area,
-    tipo: Tipo,
+    criterios
   });
 
   try {
     await newSearch.save();
-    res.redirect('/favoritos');
+    res.json({ message: 'Búsqueda guardada exitosamente' });
   } catch (err) {
-    console.error(err);
-    res.redirect('/favoritos');
+    console.error('Error al guardar búsqueda:', err);
+    res.status(500).json({ error: 'Error al guardar la búsqueda' });
+  }
+});
+
+// Ruta para obtener las búsquedas favoritas del usuario
+router.get('/favoritos/mis-busquedas', isAuthenticated, async (req: Request, res: Response) => {
+  try {
+    const userEmail = req.user?.userEmail;
+    if (!userEmail) {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
+    }
+    const busquedas = await favoriteSearch.find({ userEmail }).select('_id indice criterios createdAt activa userEmail');
+    res.json(busquedas);
+  } catch (error) {
+    console.error('Error al obtener búsquedas favoritas:', error);
+    res.status(500).json({ error: 'Error al obtener búsquedas favoritas' });
+  }
+});
+
+// Ruta para eliminar una búsqueda favorita
+router.delete('/favoritos/:id', isAuthenticated, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userEmail = req.user?.userEmail;
+
+    if (!userEmail) {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
+    }
+
+    // Buscar y eliminar la búsqueda, asegurándose de que pertenece al usuario autenticado
+    const result = await favoriteSearch.deleteOne({ _id: id, userEmail: userEmail });
+
+    if (result.deletedCount === 0) {
+      // Si deletedCount es 0, o no se encontró la búsqueda o no pertenecía al usuario
+      const existingSearch = await favoriteSearch.findById(id);
+      if (existingSearch) {
+         return res.status(403).json({ error: 'No tienes permiso para eliminar esta búsqueda' });
+      } else {
+         return res.status(404).json({ error: 'Búsqueda no encontrada' });
+      }
+    }
+
+    res.json({ message: 'Búsqueda eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error al eliminar búsqueda favorita:', error);
+    res.status(500).json({ error: 'Error al eliminar la búsqueda' });
   }
 });
 

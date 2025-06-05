@@ -11,6 +11,7 @@ html(lang='en')
     .box-grande
       h1.titulo Buscador Web
       h2 Creado por Franco Caraffo y Tomás Redolatti
+      include messages
       if loginMessage
         p.error-message= loginMessage
       form(action='/login', method='POST')
@@ -18,9 +19,9 @@ html(lang='en')
         input(type='text' name='username' placeholder='Nombre de Usuario' required='')
         input(type='password' name='password' placeholder='Contraseña' required='')
         input.boton-enviar(type='submit' value='Iniciar sesión')
+      p ¿Tenés que crear tu usuario?
+      a(href='/signup') Regístrate
+      br
       br
       img(src="https://imgs.search.brave.com/lBtw7l3MhojeV-JYt7sjdC3YR7IeRPqIBsZV4cpJMiM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9mcmVl/bG9nb3BuZy5jb20v/aW1hZ2VzL2FsbF9p/bWcvMTY1Nzk1MjQ0/MGdvb2dsZS1sb2dv/LXBuZy10cmFuc3Bh/cmVudC5wbmc", alt="")
-      a(href="/auth/google") Inicia sesion con Google
-      br
-      p ¿No tienes usuario?
-      a(href='/signup') Regístrate
+      a(href="/auth/google")  Ingresar con Google

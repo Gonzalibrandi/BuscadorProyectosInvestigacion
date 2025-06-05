@@ -9,106 +9,112 @@ body {
 
 /* Contenedor principal */
 .box-grande {
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-surface);
+  backdrop-filter: blur(50px);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
   width: 90%;
   max-width: 600px;
   text-align: center;
 }
 
-.titulo {
-  color: #05294d; /* Azul oscuro */
-  font-size: 32px;
+h1 {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.alert {
+  color: red;
 }
 
 h2 {
-  color: #7aadff; /* Azul medio */
-  font-size: 16px;
+  color: var(--color-primary);
+  font-size: var(--font-size-base);
   font-weight: 400;
   padding: 0;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-md);
 }
 
 h3 {
-  color: #637092; /* Azul oscuro */
-  font-size: 22px;
-  margin-bottom: 20px;
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-md);
 }
 
 /* Texto adicional */
 span {
-  color: #4b6cb7; /* Azul intermedio */
-  font-size: 14px;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
   display: block;
-  margin-top: 10px;
+  margin-top: var(--spacing-sm);
 }
 
 /* Estilos de los mensajes de error */
 .error-message {
-  color: #ef4444; /* Rojo claro */
-  margin-bottom: 15px;
+  color: #ef4444;
+  margin-bottom: var(--spacing-md);
 }
 
 /* Estilo de los campos de entrada */
 input {
   width: 90%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #e2e8f0; /* Bordes suaves */
-  border-radius: 5px;
-  background-color: #f1f5f9; /* Fondo gris claro */
-  font-family: "DM Sans";
-  font-size: 16px;
-  color: #333;
-  transition: border-color 0.3s;
+  padding: var(--spacing-md);
+  margin: var(--spacing-sm) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-surface);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text-light);
+  transition: all var(--transition-speed) var(--transition-timing);
 }
 
 input:focus {
-  border-color: #3b82f6; /* Azul brillante al enfocar */
+  border-color: var(--color-primary);
   outline: none;
 }
 
 /* Estilo del botón de envío */
 .boton-enviar {
-  font-family: "DM Sans";
+  font-family: var(--font-family);
   width: 90%;
-  padding: 12px;
-  margin-top: 12px;
-  background-color: #3b82f6; /* Azul brillante */
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  background-color: var(--color-primary);
   border: none;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 16px;
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-light);
+  font-size: var(--font-size-base);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all var(--transition-speed) var(--transition-timing);
 }
 
 .boton-enviar:hover {
-  background-color: #2563eb; /* Azul más oscuro al pasar el mouse */
+  background-color: var(--color-primary-dark);
 }
 
 /* Enlaces */
 a {
-  color: #3b82f6; /* Azul brillante */
+  color: var(--color-primary);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color var(--transition-speed) var(--transition-timing);
 }
 
 a:hover {
-  color: #022b81; /* Azul más oscuro al pasar el mouse */
+  color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
 p {
-  margin-top: 16px;
+  margin-top: var(--spacing-md);
   margin-bottom: 0;
-  color: black;
+  color: var(--color-primary-dark);
 }
 
 img {
   height: 12px;
-  padding-right: 4px;
+  padding-right: var(--spacing-xs);
 }

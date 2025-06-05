@@ -18,6 +18,8 @@ block content
         .modal-header
           h2 Agregar Nuevo Documento
           button.close-modal &times;
+        .modal-description
+          p Agrega un nuevo documento al índice actual. Completa los campos requeridos y haz clic en "Agregar Documento".
         .modal-body
           form#form-agregar-documento
             .step-container.active
@@ -27,9 +29,36 @@ block content
               button.btn.btn-secondary.close-modal(type="button") Cancelar
               button.btn.btn-primary(type="submit") Agregar Documento
 
+    // Modal para guardar búsqueda favorita
+    #modal-favoritos.modal
+      .modal-content
+        .modal-header
+          h2 Guardar Búsqueda
+          button.close-modal &times;
+        .modal-description
+          p Guarda los criterios de búsqueda actuales para recibir notificaciones cuando se agreguen nuevos documentos que coincidan.
+          p Las notificaciones se enviarán a: #[strong= user ? user.userEmail : 'N/A']
+          button.btn.btn-secondary#ver-busquedas(type="button") Ver mis búsquedas guardadas
+        .modal-body
+          form#form-favoritos
+            .step-container.active
+              #campos-favoritos-container
+                // Los campos se generarán dinámicamente aquí
+            .form-actions
+              button.btn.btn-secondary.close-modal(type="button") Cancelar
+              button.btn.btn-primary(type="submit") Guardar Búsqueda
+
+          #lista-favoritos-container(style="display: none;")
+            h3 Búsquedas Guardadas
+            ul#lista-favoritos
+              // Las búsquedas favoritas se cargarán aquí
+            .form-actions
+              button.btn.btn-secondary#volver-guardar(type="button") Volver a Guardar Búsqueda
+
 block scripts
   script(src='https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.min.js')
   script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@4')
   script(src='/js/sidebar.js')
   script(src='/js/search.js')
   script(src='/js/agregar-documento.js')
+  script(src='/js/favoritos.js')

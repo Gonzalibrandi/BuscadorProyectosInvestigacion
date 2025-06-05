@@ -39,9 +39,15 @@ app.use(passport.session());
 app.use(flash());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  app.locals.loginMessage = req.flash('loginMessage');
-  app.locals.signupMessage = req.flash('signupMessage');
-  app.locals.user = req.user;
+  res.locals.messages = {
+    error: req.flash('error'),
+    success: req.flash('success'),
+    info: req.flash('info'),
+    warning: req.flash('warning')
+  };
+  res.locals.loginMessage = req.flash('loginMessage');
+  res.locals.signupMessage = req.flash('signupMessage');
+  res.locals.user = req.user;
   next();
 });
 
@@ -57,67 +63,97 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Función para enviar email
 async function sendEmail(
   to: string,
-  project: Record<string, any>
+  documento: Record<string, any>,
+  criterios: Record<string, any>,
+  indice: string
 ): Promise<void> {
+  // Crear el cuerpo del email con los campos que coincidieron
+  const camposCoincidentes = Object.entries(criterios)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join('\n    ');
+
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to,
-    subject: 'Nuevo proyecto agregado que coincide con tu búsqueda',
-    text: `Se ha encontrado un nuevo proyecto que coincide con tu búsqueda:
-    Título: ${project.nombre || 'Sin título'}
-    Descripción: ${project.descripcion || 'Sin descripcion'}
-    Estado: ${project.estatus || 'Sin estado'}
-    Ubicación: ${project.basedOn || 'Sin ubicación'}
-    Área: ${project.granArea1 || 'Sin área'}
-    Tipo: ${project.tipo || 'Sin tipo'}`,
+    subject: `[${indice}] Nuevo documento que coincide con tu búsqueda`,
+    text: `¡Hola!
+
+  Se ha encontrado un nuevo documento en el índice "${indice}" que coincide con tus criterios de búsqueda.
+
+  📋 Criterios de búsqueda:
+      ${camposCoincidentes}
+
+  📄 Detalles del documento:
+      ${Object.entries(documento)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n    ')}
+
+Recibirás notificaciones cada vez que se encuentren nuevos documentos que coincidan con tus criterios de búsqueda.
+
+Saludos,
+Sistema de Búsqueda de Proyectos de Investigación`,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    console.log(`Intentando enviar correo a ${to}...`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Correo enviado: %s', info.messageId);
+  } catch (error) {
+    console.error('Error al enviar correo:', error);
+  }
 }
 
 // Función para verificar búsquedas guardadas
 async function checkSearches(): Promise<void> {
   try {
-    const searches = await favoriteSearch.find();
+    console.log('Ejecutando checkSearches para verificar búsquedas guardadas...');
+    console.log('HOLA');
+    const searches = await favoriteSearch.find({ activa: true });
 
     for (const search of searches) {
-      const { searchQuery, estado, ubicacion, area, tipo, userEmail, _id } = search;
-      const filters: string[] = [];
-      if (estado) filters.push(`estatus = "${estado}"`);
-      if (ubicacion) filters.push(`basedOn = "${ubicacion}"`);
-      if (area) filters.push(`granArea1 = "${area}"`);
-      if (tipo) filters.push(`tipo = "${tipo}"`);
-      const filterString = filters.join(' AND ');
-
-      const searchOptions: Record<string, any> = {};
-      if (filterString) {
-        searchOptions.filter = filterString;
-      }
-
-      const searchResults = await client.index('Proyectos').search(searchQuery || '', searchOptions);
-      if (searchResults.hits.length > 0) {
-        for (const hit of searchResults.hits) {
-          const project = {
-            nombre: hit.nombre || undefined,
-            descripcion: hit.descripcion || undefined,
-            estatus: hit.estatus || undefined,
-            basedOn: hit.basedOn || undefined,
-            granArea1: hit.granArea1 || undefined,
-            tipo: hit.tipo || undefined,
-          };
+      try {
+        const { indice, criterios, userEmail, _id } = search;
         
-          if (!userEmail) {
-            throw new Error('El correo del usuario no está definido');
-          }
-          await sendEmail(userEmail, hit);
+        if (!indice || !criterios || !userEmail) {
+          console.warn('Búsqueda inválida (faltan campos):', search);
+          continue;
         }
-        await favoriteSearch.deleteOne({ _id });
+        
+        // Log para depurar: mostrar qué búsqueda se está procesando
+        console.log(`Procesando búsqueda favorita: ID=${_id}, Índice=${indice}, Criterios=${JSON.stringify(criterios)}, Usuario=${userEmail}`);
+
+        // Construir los filtros para MeiliSearch
+        const filters = Object.entries(criterios)
+          .map(([key, value]) => `${key} = "${value}"`)
+          .join(' AND ');
+
+        const searchOptions: Record<string, any> = {};
+        if (filters) {
+          searchOptions.filter = filters;
+        }
+
+        // Buscar en el índice correspondiente
+        const searchResults = await client.index(indice).search('', searchOptions);
+        
+        if (searchResults.hits.length > 0) {
+          console.log(`Coincidencia encontrada para búsqueda ID=${_id}. Enviando correo...`);
+          for (const hit of searchResults.hits) {
+            await sendEmail(userEmail, hit, criterios, indice);
+          }
+          console.log(`Búsqueda ID=${_id} procesada. Manteniendo activa para futuras notificaciones.`);
+        } else {
+          console.log(`No se encontraron coincidencias para búsqueda ID=${_id}. Manteniendo activa.`);
+        }
+      } catch (error) {
+        console.error(`Error al procesar búsqueda ID=${search?._id}:`, error);
+        // Continuar con la siguiente búsqueda en caso de error
       }
     }
   } catch (err) {
-    console.error('Error checking searches:', err);
+    console.error('Error general checking searches:', err);
   }
 }
 

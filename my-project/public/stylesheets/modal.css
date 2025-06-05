@@ -1,7 +1,6 @@
 /* Estilos generales para las modales */
 .modal {
   position: absolute;
-  top: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -11,6 +10,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-md);
+  margin-top: 80px;
 }
 
 .modal.active {
@@ -21,9 +21,13 @@
   background: var(--color-background);
   border-radius: var(--border-radius-lg);
   position: relative;
-  margin: auto;
-  overflow: hidden;
+  margin: 10px auto;
   border: 1px solid var(--color-border);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 600px;
 }
 
 .modal-header {
@@ -32,6 +36,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+}
+
+.modal-description {
+  padding: 0 var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.modal-description p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: var(--spacing-sm) 0;
 }
 
 .modal-header h2 {
@@ -44,7 +61,7 @@
   background: none;
   border: none;
   color: var(--color-text-muted);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-md);
   cursor: pointer;
   padding: var(--spacing-xs);
   transition: color var(--transition-speed) var(--transition-timing);
@@ -56,8 +73,26 @@
 
 .modal-body {
   padding: var(--spacing-xl);
-  max-height: 80vh; /* Limitar la altura máxima al 70% del viewport */
-  overflow-y: auto; /* Añadir scroll vertical si el contenido excede la altura máxima */
+  max-height: 60vh;
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-background);
+}
+
+/* Estilos para la barra de scroll en Chrome/Safari */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 4px;
+  border: 2px solid var(--color-background);
 }
 
 /* Estilos de formulario dentro de modales */
@@ -87,10 +122,16 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-md);
-  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
 }
 
-/* Estilos de botones (copiados de indices.css para consistencia en modales) */
+/* Estilos de botones */
 .btn {
   padding: var(--spacing-sm) var(--spacing-lg);
   border: none;
@@ -121,7 +162,11 @@
   transform: translateY(-1px);
 }
 
-/* Estilos para contenedores de paso (usado en modal de crear índice, pero útil aquí) */
+#ver-busquedas {
+  margin-bottom: 10px;
+}
+
+/* Estilos para contenedores de paso */
 .step-container {
   display: none;
 }
@@ -134,4 +179,46 @@
   font-size: var(--font-size-lg);
   color: var(--color-text-light);
   margin-bottom: var(--spacing-lg);
+}
+
+/* Estilos para la lista de búsquedas guardadas */
+#lista-favoritos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.saved-search-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+.saved-search-item .search-details {
+  flex-grow: 1;
+  margin-right: var(--spacing-md);
+}
+
+.saved-search-item .search-details p {
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text-light);
+  font-size: var(--font-size-base);
+}
+
+.saved-search-item .search-details strong {
+  color: var(--color-text-muted);
+}
+
+.saved-search-item .search-actions {
+  flex-shrink: 0;
+}
+
+.saved-search-item .search-actions .btn-sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
 } 
