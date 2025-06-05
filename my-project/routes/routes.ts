@@ -459,4 +459,56 @@ router.get('/admin/indices/:uid/tasks/:taskUid', isAuthenticated, (async (req: R
   }
 }) as RequestHandler);
 
+// Ruta para eliminar un documento de un índice
+router.delete('/admin/indices/:indice/documents/:documentId', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const { indice, documentId } = req.params;
+    
+    // Verificar que el índice existe
+    const index = client.index(indice);
+    await index.deleteDocument(documentId);
+    
+    res.json({ message: 'Documento eliminado exitosamente' });
+  } catch (error: any) {
+    console.error('Error al eliminar documento:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para obtener la configuración de un índice
+router.get('/admin/indices/:indice/config', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const { indice } = req.params;
+    const index = client.index(indice);
+    const settings = await index.getSettings();
+    
+    res.json({
+      displayedAttributes: settings.displayedAttributes || [],
+      searchableAttributes: settings.searchableAttributes || [],
+      filterableAttributes: settings.filterableAttributes || []
+    });
+  } catch (error: any) {
+    console.error('Error al obtener configuración del índice:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
+// Ruta para asegurar que 'id' esté en displayedAttributes de un índice
+router.post('/admin/indices/:indice/asegurar-id', isAuthenticated, (async (req: Request, res: Response) => {
+  try {
+    const { indice } = req.params;
+    const index = client.index(indice);
+    const settings = await index.getSettings();
+    let displayed = settings.displayedAttributes || [];
+    if (!displayed.includes('id')) {
+      displayed = ['id', ...displayed];
+      await index.updateSettings({ displayedAttributes: displayed });
+    }
+    res.json({ message: `'id' asegurado en displayedAttributes`, displayedAttributes: displayed });
+  } catch (error: any) {
+    console.error('Error asegurando id en displayedAttributes:', error);
+    res.status(500).json({ error: error.message });
+  }
+}) as RequestHandler);
+
 export default router;

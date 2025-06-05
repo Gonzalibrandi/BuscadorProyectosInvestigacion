@@ -25,9 +25,9 @@ block content
             .step-container.active
               #campos-container
                 // Los campos se generarán dinámicamente aquí
-            .form-actions
-              button.btn.btn-secondary.close-modal(type="button") Cancelar
-              button.btn.btn-primary(type="submit") Agregar Documento
+        .form-actions
+          button.btn.btn-secondary.close-modal(type="button") Cancelar
+          button.btn.btn-primary(type="submit") Agregar Documento
 
     // Modal para guardar búsqueda favorita
     #modal-favoritos.modal
@@ -49,7 +49,6 @@ block content
               button.btn.btn-primary(type="submit") Guardar Búsqueda
 
           #lista-favoritos-container(style="display: none;")
-            h3 Búsquedas Guardadas
             ul#lista-favoritos
               // Las búsquedas favoritas se cargarán aquí
             .form-actions

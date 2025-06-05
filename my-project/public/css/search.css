@@ -29,9 +29,9 @@ body {
   border-radius: var(--border-radius-md);
   transition: background-color var(--transition-speed) var(--transition-timing);
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  gap: var(--spacing-md);
+  gap: var(--spacing-xs);
 }
 
 .hit-item:hover {
@@ -338,4 +338,41 @@ html {
 
 .expand-button.expanded i {
   transform: rotate(180deg);
+}
+
+.document-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity var(--transition-speed) var(--transition-timing);
+  z-index: 10;
+}
+
+.documento:hover .document-actions {
+  opacity: 1;
+}
+
+.delete-document {
+  background-color: red;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-speed) var(--transition-timing);
+  box-shadow: var(--shadow-sm);
+}
+
+.delete-document:hover {
+  transform: scale(1.2);
+  box-shadow: var(--shadow-md);
+}
+
+.delete-document i {
+  font-size: 14px;
 }

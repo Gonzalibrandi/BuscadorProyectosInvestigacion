@@ -7,6 +7,8 @@ if (document.getElementById('searchbox')) {
   // Función para generar el template según los atributos del índice
   async function generarTemplate() {
     try {
+      // Asegurar que el campo id esté en displayedAttributes
+      await fetch(`/admin/indices/${indice}/asegurar-id`, { method: 'POST' });
       // Obtener la configuración del índice
       const response = await fetch(`/admin/indices/${indice}/config`);
       const config = await response.json();
@@ -19,8 +21,17 @@ if (document.getElementById('searchbox')) {
       // Generar el template dinámicamente
       let template = '<div class="documento">';
       
-      // Mostrar los primeros 3 atributos
-      displayedAttrs.slice(0, 3).forEach(attr => {
+      // Agregar el botón de eliminación al inicio del documento
+      template += `
+        <div class="document-actions">
+          <button class="delete-document" data-document-id="{{id}}" title="Eliminar documento">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+      
+      // Mostrar los primeros 3 atributos, excluyendo 'id'
+      displayedAttrs.filter(attr => attr !== 'id').slice(0, 3).forEach(attr => {
         const isSearchable = searchableAttrs.includes(attr);
         const isFilterable = filterableAttrs.includes(attr);
         
@@ -39,7 +50,7 @@ if (document.getElementById('searchbox')) {
       // Si hay más de 3 atributos, agregar el contenedor para los campos ocultos
       if (displayedAttrs.length > 3) {
         template += '<div class="hidden-fields">';
-        displayedAttrs.slice(3).forEach(attr => {
+        displayedAttrs.filter(attr => attr !== 'id').slice(3).forEach(attr => {
           const isSearchable = searchableAttrs.includes(attr);
           const isFilterable = filterableAttrs.includes(attr);
           
@@ -233,6 +244,40 @@ if (document.getElementById('searchbox')) {
     });
 
     search.start();
+
+    // Agregar el manejador de eventos para el botón de eliminación
+    document.getElementById('hits').addEventListener('click', async function(e) {
+      const deleteButton = e.target.closest('.delete-document');
+      if (deleteButton) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const documentId = deleteButton.dataset.documentId;
+        
+        if (confirm('¿Estás seguro de que deseas eliminar este documento?')) {
+          try {
+            const response = await fetch(`/admin/indices/${indice}/documents/${documentId}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (response.ok) {
+              // Refrescar la búsqueda para actualizar los resultados
+              alert('Documento eliminado exitosamente');
+              window.location.reload();
+            } else {
+              const error = await response.json();
+              alert(`Error al eliminar el documento: ${error.error || 'Error desconocido'}`);
+            }
+          } catch (error) {
+            console.error('Error al eliminar el documento:', error);
+            alert('Error al eliminar el documento. Por favor, intente nuevamente.');
+          }
+        }
+      }
+    });
   }
 
   // Iniciar la búsqueda

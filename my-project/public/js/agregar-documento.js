@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Limpiar campos anteriores
             camposContainer.innerHTML = '';
             
-            // Crear campos para cada atributo mostrado
+            // Crear campos para cada atributo mostrado, excepto 'id'
             config.displayedAttributes.forEach(attr => {
+                if (attr.toLowerCase() === 'id') return; // Omitir el campo Id
                 const formGroup = document.createElement('div');
                 formGroup.className = 'form-group';
                 
